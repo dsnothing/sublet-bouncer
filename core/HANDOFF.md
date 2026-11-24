@@ -3,7 +3,7 @@
 - Added four generic fuzzy families + negation tests; offline/fallback verdictConfidence=reduced + verdictConfidenceReason + couldNotCheck warning (including ADMIT). UI owner must render this contract.
 - Excess-rent-deposit proposals/hints now require positive multi-period/extra/above-known-rent evidence; legal one-month deposits rejected with audit log. Production evidence JSON reviewed: no secrets.
 - Eval now pairs raw/verified annotated field precision+recall, fabricated spans rejected, correct values dropped, synthetic one-field corruption detection; no provider calls/deploy/v3 access.
-- Verified:160 tests pass/1 optional skip, root+eval-runner strict typechecks and shared-checkout build pass. DEV evidence/runner: tests/c2f-dev-{before,after}.json + c2f-dev.ts.
+- Verified:fresh committed-source npm ci/test/typecheck/build pass (160 tests, 1 optional skip); eval-runner strict typecheck + offline64 smoke pass. DEV evidence/runner: tests/c2f-dev-{before,after}.json + c2f-dev.ts.
 | DEV / mode | Fields correct unchanged | Violation P/R before -> after | Verdict correct before -> after |
 |---|---|---|---|
 | gold / offline | 138/138 | 1/1 -> 1/1 | 39/40 -> 39/40 |
