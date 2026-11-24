@@ -4,7 +4,8 @@ import { findSpan, offlineExtract, verifyExtraction, type Extraction, type LLMAd
 import { extractFeatures, paymentBeforeViewing, sensitiveBeforeViewing } from './features.js';
 import { hasInjection, refusalReason } from './injection.js';
 import { refreshActions, appendLog } from './log.js';
-import { negatedRestriction, evidenceClauses, booleanEvidence } from './evidence.js';
+import { negatedRestriction, evidenceClauses, booleanEvidence, excessDepositEvidence } from './evidence.js';
+export const OFFLINE_WARNING = 'Offline mode checks exact wording only; reworded clauses may be missed';
 export const LLM_TIMEOUT_MS = 20000;
 export interface AnalyzeOptions { llm?: LLMAdapter; data?: Data; timeoutMs?: number; geocode?: (address:string)=>Promise<Data['geocodes']['entries'][number]|undefined> }
 export const newId = () => globalThis.crypto.randomUUID();
@@ -21,6 +22,7 @@ export function clauseFindings(listing: string, db: Data, applicability: Analysi
       for (const pattern of patterns) {
         const matches = [...listing.matchAll(new RegExp(pattern,'gi'))].filter(m => m[0].length);
         for (const m of matches) {
+          if(rule.id==='excess_rent_deposit' && !excessDepositEvidence(m[0],listing))continue;
           if(negatedRestriction(listing,m.index!,m.index!+m[0].length,rule.id))continue;
           const status = rule.status === 'info' ? 'ok' : rule.status as ClauseFinding['status'];
           findings.push({span:{text:m[0],start:m.index!,end:m.index!+m[0].length},ruleId:rule.id,status:status==='void' && applicability!=='applies'?'questionable':status,section:rule.section,lesson:rule.lesson_plain+(status==='void'&&applicability!=='applies'?' RTA applicability needs confirmation.':''),lessonSimple:rule.lesson_simple_english,sourceUrl:rule.source_url,confidence});
@@ -34,6 +36,9 @@ export function clauseFindings(listing: string, db: Data, applicability: Analysi
     const rule = db.rules.rules.find(rule=>rule.id===proposal.proposed_rule_id);
     const span = findSpan(listing,proposal.span.text);
     if (!rule || !span) continue;
+    if(rule.id==='excess_rent_deposit' && !excessDepositEvidence(span.text,listing)) {
+      reject?.(rule.id,'Evidence does not establish a deposit exceeding one rent period');continue;
+    }
     const concept=rule.concept_terms.map(term=>new RegExp(term,'i').exec(span.text)).find(Boolean);
     const conceptNegated=concept && rule.id!=='no_pets' && negatedRestriction(listing,span.start+concept.index,span.start+concept.index+concept[0].length,rule.id);
     if(!concept || conceptNegated || negatedRestriction(listing,span.start,span.end,rule.id) || negatedRestriction(span.text,0,span.text.length,rule.id)) {
@@ -76,6 +81,11 @@ export function scoreScam(listing:string, fields:AnalysisResult['fields'], db:Da
   return {p,band:p>.7?'block':p>=.3?'escalate':'proceed',topFeatures:contributions.sort((a,b)=>Math.abs(b.weight)-Math.abs(a.weight)).slice(0,3)};
 }
 export function recomputeVerdict(r: AnalysisResult) {
+  r.verdictConfidence=r.mode==='live'?'standard':'reduced';
+  if(r.mode!=='live') {
+    r.verdictConfidenceReason=OFFLINE_WARNING;
+    if(!r.couldNotCheck.includes(OFFLINE_WARNING))r.couldNotCheck.push(OFFLINE_WARNING);
+  }
   r.reasons=[];
   if (r.refused) r.reasons.push(`Cannot analyze: ${r.refused.reason}`);
   if (r.scam.p>.7) r.reasons.push('Scam risk exceeds the block threshold');
@@ -105,7 +115,7 @@ export async function analyze(req: AnalyzeRequest, options: AnalyzeOptions = {})
       finally {clearTimeout(timer);}
     }
   }
-  const r:AnalysisResult={runId:newId(),mode,...(fallbackReason?{fallbackReason}:{}),...(mode==='live'?{model:options.llm?.model??'gemini-3-flash-preview'}:{}),listing:req.listing,fields:refused?{}:extraction.fields,clauses:[],scam:{p:0,band:'proceed',topFeatures:[]},commute:{status:'unknown'},rtaApplies:'unknown',verdict:'HOLD',reasons:[],decisions:[],escalations:[],actions:[],log:[],couldNotCheck:['Ownership, identity, and listing authenticity','Transit service changes; weekday 08:30 schedule only','Legal advice and exceptions beyond the verified rules'],...(refused?{refused:{reason:refused}}:{})};
+  const r:AnalysisResult={runId:newId(),mode,verdictConfidence:mode==='live'?'standard':'reduced',...(fallbackReason?{fallbackReason}:{}),...(mode==='live'?{model:options.llm?.model??'gemini-3-flash-preview'}:{}),listing:req.listing,fields:refused?{}:extraction.fields,clauses:[],scam:{p:0,band:'proceed',topFeatures:[]},commute:{status:'unknown'},rtaApplies:'unknown',verdict:'HOLD',reasons:[],decisions:[],escalations:[],actions:[],log:[],couldNotCheck:['Ownership, identity, and listing authenticity','Transit service changes; weekday 08:30 schedule only','Legal advice and exceptions beyond the verified rules'],...(refused?{refused:{reason:refused}}:{})};
   const esc=(id:Decision['id'],question:string,evidence:Escalation['evidence']=[],opts=['Confirm','Unable to confirm'],blocking=true)=>{r.escalations.push({id:newId(),decisionId:id,blocking,question,options:opts,evidence});if(!blocking&&!r.couldNotCheck.includes(question))r.couldNotCheck.push(question);};
   const decision=(id:Decision['id'],label:string,output:unknown,confidence=1,threshold?:number)=>{const d:Decision={id,kind:id==='D1'&&mode==='live'?'llm':id==='D2'&&mode==='live'?'llm+rules':id==='D3'?'model':'rules',label,output,confidence,...(threshold!==undefined?{threshold}:{}),escalated:r.escalations.some(e=>e.decisionId===id),reason:r.escalations.filter(e=>e.decisionId===id).map(e=>e.question).join('; ')||'Policy check complete',evidence:id==='D1'?Object.values(r.fields).flatMap(f=>f.span?[f.span]:[]):id==='D2'?r.clauses.map(c=>c.span):[]};r.decisions.push(d);appendLog(r,'decision',id,label,'agent',confidence,threshold);};
   if(fallbackReason)appendLog(r,'decision','D1',fallbackReason+(r.model?' (answered by '+r.model+')':''));

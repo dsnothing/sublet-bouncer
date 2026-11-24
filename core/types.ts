@@ -11,6 +11,7 @@ export interface ActionRecord { id: string; type: 'draft_reply'|'save_evidence_c
   tier: 'auto'|'confirm'; status: 'proposed'|'done'|'undone'|'blocked'; payload: unknown; blockedReason?: string }
 export interface LogEntry { id: string; ts: string; kind: 'decision'|'action'|'undo'|'correction'; ref: string; actor: 'agent'|'human'; summary: string; confidence?: number; threshold?: number }
 export interface AnalysisResult { runId: string; mode: 'live'|'offline'|'offline-fallback'; fallbackReason?: string; model?: string;
+  verdictConfidence: 'standard'|'reduced'; verdictConfidenceReason?: string;
   listing: string; fields: Record<string, { value: unknown; span?: Span; confidence: number }>;
   clauses: ClauseFinding[]; scam: { p: number; band: 'proceed'|'escalate'|'block'; topFeatures: {name: string; weight: number}[] };
   commute: Commute; rtaApplies: 'applies'|'may_not_apply'|'unknown'; verdict: Verdict; reasons: string[];

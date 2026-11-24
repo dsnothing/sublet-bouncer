@@ -13,7 +13,8 @@
       "fuzzy_patterns": [
         "additional\\s+deposit",
         "\\bheld\\s+(?:against|for)\\s+(?:breakages?|damages?|repairs?)\\b",
-        "\\b(?:breakage|damages?|security)\\s+(?:fund|bond|fee|holdback)\\b"
+        "\\b(?:breakage|damages?|security)\\s+(?:fund|bond|fee|holdback)\\b",
+        "\\b(?:hold|held|keep|kept|withhold|withheld)\\b[^.!?;\\n]{0,45}\\b(?:in\\s+case|against|for)\\b[^.!?;\\n]{0,40}\\b(?:damages?|breakages?|broken|repairs?|cleaning)\\b"
       ],
       "status": "void",
       "lesson_plain": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
@@ -31,7 +32,10 @@
         "(?:two|three|[2-9])\\s*months?[’\\x27]?\\s*(?:rent\\s*)?(?:deposit|up\\s*front)",
         "(?:rent\\s*)?deposit\\s*(?:of\\s*)?(?:two|three|[2-9])\\s*months?"
       ],
-      "fuzzy_patterns": [],
+      "fuzzy_patterns": [
+        "\\bfirst\\s*(?:and|\\+)\\s*last\\s*(?:and|\\+)\\s*extra\\b",
+        "\\b(?:rent\\s+)?deposit\\s*(?:of|is|:)?\\s*\\$\\s*[\\d,]+"
+      ],
       "status": "void",
       "lesson_plain": "A required rent deposit is capped at the lesser of one rent period and one month. Compare any stated dollar deposit to the actual rent.",
       "lesson_simple_english": "A required rent deposit is capped at the lesser of one rent period and one month. Compare any stated dollar deposit to the actual rent.",
@@ -86,7 +90,9 @@
         "landlord\\s+(?:can|may|will)\\s+enter\\s+(?:any\\s*time|anytime|without\\s+(?:notice|24))",
         "(?:entry|enter)\\s+without\\s+(?:prior\\s+)?notice"
       ],
-      "fuzzy_patterns": [],
+      "fuzzy_patterns": [
+        "\\b(?:landlord|owner)\\b[^.!?;\\n]{0,35}\\b(?:enter|pop\\s+in|drop\\s+by|come\\s+in)\\b[^.!?;\\n]{0,45}\\b(?:whenever|any\\s*time|without\\s+(?:prior\\s+)?notice|no\\s+need\\s+to\\s+tell)\\b"
+      ],
       "status": "void",
       "lesson_plain": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
       "lesson_simple_english": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
@@ -104,7 +110,8 @@
         "landlord\\s+(?:is\\s+)?not\\s+responsible\\s+for\\s+(?:any\\s+)?repairs"
       ],
       "fuzzy_patterns": [
-        "\\bas[ -]is\\b"
+        "\\bas[ -]is\\b",
+        "\\b(?:you|tenant)\\s+(?:(?:must|will)\\s+)?(?:fix|pay\\s+for)\\s+all\\s+(?:the\\s+)?repairs\\b"
       ],
       "status": "void",
       "lesson_plain": "A landlord remains responsible for repair, habitation and required standards. An agreement cannot waive the Act.",
@@ -123,7 +130,10 @@
         "evict\\s+(?:you\\s+)?without\\s+(?:the\\s+)?(?:LTB|board|court)",
         "immediate\\s+(?:eviction|lock[ -]?out)"
       ],
-      "fuzzy_patterns": [],
+      "fuzzy_patterns": [
+        "\\b(?:change|changing)\\s+(?:the\\s+)?locks\\b",
+        "\\bremove\\s+your\\s+(?:things|belongings)\\b"
+      ],
       "status": "void",
       "lesson_plain": "A landlord cannot recover possession of an occupied unit without a Board order, except abandonment/vacating; changing locks requires replacement keys.",
       "lesson_simple_english": "A landlord cannot recover possession of an occupied unit without a Board order, except abandonment/vacating; changing locks requires replacement keys.",

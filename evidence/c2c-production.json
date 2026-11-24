@@ -1,0 +1,20 @@
+{
+    "url":  "https://sublet-bouncer.vercel.app",
+    "checks":  [
+                   {
+                       "fallbackReason":  null,
+                       "model":  "gemini-3.1-flash-lite",
+                       "call":  1,
+                       "httpAndSeconds":  "200 5.326154",
+                       "mode":  "live"
+                   },
+                   {
+                       "fallbackReason":  null,
+                       "model":  "gemini-3.1-flash-lite",
+                       "call":  2,
+                       "httpAndSeconds":  "200 1.863686",
+                       "mode":  "live"
+                   }
+               ],
+    "sha":  "30126e18169f248b16715e6b11f4b56c701c856f"
+}

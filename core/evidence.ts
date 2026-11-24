@@ -26,9 +26,22 @@ export function negatedRestriction(text:string,start:number,end:number,ruleId:st
   const clause=before+text.slice(start,end)+after;
   if(/\b(?:no|not|never|without|cannot|can't|won't|don't|doesn't)\s+(?:(?:a|any|the|require|requires|request|enforce|allow)\s+){0,4}["'“”‘’]*\s*$/i.test(before))return true;
   if(/^\s*["'“”‘’]*(?:\s+(?:clause|policy|rule|is|are|will|be|does))*\s+(?:not\s+(?:required|enforced|applicable|apply)|never\s+(?:required|enforced)|optional|voluntary|waived|unnecessary)/i.test(after))return true;
+  if(ruleId==='entry_notice' && /\b(?:owner|landlord)\b[^.!?;\n]{0,25}\b(?:cannot|can't|won't|never|may\s+not|must\s+not|does\s+not|do\s+not)\b[^.!?;\n]{0,20}\b(?:enter|pop|drop|come)\b/i.test(clause))return true;
+  if(ruleId==='damage_deposit' && /\bno\s+(?:money|sum|amount|cash)\b/i.test(clause))return true;
   if(ruleId==='no_pets')return /\b(?:pets?|animals?|dogs?|cats?)\s+(?:are\s+)?(?:welcome|allowed|permitted)\b/i.test(clause.replace(/\bno[ -](?:pets?|animals?|dogs?|cats?)\b/gi,'')) || /\b(?:do\s+not|don't|never|not)\s+(?:use|have|enforce|apply|include|a\s+rule|a\s+clause)\b/i.test(clause);
   if(['damage_deposit','excess_rent_deposit','key_deposit'].includes(ruleId) && /\b(?:no|never|not)\s+(?:(?:damage|security|rent|key|pet|cleaning)\s+)?(?:deposit|bond|hold|fund)\b|\b(?:deposit|bond|hold|fund)\s+(?:is\s+)?(?:not\s+required|optional|waived)\b/i.test(clause))return true;
   if(ruleId==='postdated_cheques' && /\b(?:optional|voluntary|not\s+required|never\s+required)\b/i.test(clause))return true;
   if(ruleId==='owner_shared')return booleanEvidence('owner_lives_in',clause)===false;
   return false;
+}
+
+// Positive evidence of excess is required, independently of the model's label.
+export function excessDepositEvidence(evidence:string,listing:string):boolean {
+  const text=evidence.replace(/[\u2018\u2019]/g,"'");
+  const context=evidenceClauses(listing).find(s=>s.includes(evidence))??text;
+  if(/\b(?:damage|security|key|pet|cleaning)\s+deposit\b/i.test(context) && !/\brent\s+deposit\b/i.test(text))return false;
+  if(/\b(?:(?:two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[2-9]|\d{2,})\s*months?['?]?\s*(?:rent\s*)?(?:deposit|up\s*front|advance)|(?:rent\s*)?deposit\s*(?:of\s*)?(?:two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[2-9]|\d{2,})\s*months?)\b/i.test(text) || /\bfirst\s*(?:and|\+)\s*last\s*(?:and|\+)\s*extra\b/i.test(text))return true;
+  const rent=/\brent\s*(?:is|:)?\s*\$\s*([\d,]+(?:\.\d+)?)/i.exec(listing) ?? /\$\s*([\d,]+(?:\.\d+)?)\s*(?:\/|per\s*)mo(?:nth)?\b/i.exec(listing);
+  const deposit=/\b(?:rent\s+)?deposit\s*(?:of|is|:)?\s*\$\s*([\d,]+(?:\.\d+)?)/i.exec(text);
+  return !!rent && !!deposit && Number(deposit[1].replace(/,/g,''))>Number(rent[1].replace(/,/g,''));
 }

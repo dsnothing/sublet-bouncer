@@ -1,0 +1,243 @@
+{
+  "phase": "after",
+  "method": "Offline and paired saved raw extraction replay, no new provider calls; development data only",
+  "splits": {
+    "gold": {
+      "offline": {
+        "n": 40,
+        "rawN": 26,
+        "schemaRejected": 0,
+        "falsePositives": [],
+        "quality": {
+          "raw": {
+            "correct": 0,
+            "incorrect": 0,
+            "missing": 0,
+            "unannotated": 0
+          },
+          "verified": {
+            "correct": 0,
+            "incorrect": 0,
+            "missing": 0,
+            "unannotated": 0
+          }
+        },
+        "safety": {
+          "fabricated_spans": 0,
+          "fabricated_spans_rejected": 0,
+          "correct_values_dropped": 0,
+          "trials": 0,
+          "raw_detected": 0,
+          "verified_detected": 0
+        },
+        "field_correct": 138,
+        "field_total": 138,
+        "verdict_correct": 39,
+        "tp": 16,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1
+      },
+      "replay": {
+        "n": 40,
+        "rawN": 26,
+        "schemaRejected": 19,
+        "falsePositives": [],
+        "quality": {
+          "raw": {
+            "correct": 20,
+            "incorrect": 1,
+            "missing": 3,
+            "unannotated": 3
+          },
+          "verified": {
+            "correct": 20,
+            "incorrect": 1,
+            "missing": 3,
+            "unannotated": 3
+          }
+        },
+        "safety": {
+          "fabricated_spans": 0,
+          "fabricated_spans_rejected": 0,
+          "correct_values_dropped": 0,
+          "trials": 7,
+          "raw_detected": 0,
+          "verified_detected": 7
+        },
+        "field_correct": 134,
+        "field_total": 138,
+        "verdict_correct": 39,
+        "tp": 16,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1
+      }
+    },
+    "v1": {
+      "offline": {
+        "n": 24,
+        "rawN": 18,
+        "schemaRejected": 0,
+        "falsePositives": [],
+        "quality": {
+          "raw": {
+            "correct": 0,
+            "incorrect": 0,
+            "missing": 0,
+            "unannotated": 0
+          },
+          "verified": {
+            "correct": 0,
+            "incorrect": 0,
+            "missing": 0,
+            "unannotated": 0
+          }
+        },
+        "safety": {
+          "fabricated_spans": 0,
+          "fabricated_spans_rejected": 0,
+          "correct_values_dropped": 0,
+          "trials": 0,
+          "raw_detected": 0,
+          "verified_detected": 0
+        },
+        "field_correct": 39,
+        "field_total": 68,
+        "verdict_correct": 20,
+        "tp": 4,
+        "fp": 0,
+        "fn": 5,
+        "precision": 1,
+        "recall": 0.4444444444444444
+      },
+      "replay": {
+        "n": 24,
+        "rawN": 18,
+        "schemaRejected": 13,
+        "falsePositives": [],
+        "quality": {
+          "raw": {
+            "correct": 13,
+            "incorrect": 0,
+            "missing": 0,
+            "unannotated": 13
+          },
+          "verified": {
+            "correct": 13,
+            "incorrect": 0,
+            "missing": 0,
+            "unannotated": 12
+          }
+        },
+        "safety": {
+          "fabricated_spans": 0,
+          "fabricated_spans_rejected": 0,
+          "correct_values_dropped": 0,
+          "trials": 5,
+          "raw_detected": 0,
+          "verified_detected": 5
+        },
+        "field_correct": 43,
+        "field_total": 68,
+        "verdict_correct": 20,
+        "tp": 4,
+        "fp": 0,
+        "fn": 5,
+        "precision": 1,
+        "recall": 0.4444444444444444
+      }
+    },
+    "v2": {
+      "offline": {
+        "n": 30,
+        "rawN": 26,
+        "schemaRejected": 0,
+        "falsePositives": [],
+        "quality": {
+          "raw": {
+            "correct": 0,
+            "incorrect": 0,
+            "missing": 0,
+            "unannotated": 0
+          },
+          "verified": {
+            "correct": 0,
+            "incorrect": 0,
+            "missing": 0,
+            "unannotated": 0
+          }
+        },
+        "safety": {
+          "fabricated_spans": 0,
+          "fabricated_spans_rejected": 0,
+          "correct_values_dropped": 0,
+          "trials": 0,
+          "raw_detected": 0,
+          "verified_detected": 0
+        },
+        "field_correct": 61,
+        "field_total": 117,
+        "verdict_correct": 18,
+        "tp": 1,
+        "fp": 0,
+        "fn": 8,
+        "precision": 1,
+        "recall": 0.1111111111111111
+      },
+      "replay": {
+        "n": 30,
+        "rawN": 26,
+        "schemaRejected": 0,
+        "falsePositives": [
+          {
+            "id": "v2-12",
+            "rule": "damage_deposit",
+            "evidence": [
+              "put down a $200 refundable hold"
+            ]
+          },
+          {
+            "id": "v2-21",
+            "rule": "damage_deposit",
+            "evidence": [
+              "I will need one month's rent as a deposit when we sign."
+            ]
+          }
+        ],
+        "quality": {
+          "raw": {
+            "correct": 67,
+            "incorrect": 10,
+            "missing": 24,
+            "unannotated": 11
+          },
+          "verified": {
+            "correct": 65,
+            "incorrect": 10,
+            "missing": 26,
+            "unannotated": 11
+          }
+        },
+        "safety": {
+          "fabricated_spans": 0,
+          "fabricated_spans_rejected": 0,
+          "correct_values_dropped": 2,
+          "trials": 26,
+          "raw_detected": 0,
+          "verified_detected": 26
+        },
+        "field_correct": 73,
+        "field_total": 117,
+        "verdict_correct": 25,
+        "tp": 6,
+        "fp": 2,
+        "fn": 3,
+        "precision": 0.75,
+        "recall": 0.6666666666666666
+      }
+    }
+  }
+}

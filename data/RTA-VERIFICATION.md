@@ -183,3 +183,8 @@ Source: https://www.ontario.ca/laws/statute/06r17; retrieved 2026-11-24
 - s.105 security for damage: held against/for breakage, damage or repairs; breakage/damage/security fund, bond, fee or holdback.
 - s.14 animal prohibition: no animals/furry friends; animals/pets banned, forbidden or unwelcome; cats/dogs not allowed, permitted or welcome.
 - These are uncertain lexical hints (fuzzy_patterns, confidence 0.6), always escalated; no exact patterns or legal interpretations changed.
+
+## C2f offline coverage / evidence gate (2026-11-24)
+- Added fuzzy held/kept/withheld-for-damage/cleaning, owner entry-anytime, tenant-all-repairs and lock/removal hints at confidence 0.6 with blocking review; negations covered.
+- Rent-deposit hints/proposals require positive multi-month/extra or deposit-above-known-rent evidence; damage/security/key deposits are not inferred to be rent deposits.
+- Existing verified legal interpretations and exact-pattern confidence remain unchanged. No blind v3 files opened; gold/v1/v2 are development data.
