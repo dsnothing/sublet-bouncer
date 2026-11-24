@@ -174,3 +174,11 @@
 - **Verified**: `tsc --noEmit`, `npm run build`, and `npm test` (160 passed, 1 skipped) green; headless Chrome CDP at 1280×900 & 375×812 verified offline ADMIT, one-click Gemini re-check → live ADMIT (`gemini-3.1-flash-lite`), `aria-live`, `prefers-reduced-motion: reduce` (`1e-05s`), 0 overflow.
 - **Screenshots**: `evidence/ui/c4e-{1280-offline-admit,1280-offline-could-not-check,375-offline-admit,1280-live-admit,375-live-admit}.png`.
 - **Open risks**: None blocking; no deploy performed (per brief).
+
+## C2g - General prompt-injection coverage (Codex L3)
+- Role/skills: L3 implementation; karpathy-guidelines (scope), systematic-debugging (detector trace); gap: rg unavailable, PowerShell search used.
+- Added general AI addressing, verdict commands, instruction overrides, output directives and fake delimiter detection; NFKC normalization strips invisible format characters.
+- Added 43 regressions: 33 family/obfuscation positives with blocking D1 escalation, 8 ordinary-listing negatives, 2 injection-only refusals; reproduced 32 misses before fix.
+- Verified: npm test 203 passed / 1 optional skipped (8 files); npm run typecheck and npm run build passed.
+- Post-v3-freeze change: no frozen v3 fixtures opened, no v3 evaluation rerun or tuning; existing v3 metrics describe the frozen source, not this change.
+- Risks: heuristic coverage is incomplete; normal-listing negatives pass. No frontend change or deployment; unrelated evidence/demo/ left untouched.
