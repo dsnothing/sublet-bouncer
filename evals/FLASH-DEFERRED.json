@@ -1,0 +1,11 @@
+{
+  "model": "gemini-3-flash-preview",
+  "status": "deferred: daily free-tier quota",
+  "advertised_retry_delay_seconds": 78912,
+  "recorded_at": "2026-11-24T10:09:16.274480+00:00",
+  "successful_resume_cases": [
+    "rt-01",
+    "rt-02"
+  ],
+  "note": "Two v1 resume responses remain in ignored cache. No further Flash calls authorized in final Lite evaluation."
+}
