@@ -207,3 +207,12 @@
 - Safety: 83 regressions across 5 files, including 35 authored pairs and 3 asserted key-deposit gaps. Live paths used stubs.
 - Post-v3: no frozen fixtures, labels, harness or results changed, opened, or run. C10 is development work.
 - C5 sample cache seeds are stale and need regeneration in C11. Part B owns UI rendering and visual QA. No deploy.
+
+## C12 Part A - Baseline duel (Codex L3, 2026-11-24)
+- Skills: karpathy-guidelines for scope, validate-data for scoring and cost, systematic-debugging for verification. PowerShell used in place of unavailable rg.
+- Prereg 1c22017; run d020109. Kept six completed replies after interruption and resumed at v3-07 before its first request. B1 prompt and B2 checklist hashes match prereg.
+- Verdict: B2 18/30, B1 20/30, Bouncer offline 23/30, frozen live 24/30. B1 violation P/R .813/1.000, 1 absent quote, 19 exact section mismatches, 0 no answers.
+- B1 505.0 mean / 630 p95 tokens ($0.000196, 28/30 fully metered); Bouncer dev proxy 444.7 / 474 ($0.000361, 10/10). List-price estimates. Free-tier demo $0.
+- Cached 45/50 HTTP attempts. Both B1 HTTP 503 retries succeeded. Frozen Bouncer had 6 provider fallbacks. Offline replay reproduces results and export.
+- Part B data: web/src/data/baseline-samples.json. Use samples.clean/tricky/scammy only when the listing matches exactly. All three match merged C10; recorded verdicts ADMIT/REFUSE/REFUSE.
+- npm test: 312 passed, 1 skipped. Typecheck, build, cache parity and credential scan passed. Synthetic n=30; section mismatches measure exact text agreement. No deploy.

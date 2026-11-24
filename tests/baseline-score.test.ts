@@ -29,12 +29,8 @@ describe('C12 frozen score parity', () => {
 });
 
 describe("C12 cached demo samples", () => {
-  it.each(["clean", "scammy"] as const)("matches the current %s UI listing", (key) => {
+  it.each(["clean", "tricky", "scammy"] as const)("matches the current %s UI listing", (key) => {
     expect(exportData.samples[key].listing).toBe(SAMPLE_LISTINGS[key].listing);
-  });
-  // Part A can land before C10. Check exact parity as soon as the hero is active.
-  it.skipIf(SAMPLE_LISTINGS.tricky.goldId === "gold-31")("matches the current C10 hero listing", () => {
-    expect(exportData.samples.tricky.listing).toBe(SAMPLE_LISTINGS.tricky.listing);
   });
   it("preserves raw answers and mechanically verifies each quote and section", () => {
     for (const { rawAnswer, verdict, listing, clauses } of Object.values(exportData.samples)) {
