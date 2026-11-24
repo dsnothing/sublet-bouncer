@@ -5,7 +5,7 @@ Submissions open **Nov 28 12:00am ET** and close **Dec 1 3:30am ET** (Devpost sc
 > **Status: DRAFT. Items marked ⏳ are not done yet and must not be claimed until they exist in git with dates inside Nov 28–30.**
 
 ## Pre-existing vs new work (required disclosure)
-- **Pre-existing (built Nov 24–27, before submissions opened):** the core engine (typed decisions D1–D7, permission gate, action log with undo, "Bouncer was wrong" correction flow), the web interface, the data tables, 160 automated tests, the evaluation harness and three evaluation sets. The same core is entered in two other hackathons (Global AI Builder's Challenge, IdeaLab Hacks), each with its own write-up and video.
+- **Pre-existing (built from Nov 24, before submissions opened on Nov 28):** the core engine (typed decisions D1–D7, permission gate, action log with undo, "Bouncer was wrong" correction flow), the web interface, the data tables, 160 automated tests, the evaluation harness and three evaluation sets. The same core is entered in two other hackathons (Global AI Builder's Challenge, IdeaLab Hacks), each with its own write-up and video.
 - **New during the Hack Days (Nov 28–30):** ⏳ policy versioning (every verdict records the rule-table version that produced it), ⏳ a "learned corrections" registry that replays past human corrections against new rule versions, ⏳ a batch triage queue for many listings, ⏳ the recorded wrong-decision recovery, ⏳ final test evidence. *Fill in only what ships, with commit SHAs and dates.*
 
 ## What it does (a real workflow, not a chatbot)
@@ -40,7 +40,7 @@ Details: `docs/ACCOUNTABILITY.md`.
 ## Why it should score on the criteria
 - **Works beyond the demo (30):** live URL where judges paste any listing; three layers (Flash-Lite, Flash, offline engine) so it never returns nothing; offline mode is marked reduced-confidence.
 - **Solves a real task (25):** produces gated actions, not chat.
-- **Fails honestly (25):** it says what it could not check, escalates instead of guessing, refuses non-English, and the LLM cannot declare a clause illegal on its own because blind testing showed its flags were right only 35% of the time.
+- **Fails honestly (25):** it says what it could not check, escalates instead of guessing, refuses non-English, and the LLM cannot declare a clause illegal on its own because blind testing showed its proposals were wrong often enough to matter (5 of 7 correct on v3; 14 of the 15 wrong clause flags on v2).
 - **Shows the work (20):** decision map, accountability layer, test evidence, evaluation history with every contamination disclosed.
 
 ## Limitations (honest)
