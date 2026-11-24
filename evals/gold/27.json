@@ -1,0 +1,20 @@
+{
+  "group": "scam_illegal",
+  "listing": "181 King Street N $600/month. Landlord out of the country. Deposit first to secure. Wire transfer; WhatsApp only. Posted everywhere.",
+  "fields": {
+    "rent": 600,
+    "address": "181 King Street N"
+  },
+  "clauses": [],
+  "scam": 1,
+  "verdict": "REFUSE",
+  "id": "gold-27",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}

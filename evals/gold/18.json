@@ -1,0 +1,24 @@
+{
+  "group": "scam_illegal",
+  "listing": "45 Sunview Street, rent $960/month. Owner does not live here. Viewing available. 12 post dated cheques required.",
+  "fields": {
+    "rent": 960,
+    "address": "45 Sunview Street",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "postdated_cheques"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "id": "gold-18",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "group": "clean",
+  "listing": "Bright room on second floor at 29 Hickory Street W. Rent: $870/mo. Viewing offered. Owner does not live here.",
+  "fields": {
+    "rent": 870,
+    "address": "29 Hickory Street W",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "id": "gold-05",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "group": "tricky",
+  "listing": "9999 Imaginary Avenue $950/month. Viewing available. Owner does not live here. Please confirm location.",
+  "fields": {
+    "rent": 950,
+    "address": "9999 Imaginary Avenue",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [],
+  "scam": 0,
+  "verdict": "HOLD",
+  "id": "gold-39",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}

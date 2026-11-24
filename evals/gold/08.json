@@ -1,0 +1,22 @@
+{
+  "group": "clean",
+  "listing": "Room at 85 Regina Street N for $940/month. Viewing available on weekends. Owner does not live here.",
+  "fields": {
+    "rent": 940,
+    "address": "85 Regina Street N",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "id": "gold-08",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}

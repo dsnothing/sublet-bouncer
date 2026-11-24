@@ -1,0 +1,22 @@
+{
+  "group": "clean",
+  "listing": "Furnished bedroom at 250 Lester Street, rent $1050/month. Viewing available. Owner does not live here. Happy to answer questions.",
+  "fields": {
+    "rent": 1050,
+    "address": "250 Lester Street",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "id": "gold-13",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}

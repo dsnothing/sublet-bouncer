@@ -1,0 +1,24 @@
+{
+  "group": "scam_illegal",
+  "listing": "29 Hickory Street W, $940/month. Viewing offered. Owner does not live here. Tenant does all repairs.",
+  "fields": {
+    "rent": 940,
+    "address": "29 Hickory Street W",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "maintenance_waiver"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "id": "gold-20",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}

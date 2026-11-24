@@ -1,0 +1,24 @@
+{
+  "group": "scam_illegal",
+  "listing": "29 Hickory Street W $480/month. No viewing. Deposit first. Gift cards. Urgent. No pets allowed. Landlord can enter anytime.",
+  "fields": {
+    "rent": 480,
+    "address": "29 Hickory Street W",
+    "viewing_offered": false
+  },
+  "clauses": [
+    "no_pets",
+    "entry_notice"
+  ],
+  "scam": 1,
+  "verdict": "REFUSE",
+  "id": "gold-30",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}

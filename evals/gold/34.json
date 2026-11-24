@@ -1,0 +1,17 @@
+{
+  "group": "tricky",
+  "listing": "Room for winter term, price negotiable. Contact for the location. Available for a student.",
+  "fields": {},
+  "clauses": [],
+  "scam": 0,
+  "verdict": "HOLD",
+  "id": "gold-34",
+  "synthetic": true,
+  "source": "Independent authored fixture, not a real listing; held out from training",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  }
+}
