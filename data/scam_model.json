@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "trained_on": "2026-11-24",
   "synthetic": true,
-  "source": "scripts/gen_training.ts; seed 33817; feature design informed by https://antifraudcentre-centreantifraude.ca/scams-fraudes/rental-location-eng.htm",
+  "source": "scripts/gen_training.ts; seed 33817; feature design informed by https://www.rcmp.ca/en/bc/safety-tips/frauds-and-scams/rental-scams and https://centreantifraude.ca/scams-fraudes/service-eng.htm",
   "features": [
     {
       "name": "rent_to_median",
