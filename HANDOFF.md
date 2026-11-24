@@ -258,3 +258,9 @@
 - Cached B1 replay found 19 strict and 6 normalized section mismatches, with all 13 labelled violations found (recall 1.00).
 - The report discloses the post-hoc matcher and shows three examples. Sample data exposes both match flags for the UI.
 - Raw responses and prompt are unchanged. Two offline replays were byte-identical. `npm test` had 370 passes and one skip. Typecheck passed.
+
+## C12e — Normalized baseline citation UI follow-up (Antigravity L4/L5)
+- **Role/skills**: L4/L5 frontend & browser QA; skills: `karpathy-guidelines`; gap: `npm.cmd` for PowerShell policy, headless Chrome CDP.
+- **Changed**: Updated `web/src/components/BoardingPass.tsx` so `shouldFlagBaselineSection` uses only `baseline-samples.json`'s normalized `matchesRule` flag, removed the duplicate `rta_rules.json` cross-check, and updated the honest baseline note to cite `evals/RESULTS-BASELINES.md` (13 labelled violations, recall 1.00, 6 normalized citation mismatches).
+- **Verified**: `npm.cmd run typecheck`, `npm.cmd run build`, and `npm.cmd test` (370 passed, 1 skipped) green; headless Chrome CDP at 1280×900 and 375×812 verified Hidden terms (`Section 105`, `Section 26`) and Scammy (`Section 105`) show 0 struck-through citations, 0 overflow, and 0 console errors.
+- **Screenshots**: `evidence/ui/c12d-{1280,375}-{hidden,scammy}.png`. No deploy.

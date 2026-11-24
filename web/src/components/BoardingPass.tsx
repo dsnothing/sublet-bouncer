@@ -17,7 +17,6 @@ import {
   Zap,
 } from 'lucide-react';
 import { verdictHeadline } from '../../../core/index';
-import rtaRulesRaw from '../../../data/rta_rules.json';
 import baselineSamplesRaw from '../data/baseline-samples.json';
 import { buildViewingIcs, downloadEvidenceCard, downloadTextFile } from '../ics';
 import type {
@@ -35,6 +34,7 @@ export interface BaselineClause {
   section: string;
   inListing: boolean;
   matchesRule: boolean;
+  strictMatchesRule?: boolean;
 }
 
 export interface BaselineSampleEntry {
@@ -56,35 +56,8 @@ const BASELINE_SAMPLES = baselineSamplesRaw as BaselineSamplesFile;
 const BASELINE_REPORT_URL =
   'https://github.com/dsnothing/sublet-bouncer/blob/main/evals/RESULTS-BASELINES.md';
 
-const VERIFIED_RULE_SECTIONS = new Map<string, string[]>(
-  rtaRulesRaw.rules.map((rule) => [
-    rule.id,
-    rule.section
-      .split(';')
-      .map((part) => normalizeSectionCitation(part))
-      .filter(Boolean),
-  ]),
-);
-
-function normalizeSectionCitation(raw: string): string {
-  return raw
-    .trim()
-    .toLowerCase()
-    .replace(/^sections?\s+/i, 's.')
-    .replace(/^s\.\s+/i, 's.')
-    .replace(/\s+/g, ' ');
-}
-
-export function sectionMatchesVerifiedTable(category: string, section: string): boolean {
-  const verifiedParts = VERIFIED_RULE_SECTIONS.get(category);
-  if (!verifiedParts || verifiedParts.length === 0) return false;
-  const normalized = normalizeSectionCitation(section);
-  return verifiedParts.includes(normalized);
-}
-
 export function shouldFlagBaselineSection(clause: BaselineClause): boolean {
-  if (clause.matchesRule) return false;
-  return !sectionMatchesVerifiedTable(clause.category, clause.section);
+  return !clause.matchesRule;
 }
 
 export function buildChatbotComparisonSummary(
@@ -1023,7 +996,9 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
                 </div>
 
                 <p className="chatbot-compare-honest-note" data-testid="chatbot-compare-summary">
-                  {buildChatbotComparisonSummary(baselineSample, result)}{' '}
+                  {buildChatbotComparisonSummary(baselineSample, result)} Across the 30-listing
+                  baseline, the plain chatbot found all 13 labelled violations (recall 1.00), but 6
+                  of its citations differed from the verified rule table (normalized).{' '}
                   <a
                     href={BASELINE_REPORT_URL}
                     target="_blank"
