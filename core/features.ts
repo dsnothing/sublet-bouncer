@@ -1,5 +1,17 @@
 import type { AnalysisResult } from './types.js';
 import { findSpan, LIVE_RISK_FIELDS, offlineExtract } from './extract.js';
+import { evidenceClauses } from './evidence.js';
+export function sensitiveBeforeViewing(listing:string):boolean {
+  return evidenceClauses(listing).some(s=>{
+    const sensitive=/\b(?:SIN|social\s+insurance(?:\s+number)?|(?:photo\s+)?ID|passport|driver'?s?\s+licen[cs]e|bank\s+account|void\s+cheque|(?:credit\s+|debit\s+)?card\s+number|credit\s+check)\b/i;
+    const request=/\b(?:send|provide|submit|share|supply|give|need|require\w*|request\w*|upload|complete)\b/i;
+    const before=/\bbefore\s+(?:(?:any|a|the|your|first|in[ -]person)\s+)*(?:view\w*|tour\w*|visit\w*|showing\w*|seeing)\b/i;
+    const reversed=/(?:view\w*|tour\w*|visit\w*|showing\w*)\b.{0,60}\b(?:only\s+after|after|once|until)\b/i;
+    if(!sensitive.test(s)||!before.test(s)&&!reversed.test(s))return false;
+    if(/\b(?:never|no\s+need\s+to|(?:do\s+not|don't|will\s+not|won't|not)\s+(?:ask|request|require|send|provide|share|need))\b/i.test(s))return false;
+    return request.test(s)||/credit\s+check/i.test(s);
+  });
+}
 export interface CmhcBenchmarks { median_monthly: { room?: number; bachelor: number; one_bedroom?: number; two_bedroom?: number }; [key:string]: unknown }
 export const FEATURE_NAMES = ['rent_to_median','payment_before_viewing','risky_payment_method','landlord_abroad','off_platform_only','no_address','no_viewing_offered','urgency_language','sob_story_length','early_id_request','amenities_vs_price','duplicate_markers'] as const;
 export type FeatureName = typeof FEATURE_NAMES[number];

@@ -1,5 +1,5 @@
 import type { AnalysisResult, AnalyzeRequest, ActionRecord, Decision, LogEntry } from './types.js';
-import { recomputeVerdict, clauseFindings, lookupCommute, scoreScam, newId } from './engine.js';
+import { recomputeVerdict, clauseFindings, lookupCommute, scoreScam, newId, rtaApplicability } from './engine.js';
 import { data } from './data.js';
 export interface RegressionFixture { listing:string; decision_id:Decision['id']; expected:unknown }
 type StoredEntry=LogEntry & { inputs_hash?:string; output?:unknown; inverse?:ActionRecord; profile?:AnalyzeRequest['profile']; decision_kind?:Decision['kind'] };
@@ -63,7 +63,7 @@ export function markWrong(result:AnalysisResult,decisionId:Decision['id'],correc
     if(!correction||typeof correction!=='object'||Array.isArray(correction))throw new Error('D1 correction must be a fields object');
     r.fields=structuredClone(correction) as AnalysisResult['fields'];
     if(Object.values(r.fields).some(f=>!f||typeof f!=='object'||!('value'in f)||typeof f.confidence!=='number'))throw new Error('Invalid corrected fields');
-    r.rtaApplies=r.fields.owner_lives_in?.value===true?'may_not_apply':r.fields.owner_lives_in?.value===false?'applies':'unknown';
+    r.rtaApplies=rtaApplicability(r.listing,r.fields);
     r.scam=scoreScam(r.listing,r.fields,data);if(profile)r.commute=lookupCommute(r.fields,profile,data);
     r.clauses=clauseFindings(r.listing,data,r.rtaApplies,proposals);
   } else if(decisionId==='D2') {if(!Array.isArray(correction))throw new Error('D2 correction must be clause findings');r.clauses=structuredClone(correction);}
@@ -74,10 +74,11 @@ export function markWrong(result:AnalysisResult,decisionId:Decision['id'],correc
   else if(decisionId==='D7')throw new Error('Permission policy cannot be overridden');
   r.escalations=r.escalations.filter(e=>e.decisionId!==decisionId);
   if(decisionId==='D1')r.escalations=r.escalations.filter(e=>!['D3','D4','D5'].includes(e.decisionId));
-  const pending=(id:Decision['id'],question:string)=>{if(!r.escalations.some(e=>e.decisionId===id))r.escalations.push({id:newId(),decisionId:id,question,options:['Confirm','Unable to confirm'],evidence:[]});};
+  const pending=(id:Decision['id'],question:string,blocking=true)=>{if(!r.escalations.some(e=>e.decisionId===id)){r.escalations.push({id:newId(),decisionId:id,blocking,question,options:['Confirm','Unable to confirm'],evidence:[]});if(!blocking&&!r.couldNotCheck.includes(question))r.couldNotCheck.push(question);}};
+  if(!r.fields.address&&!r.refused)pending('D1','Please confirm address');
   if(r.scam.band==='escalate')pending('D3','Verify listing identity before proceeding');
-  if(r.commute.status==='unknown')pending('D4','Confirm a geocodable address and commute');
-  if(r.rtaApplies==='unknown')pending('D5','Does the owner share a kitchen or bathroom?');
+  if(r.commute.status==='unknown')pending('D4','Confirm a geocodable address and commute',false);
+  if(r.rtaApplies==='unknown'||r.rtaApplies==='may_not_apply'&&decisionId!=='D5')pending('D5','Does the owner share a kitchen or bathroom?');
   appendLog(r,'correction',decisionId,`Pinned correction to ${decisionId}`,'human').output=structuredClone(correction);
   recomputeVerdict(r);
   if(decisionId==='D6'&&r.verdict!=='REFUSE'){

@@ -1,6 +1,7 @@
 import { analyze, validateRequest } from '../core/index.js';
 import { createGeminiAdapter } from './gemini.js';
 import { json } from './_lib/http.js';
+import { geocode } from './_lib/geocode.js';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 export interface ApiRequest extends IncomingMessage { body?: unknown }
 export async function readBody(req:ApiRequest):Promise<unknown>{
@@ -10,5 +11,5 @@ export async function readBody(req:ApiRequest):Promise<unknown>{
 export default async function handler(req:ApiRequest,res:ServerResponse){
   if(req.method!=='POST'){res.setHeader('Allow','POST');return json(res,405,{error:'Use POST'});}
   let body;try{body=await readBody(req);validateRequest(body);}catch{return json(res,400,{error:'Invalid JSON, listing, profile, or mode'});}
-  try{return json(res,200,await analyze(body,{llm:createGeminiAdapter()}));}catch{return json(res,500,{error:'Analysis failed'});}
+  try{return json(res,200,await analyze(body,{llm:createGeminiAdapter(),...(body.mode!=='offline'?{geocode}:{})}));}catch{return json(res,500,{error:'Analysis failed'});}
 }

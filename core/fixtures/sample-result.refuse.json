@@ -118,7 +118,8 @@
       "options": [
         "Provide address"
       ],
-      "evidence": []
+      "evidence": [],
+      "blocking": false
     }
   ],
   "actions": [

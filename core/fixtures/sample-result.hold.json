@@ -154,7 +154,8 @@
       "options": [
         "Ask to remove"
       ],
-      "evidence": []
+      "evidence": [],
+      "blocking": true
     }
   ],
   "actions": [

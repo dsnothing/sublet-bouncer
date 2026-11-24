@@ -1,12 +1,12 @@
 import type { AnalysisResult, AnalyzeRequest, ClauseFinding, Commute, Decision, Escalation } from './types.js';
 import { data, type Data } from './data.js';
 import { findSpan, offlineExtract, verifyExtraction, type Extraction, type LLMAdapter } from './extract.js';
-import { extractFeatures, paymentBeforeViewing } from './features.js';
+import { extractFeatures, paymentBeforeViewing, sensitiveBeforeViewing } from './features.js';
 import { hasInjection, refusalReason } from './injection.js';
 import { refreshActions, appendLog } from './log.js';
-import { negatedRestriction } from './evidence.js';
+import { negatedRestriction, evidenceClauses, booleanEvidence } from './evidence.js';
 export const LLM_TIMEOUT_MS = 20000;
-export interface AnalyzeOptions { llm?: LLMAdapter; data?: Data; timeoutMs?: number }
+export interface AnalyzeOptions { llm?: LLMAdapter; data?: Data; timeoutMs?: number; geocode?: (address:string)=>Promise<Data['geocodes']['entries'][number]|undefined> }
 export const newId = () => globalThis.crypto.randomUUID();
 export function validateRequest(raw: unknown): asserts raw is AnalyzeRequest {
   const r = raw as AnalyzeRequest;
@@ -40,15 +40,25 @@ export function clauseFindings(listing: string, db: Data, applicability: Analysi
       reject?.(rule.id,'Evidence lacks the rule concept or negates/permits the suspected restriction');continue;
     }
     if(findings.some(f=>f.ruleId===rule.id))continue;
-    findings.push({span,ruleId:rule.id,status:'questionable',section:rule.section,lesson:rule.lesson_plain,lessonSimple:rule.lesson_simple_english,sourceUrl:rule.source_url,confidence:.7});
+    findings.push({span,ruleId:rule.id,status:rule.status==='info'?'ok':'questionable',section:rule.section,lesson:rule.lesson_plain,lessonSimple:rule.lesson_simple_english,sourceUrl:rule.source_url,confidence:.7});
   }
   return findings;
 }
 const minutes = (s:string) => Number(s.slice(0,2))*60+Number(s.slice(3,5));
+export function normalizeAddress(address:string):string {
+  const words:Record<string,string>={st:'street',ave:'avenue',rd:'road',dr:'drive',blvd:'boulevard',cres:'crescent',n:'north',s:'south',e:'east',w:'west'};
+  return address.toLowerCase().replace(/\b(?:unit|apt|apartment|suite)\s*#?\s*[\w-]+\s*,?/g,'').replace(/#\s*[\w-]+\s*,?/g,'').replace(/^\s*\d+[a-z]?\s*-\s*(?=\d)/,'').replace(/\b(st|ave|rd|dr|blvd|cres|n|s|e|w)\b\.?/g,m=>words[m.replace('.','')]).replace(/[^\w\s]/g,' ').replace(/\s+/g,' ').trim();
+}
+export function rtaApplicability(listing:string,fields:AnalysisResult['fields']):AnalysisResult['rtaApplies'] {
+  if(fields.owner_lives_in?.value===false)return 'applies';
+  const resident=evidenceClauses(listing).some(s=>/\b(?:owner|landlord|homeowner|live[ -]in)\b/i.test(s)&&/\b(?:liv\w*|resid\w*|occup\w*|on\s+prem\w*|shar\w*)\b/i.test(s)&&booleanEvidence('owner_lives_in',s)===true);
+  const bothSeparate=/\b(?:private|separate|own|not\s+shared)\s+(?:kitchen\s+and\s+(?:bath|bathroom)|bathroom\s+and\s+kitchen)\b/i.test(listing) || /\b(?:private|separate|own|not\s+shared)\s+kitchen\b/i.test(listing)&&/\b(?:private|separate|own|not\s+shared)\s+bath(?:room)?\b/i.test(listing);
+  return resident&&!bothSeparate?'may_not_apply':'applies';
+}
 export function lookupCommute(fields: AnalysisResult['fields'], profile: AnalyzeRequest['profile'], db: Data): Commute {
   if (typeof fields.address?.value !== 'string') return {status:'unknown',summary:'Full address needed'};
-  const address = fields.address.value.toLowerCase();
-  const geo = db.geocodes.entries.find(g => [g.key,...g.aliases].some(a=>address.includes(a.toLowerCase())));
+  const address = normalizeAddress(fields.address.value);
+  const geo = db.geocodes.entries.find(g => [g.key,...g.aliases].some(a=>(' '+address+' ').includes(' '+normalizeAddress(a)+' ')));
   if (!geo || geo.confidence < .8) return {status:'unknown',summary:'Address is outside the verified geocode cache'};
   const distance=(lat:number,lon:number)=>Math.hypot((lat-geo.lat)*111320,(lon-geo.lon)*111320*Math.cos(geo.lat*Math.PI/180));
   const origin = [...db.commutes.origins].sort((a,b)=>distance(a.lat,a.lon)-distance(b.lat,b.lon))[0];
@@ -70,9 +80,10 @@ export function recomputeVerdict(r: AnalysisResult) {
   if (r.refused) r.reasons.push(`Cannot analyze: ${r.refused.reason}`);
   if (r.scam.p>.7) r.reasons.push('Scam risk exceeds the block threshold');
   if (paymentBeforeViewing(r.listing) || r.fields.payment_before_viewing?.value===true) r.reasons.push('Payment requested before viewing');
-  if (r.refused || r.scam.p>.7 || paymentBeforeViewing(r.listing) || r.fields.payment_before_viewing?.value===true) r.verdict='REFUSE';
+  if (sensitiveBeforeViewing(r.listing)) r.reasons.push('Sensitive identity or banking details requested before viewing');
+  if (r.refused || r.scam.p>.7 || paymentBeforeViewing(r.listing) || r.fields.payment_before_viewing?.value===true || sensitiveBeforeViewing(r.listing)) r.verdict='REFUSE';
   else {
-    if (r.escalations.length) r.reasons.push('Open questions require confirmation');
+    if (r.escalations.some(e=>e.blocking)) r.reasons.push('Open questions require confirmation');
     if (r.clauses.some(c=>c.status!=='ok')) r.reasons.push('Flagged lease clauses need attention');
     if (r.commute.status==='infeasible') r.reasons.push('Commute arrives after class');
     r.verdict=r.reasons.length?'HOLD':'ADMIT';
@@ -95,21 +106,23 @@ export async function analyze(req: AnalyzeRequest, options: AnalyzeOptions = {})
     }
   }
   const r:AnalysisResult={runId:newId(),mode,...(fallbackReason?{fallbackReason}:{}),...(mode==='live'?{model:options.llm?.model??'gemini-3-flash-preview'}:{}),listing:req.listing,fields:refused?{}:extraction.fields,clauses:[],scam:{p:0,band:'proceed',topFeatures:[]},commute:{status:'unknown'},rtaApplies:'unknown',verdict:'HOLD',reasons:[],decisions:[],escalations:[],actions:[],log:[],couldNotCheck:['Ownership, identity, and listing authenticity','Transit service changes; weekday 08:30 schedule only','Legal advice and exceptions beyond the verified rules'],...(refused?{refused:{reason:refused}}:{})};
-  const esc=(id:Decision['id'],question:string,evidence:Escalation['evidence']=[],opts=['Confirm','Unable to confirm'])=>r.escalations.push({id:newId(),decisionId:id,question,options:opts,evidence});
+  const esc=(id:Decision['id'],question:string,evidence:Escalation['evidence']=[],opts=['Confirm','Unable to confirm'],blocking=true)=>{r.escalations.push({id:newId(),decisionId:id,blocking,question,options:opts,evidence});if(!blocking&&!r.couldNotCheck.includes(question))r.couldNotCheck.push(question);};
   const decision=(id:Decision['id'],label:string,output:unknown,confidence=1,threshold?:number)=>{const d:Decision={id,kind:id==='D1'&&mode==='live'?'llm':id==='D2'&&mode==='live'?'llm+rules':id==='D3'?'model':'rules',label,output,confidence,...(threshold!==undefined?{threshold}:{}),escalated:r.escalations.some(e=>e.decisionId===id),reason:r.escalations.filter(e=>e.decisionId===id).map(e=>e.question).join('; ')||'Policy check complete',evidence:id==='D1'?Object.values(r.fields).flatMap(f=>f.span?[f.span]:[]):id==='D2'?r.clauses.map(c=>c.span):[]};r.decisions.push(d);appendLog(r,'decision',id,label,'agent',confidence,threshold);};
   if(fallbackReason)appendLog(r,'decision','D1',fallbackReason+(r.model?' (answered by '+r.model+')':''));
-  issues.forEach(issue=>{r.couldNotCheck.push(issue);esc('D1',issue);appendLog(r,'decision','D1',issue);});
-  for(const [name,f] of Object.entries(r.fields)) if(f.confidence<.8) esc('D1',`Please confirm ${name}`,f.span?[f.span]:[]);
+  issues.forEach(issue=>{r.couldNotCheck.push(issue);esc('D1',issue,[],undefined,false);appendLog(r,'decision','D1',issue);});
+  for(const [name,f] of Object.entries(r.fields)) if(f.confidence<.8) esc('D1',`Please confirm ${name}`,f.span?[f.span]:[],undefined,false);
   if (hasInjection(req.listing)) esc('D1','Listing contains instruction-like content; review it as untrusted data');
-  if(!r.fields.rent && !refused) esc('D1','Please confirm the monthly rent');
+  if(!r.fields.address && !refused) esc('D1','Please confirm address');
+  if(!r.fields.rent && !refused) esc('D1','Please confirm the monthly rent',[],undefined,false);
   decision('D1','Field extraction',r.fields,mode==='live'?.9:.85,.8);
   const owner=r.fields.owner_lives_in;
-  r.rtaApplies=owner?.value===true?'may_not_apply':owner?.value===false?'applies':'unknown';
-  if(r.rtaApplies==='unknown') esc('D5','Does the owner share a kitchen or bathroom?',[],['Owner shares kitchen/bath','Owner does not share','Unsure']);
+  r.rtaApplies=rtaApplicability(req.listing,r.fields);
+  if(r.rtaApplies==='may_not_apply') esc('D5','Does the owner share a kitchen or bathroom?',owner?.span?[owner.span]:[],['Owner shares kitchen/bath','Owner does not share','Unsure']);
+  else r.couldNotCheck.push("RTA applies unless you'd share a kitchen/bath with the owner");
   if(r.rtaApplies==='may_not_apply') r.couldNotCheck.push('Shared kitchen/bath with owner: RTA may not apply under s.5(i)');
   const rejectedProposals:{ruleId:string;reason:string}[]=[];
   if(!refused) r.clauses=clauseFindings(req.listing,db,r.rtaApplies,extraction.clauses,(ruleId,reason)=>rejectedProposals.push({ruleId,reason}));
-  for(const c of r.clauses) if(c.confidence<.75) esc('D2',c.confidence===.7?`The bouncer thinks this may concern ${db.rules.rules.find(rule=>rule.id===c.ruleId)?.title} (${c.section}). Confirm?`:`Confirm clause: ${c.span.text}`,[c.span]);
+  for(const c of r.clauses) if(c.confidence<.75) esc('D2',c.confidence===.7?`The bouncer thinks this may concern ${db.rules.rules.find(rule=>rule.id===c.ruleId)?.title} (${c.section}). Confirm?`:`Confirm clause: ${c.span.text}`,[c.span],undefined,db.rules.rules.find(rule=>rule.id===c.ruleId)?.status!=='info');
   decision('D2','Clause legality',r.clauses,r.clauses.length?Math.min(...r.clauses.map(c=>c.confidence)):1,.75);
   for(const rejection of rejectedProposals){
     const entry=appendLog(r,'decision','D2',`Rejected proposal ${rejection.ruleId}: ${rejection.reason}`);
@@ -119,7 +132,10 @@ export async function analyze(req: AnalyzeRequest, options: AnalyzeOptions = {})
   if(r.scam.band==='escalate') esc('D3','Verify listing identity and arrange a viewing before proceeding');
   decision('D3','Scam risk',r.scam,1,.7);
   if(!refused) r.commute=lookupCommute(r.fields,req.profile,db);
-  if(r.commute.status==='unknown') esc('D4','Confirm a geocodable address and commute',[],['Unable to confirm']);
+  if(!refused&&r.commute.status==='unknown'&&typeof r.fields.address?.value==='string'&&options.geocode){
+    try {const geo=await options.geocode(r.fields.address.value);if(geo)r.commute=lookupCommute(r.fields,req.profile,{...db,geocodes:{...db.geocodes,entries:[geo,...db.geocodes.entries]}});}catch{/* Network failure remains unknown. */}
+  }
+  if(r.commute.status==='unknown') esc('D4','Confirm a geocodable address and commute',[],['Unable to confirm'],false);
   decision('D4','Commute feasibility',r.commute,r.commute.status==='unknown'?0:1,.8);
   decision('D5','RTA applicability',r.rtaApplies,owner?.confidence??0,.8);
   recomputeVerdict(r);decision('D6','Aggregate verdict',{verdict:r.verdict,reasons:r.reasons});

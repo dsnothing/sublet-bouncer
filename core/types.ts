@@ -6,7 +6,7 @@ export interface Decision { id: 'D1'|'D2'|'D3'|'D4'|'D5'|'D6'|'D7'; kind: Decisi
 export interface ClauseFinding { span: Span; ruleId: string | null; status: 'void'|'questionable'|'ok';
   section?: string; lesson: string; lessonSimple: string; sourceUrl?: string; confidence: number }
 export interface Commute { status: 'feasible'|'tight'|'infeasible'|'unknown'; minutes?: number; summary?: string; arriveBy?: string }
-export interface Escalation { id: string; decisionId: Decision['id']; question: string; options: string[]; evidence: Span[] }
+export interface Escalation { id: string; decisionId: Decision['id']; blocking: boolean; question: string; options: string[]; evidence: Span[] }
 export interface ActionRecord { id: string; type: 'draft_reply'|'save_evidence_card'|'export_viewing_ics'|'copy_reply_to_clipboard';
   tier: 'auto'|'confirm'; status: 'proposed'|'done'|'undone'|'blocked'; payload: unknown; blockedReason?: string }
 export interface LogEntry { id: string; ts: string; kind: 'decision'|'action'|'undo'|'correction'; ref: string; actor: 'agent'|'human'; summary: string; confidence?: number; threshold?: number }

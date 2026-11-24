@@ -144,3 +144,19 @@
 | v2 / offline | 28/117 -> 61/117 | .500/.111 -> 1.000/.111 | 13/30 -> 15/30 |
 | v2 / saved replay | 43/117 -> 73/117 | .348/.889 -> .636/.778 | 13/30 -> 17/30 |
 - Evidence: evals/precision-dev-{before,after}.json; runner evals/precision_dev.ts. Risks: generic lexicons incomplete, synthetic DEV only, v2 recall loss TP8->7/FN1->2; D4/D5 unknowns still hold. No generalization claim.
+
+## C2e - Escalation policy v2 (Codex L3)
+- Skills: karpathy-guidelines (scope), systematic-debugging (regression trace); Node PATH workaround, no capability gaps.
+- Added blocking contract/fixtures; D6 ignores notes, D1 missing address blocks, D5 evidence-gated/default applies, D2 info stays ok; injection/non-English and D7 gates retained.
+- Added pre-viewing sensitive-ID/banking REFUSE, address normalization, server-only Nominatim fallback (generic UA, 1/s queue, 5s timeout, memory cache); browser/offline cache-only.
+- Verified:126 tests passed/1 optional skipped; root+dev-runner strict typechecks/build; fresh-source npm install/test/typecheck/build passed, native ESM API health/analyze HTTP200.
+- UI handoff: render Escalation.blocking=false as "Notes to confirm"; no web edits needed. No deployment. No v3 files opened or new provider calls; labels unchanged.
+| DEV / mode | Fields correct (unchanged) | Violation P/R (unchanged) | Verdict correct before -> after |
+|---|---|---|---|
+| gold / offline | 138/138 | 1.000/1.000 | 38/40 -> 39/40 |
+| gold / saved replay | 134/138 | 1.000/1.000 | 36/40 -> 39/40 |
+| v1 / offline | 39/68 | 1.000/.333 | 12/24 -> 19/24 |
+| v1 / saved replay | 43/68 | 1.000/.333 | 12/24 -> 19/24 |
+| v2 / offline | 61/117 | 1.000/.111 | 15/30 -> 18/30 |
+| v2 / saved replay | 73/117 | .636/.778 | 17/30 -> 25/30 |
+- Evidence:evals/escalation-dev-{before,after}.json + escalation_dev.ts; saved raw coverage26/40,18/24,26/30 (missing live uses offline fallback). Risks:synthetic DEV only, lexicons incomplete, rate/cache per server process (no cross-instance coordination), live geocoder mocked only; README policy text needs lead refresh.
