@@ -91,3 +91,12 @@
 - Reproduce: Node PATH available, npm ci, npm test, npm run typecheck/build; npx tsx scripts/c2c-latency.ts <label>.
 - Deploy from clean detached worktree of this commit; post-deploy signed-out checks and actual SHA reported in final response.
 - Open risk: README remains absent/lead-owned; C3 must independently verify accuracy after schema/prompt reduction.
+
+## C7 - judge-facing documentation (Codex L3)
+- Role/skills: L3 docs; write-page writing guidance reviewed (Page workflow inapplicable); gap: rg absent, PowerShell used.
+- Added README, D1-D7 decision map, accountability/recovery, limitations, architecture, AI disclosure and David S MIT licence.
+- Verified claims against engine/verifier/log/API/web code and source provenance; documented configured Lite-first versus Flash-first code defaults.
+- Kept <!-- RESULTS:FINAL --> and linked reports without quoting eval numbers; human review remains explicitly pending.
+- Verification: 71 tests passed, 1 optional skipped; typecheck/build passed; relative links and placeholder checked.
+- Docs commit ac654d6 pushed to main; concurrent DATA-SOURCES/evals/web edits excluded.
+- Risks: no fresh-clone install or browser check in this docs task; final evals and production evidence remain other owners' work.
