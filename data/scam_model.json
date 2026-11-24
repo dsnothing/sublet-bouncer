@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "trained_on": "2026-11-24",
+  "synthetic": true,
+  "source": "scripts/gen_training.ts; seed 33817; feature design informed by https://antifraudcentre-centreantifraude.ca/scams-fraudes/rental-location-eng.htm",
+  "features": [
+    {
+      "name": "rent_to_median",
+      "description": "rent to median",
+      "mean": 1.0186398678414095,
+      "std": 0.2748837111708007
+    },
+    {
+      "name": "payment_before_viewing",
+      "description": "payment before viewing",
+      "mean": 0.31,
+      "std": 0.4624932431938871
+    },
+    {
+      "name": "risky_payment_method",
+      "description": "risky payment method",
+      "mean": 0.46,
+      "std": 0.4983974317750849
+    },
+    {
+      "name": "landlord_abroad",
+      "description": "landlord abroad",
+      "mean": 0.3,
+      "std": 0.45825756949558416
+    },
+    {
+      "name": "off_platform_only",
+      "description": "off platform only",
+      "mean": 0.285,
+      "std": 0.451414443721067
+    },
+    {
+      "name": "no_address",
+      "description": "no address",
+      "mean": 0.26,
+      "std": 0.4386342439892259
+    },
+    {
+      "name": "no_viewing_offered",
+      "description": "no viewing offered",
+      "mean": 0.405,
+      "std": 0.4908920451586072
+    },
+    {
+      "name": "urgency_language",
+      "description": "urgency language",
+      "mean": 0.29,
+      "std": 0.4537620521815372
+    },
+    {
+      "name": "sob_story_length",
+      "description": "sob story length",
+      "mean": 0.08598499999999999,
+      "std": 0.21363694618440895
+    },
+    {
+      "name": "early_id_request",
+      "description": "early id request",
+      "mean": 0.265,
+      "std": 0.4413332074521472
+    },
+    {
+      "name": "amenities_vs_price",
+      "description": "amenities vs price",
+      "mean": 0.055,
+      "std": 0.22798026230355972
+    },
+    {
+      "name": "duplicate_markers",
+      "description": "duplicate markers",
+      "mean": 0.285,
+      "std": 0.451414443721067
+    }
+  ],
+  "weights": [
+    -0.4411466218182816,
+    0.9369105669670553,
+    0.8518083544199792,
+    0.5564865786312367,
+    0.564148549326812,
+    0.48813087053450405,
+    0.5564773597509542,
+    0.9024573607932972,
+    0.5566888336099284,
+    0.5490091366597476,
+    0.07208355219993347,
+    0.6185123499780566
+  ],
+  "intercept": 0.5474653632590372,
+  "thresholds": {
+    "proceed": 0.3,
+    "block": 0.7
+  },
+  "metrics": {
+    "training_rows": 200,
+    "calibration_note": "Uncalibrated logistic regression on 200 synthetic examples, L2=0.02. Scores are heuristic, not real-world scam probabilities. AUC must be measured on the held-out synthetic gold set; no training AUC claimed."
+  }
+}
