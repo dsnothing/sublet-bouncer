@@ -3,10 +3,13 @@ import {
   AlertTriangle,
   CalendarPlus,
   Check,
+  ChevronDown,
   Copy,
   Download,
+  ExternalLink,
   EyeOff,
   Info,
+  MessageSquare,
   RefreshCw,
   ShieldAlert,
   ShieldCheck,
@@ -14,8 +17,41 @@ import {
   Zap,
 } from 'lucide-react';
 import { verdictHeadline } from '../../../core/index';
+import baselineSamplesRaw from '../data/baseline-samples.json';
 import { buildViewingIcs, downloadEvidenceCard, downloadTextFile } from '../ics';
 import type { AnalysisResult, DataSourceMode, LanguageLevel, ProfileState, Span } from '../types';
+
+interface BaselineClause {
+  category: string;
+  quote: string;
+  section: string;
+  inListing: boolean;
+  matchesRule: boolean;
+}
+
+interface BaselineSampleEntry {
+  listing: string;
+  model: string;
+  recordedAt: string;
+  rawAnswer: string;
+  verdict: string;
+  clauses: BaselineClause[];
+}
+
+interface BaselineSamplesFile {
+  model: string;
+  date: string;
+  samples: Record<'clean' | 'tricky' | 'scammy', BaselineSampleEntry>;
+}
+
+const BASELINE_SAMPLES = baselineSamplesRaw as BaselineSamplesFile;
+const BASELINE_REPORT_URL =
+  'https://github.com/dsnothing/sublet-bouncer/blob/main/evals/RESULTS-BASELINES.md';
+
+function findBaselineSample(listing: string): BaselineSampleEntry | null {
+  const entries = Object.values(BASELINE_SAMPLES.samples);
+  return entries.find((entry) => entry.listing === listing) ?? null;
+}
 
 interface BoardingPassProps {
   result: AnalysisResult;
@@ -237,6 +273,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   const [actionError, setActionError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showWhyOffline, setShowWhyOffline] = useState<boolean>(false);
+  const [showChatbotCompare, setShowChatbotCompare] = useState<boolean>(false);
 
   const rawFallbackReason = result.fallbackReason ?? notice;
   const isSimulatedOutage = result.simulated === true;
@@ -250,6 +287,10 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
     setActionError(null);
     setShowWhyOffline(false);
   }, [result.runId]);
+
+  useEffect(() => {
+    setShowChatbotCompare(false);
+  }, [result.listing]);
 
   useEffect(() => {
     if (!isBreakerOpen) {
@@ -425,6 +466,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
     return nodes;
   };
 
+  const baselineSample = !result.refused ? findBaselineSample(result.listing) : null;
   const showRecheckBtn =
     isReducedConfidence && (canRecheckWithGemini || isBreakerOpen) && !result.refused;
   const showFreshCheckBtn = isCachedResult && !result.refused;
@@ -674,6 +716,157 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
               <li key={idx}>{reason}</li>
             ))}
           </ul>
+        )}
+
+        {baselineSample && (
+          <section className="chatbot-compare-section" aria-label="Plain chatbot comparison">
+            <button
+              type="button"
+              className="chatbot-compare-toggle"
+              aria-expanded={showChatbotCompare}
+              aria-controls="chatbot-comparison-panel"
+              onClick={() => setShowChatbotCompare((v) => !v)}
+              data-testid="chatbot-compare-toggle"
+            >
+              <span className="chatbot-compare-toggle-label">
+                <MessageSquare size={14} aria-hidden="true" />
+                <span>What a plain chatbot said</span>
+              </span>
+              <ChevronDown
+                size={15}
+                aria-hidden="true"
+                className={`chatbot-compare-chevron${showChatbotCompare ? ' open' : ''}`}
+              />
+            </button>
+
+            {showChatbotCompare && (
+              <div
+                id="chatbot-comparison-panel"
+                className="chatbot-compare-panel"
+                data-testid="chatbot-comparison-panel"
+              >
+                <p className="chatbot-compare-provenance">
+                  Saved output from a plain chatbot prompt (Gemini 3.1 Flash-Lite), not a live call,
+                  run {BASELINE_SAMPLES.date}.
+                </p>
+
+                <div className="chatbot-compare-grid">
+                  <div className="chatbot-compare-col">
+                    <div className="chatbot-col-head">
+                      <h3 className="chatbot-col-title">Plain chatbot</h3>
+                      <span
+                        className={`status-pill ${
+                          baselineSample.verdict === 'ADMIT'
+                            ? 'ok'
+                            : baselineSample.verdict === 'HOLD'
+                              ? 'warn'
+                              : 'bad'
+                        }`}
+                      >
+                        {baselineSample.verdict}
+                      </span>
+                    </div>
+
+                    {baselineSample.clauses.length === 0 ? (
+                      <p className="chatbot-empty-note">No clauses flagged.</p>
+                    ) : (
+                      <ul className="chatbot-clause-list">
+                        {baselineSample.clauses.map((clause, idx) => (
+                          <li key={idx} className="chatbot-clause-item">
+                            <div className="chatbot-clause-quote">
+                              {clause.inListing ? (
+                                <span>&ldquo;{clause.quote}&rdquo;</span>
+                              ) : (
+                                <>
+                                  <del className="chatbot-struck">&ldquo;{clause.quote}&rdquo;</del>
+                                  <span className="chatbot-flag-badge">not in the listing</span>
+                                </>
+                              )}
+                            </div>
+                            <div className="chatbot-clause-meta">
+                              <span className="chatbot-cat-chip">{clause.category}</span>
+                              {clause.matchesRule ? (
+                                <span className="chatbot-sec-chip">{clause.section}</span>
+                              ) : (
+                                <>
+                                  <del className="chatbot-struck chatbot-sec-struck">
+                                    {clause.section}
+                                  </del>
+                                  <span className="chatbot-flag-badge">
+                                    doesn&apos;t match the rule
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  <div className="chatbot-compare-col bouncer">
+                    <div className="chatbot-col-head">
+                      <h3 className="chatbot-col-title">Sublet Bouncer</h3>
+                      <span
+                        className={`status-pill ${
+                          result.verdict === 'ADMIT'
+                            ? 'ok'
+                            : result.verdict === 'HOLD'
+                              ? 'warn'
+                              : 'bad'
+                        }`}
+                      >
+                        {result.verdict}
+                      </span>
+                    </div>
+
+                    {result.clauses.length === 0 ? (
+                      <p className="chatbot-empty-note">No clauses flagged.</p>
+                    ) : (
+                      <ul className="chatbot-clause-list">
+                        {result.clauses.map((clause, idx) => (
+                          <li key={idx} className="chatbot-clause-item">
+                            <div className="chatbot-clause-quote">
+                              <button
+                                type="button"
+                                className="chatbot-span-jump"
+                                onClick={() => onFocusSpan(clause.span)}
+                                title={`Jump to "${clause.span.text}" in listing`}
+                              >
+                                &ldquo;{clause.span.text}&rdquo;
+                              </button>
+                            </div>
+                            <div className="chatbot-clause-meta">
+                              {clause.ruleId && (
+                                <span className="chatbot-cat-chip">{clause.ruleId}</span>
+                              )}
+                              {clause.section && (
+                                <span className="chatbot-sec-verified">{clause.section}</span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+
+                <p className="chatbot-compare-honest-note">
+                  The plain chatbot found the violations but cited law sections that don&apos;t
+                  match the verified table; Bouncer&apos;s quotes and sections are verified.{' '}
+                  <a
+                    href={BASELINE_REPORT_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="chatbot-report-link"
+                  >
+                    Full comparison: evals/RESULTS-BASELINES.md
+                    <ExternalLink size={11} aria-hidden="true" />
+                  </a>
+                </p>
+              </div>
+            )}
+          </section>
         )}
       </div>
 
