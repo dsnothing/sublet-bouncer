@@ -207,3 +207,11 @@
 - Safety: 83 regressions across 5 files, including 35 authored pairs and 3 asserted key-deposit gaps. Live paths used stubs.
 - Post-v3: no frozen fixtures, labels, harness or results changed, opened, or run. C10 is development work.
 - C5 sample cache seeds are stale and need regeneration in C11. Part B owns UI rendering and visual QA. No deploy.
+
+## C11 Part A — Judge-proof live mode (Codex L3)
+- Role and skills: L3 backend and tests with karpathy-guidelines for scope and acceptance checks. PowerShell search substituted for rg.
+- Added atomic live-only seed recording with raw extraction, model, run ID and decision signature; parity follows current bundled samples.
+- Added an instance-local circuit breaker and exact bundled-sample simulation. Both forced fallback paths skip network requests.
+- API: send `simulateOutage: true`; response has `simulated: true`, `mode: 'offline-fallback'`, reduced confidence and the simulation reason. Breaker bypass returns `breaker: 'open'` and the overload reason.
+- Verified 34 new tests (338 passed, one optional live skipped after C10), typecheck, build, local API and web startup, and the eight-request smoke recorder against a local mock.
+- Lead runs the live seed after engine freeze, then deploys and records production smoke evidence. No live seed, production smoke or deploy performed. Frozen v3 untouched.

@@ -11,6 +11,7 @@ export interface AnalyzeOptions { llm?: LLMAdapter; data?: Data; timeoutMs?: num
 export const newId = () => globalThis.crypto.randomUUID();
 export function validateRequest(raw: unknown): asserts raw is AnalyzeRequest {
   const r = raw as AnalyzeRequest;
+  if (r?.simulateOutage !== undefined && typeof r.simulateOutage !== 'boolean') throw new Error('Invalid simulateOutage');
   if (!r || (r.noCache !== undefined && typeof r.noCache !== 'boolean') || typeof r.listing !== 'string' || r.listing.length > 50000 || !r.profile || !['UW','WLU'].includes(r.profile.campus) || !/^\d{2}:\d{2}$/.test(r.profile.classStart) || Number(r.profile.classStart.slice(0,2))>23 || Number(r.profile.classStart.slice(3))>59 || ![r.profile.termStart,r.profile.termEnd].every(s => /^\d{4}-\d{2}-\d{2}$/.test(s) && !Number.isNaN(Date.parse(s))) || r.profile.termEnd < r.profile.termStart || (r.mode !== undefined && !['live','offline'].includes(r.mode))) throw new Error('Invalid listing, profile, or mode');
 }
 export function clauseFindings(listing: string, db: Data, applicability: AnalysisResult['rtaApplies'], proposals: Extraction['clauses'] = [], reject?: (ruleId:string,reason:string)=>void): ClauseFinding[] {

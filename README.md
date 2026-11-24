@@ -62,7 +62,11 @@ Capacity controls (post-v3): `/api/analyze` keeps up to 200 completed live resul
 
 The primary retries 429/503 once only when the provider advertises a delay of at most 3 seconds (`Retry-After` seconds or Gemini `retryDelay`). Waiting and the retry share the primary's existing 14-second allowance; the fallback retains up to 6 seconds. POST `noCache: true` bypasses result caching and in-flight coalescing for independent measurements; visitor limits still apply. Existing eval harnesses call core directly and are unchanged.
 
-To populate the build-time cache with genuine live results for the three public samples, explicitly run `node --env-file=.env --import tsx scripts/seed_sample_cache.ts`, then commit the generated `api/_lib/sample-cache.json` before deployment. The script spaces samples by at least 8 seconds, records original models and timestamps, and preserves the existing file if any sample falls back. The checked-in seed starts empty because this card was tested with mocks; no saved result is presented as live without a real live run. Pasted listings are never written to the seed file. Vercel needs only the existing `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3.1-flash-lite`, and `GEMINI_FALLBACK_MODEL=gemini-3-flash-preview`; no Azure variables are used.
+Once the engine and samples are final, set the Gemini key in the environment and run `GEMINI_MODEL=gemini-3.1-flash-lite npx tsx scripts/seed_sample_cache.ts`. In PowerShell, set `$env:GEMINI_MODEL = 'gemini-3.1-flash-lite'` and run `npx.cmd tsx scripts/seed_sample_cache.ts`. Commit the generated `api/_lib/sample-cache.json` before deploying and confirm `npm test` passes the seed replay. Samples are spaced at least nine seconds apart. A 429, 503 or timeout can trigger up to two retries, thirty seconds apart. All samples must finish live before the file is replaced.
+
+With the seed installed, sample buttons replay recorded live Gemini runs and display the model and date. “Run fresh check” requests a new Gemini run subject to the visitor limit and circuit breaker. The breaker and caches are per server instance. Three consecutive overload or timeout failures in a minute open the breaker for a minute before one trial. The labelled sample-only simulated outage takes the same offline fallback path without contacting Gemini.
+
+From the deployed commit, run `npx tsx scripts/prod_smoke.ts` to record deployment checks in `evidence/`. Pass a base URL as the first argument to check a different deployment.
 
 In separate terminals:
 

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { analyze, type AnalyzeOptions } from '../../core/engine.js';
+import { analyze, validateRequest, type AnalyzeOptions } from '../../core/engine.js';
 import { normalize, type LLMAdapter } from '../../core/extract.js';
 import type { AnalyzeRequest, AnalysisResult } from '../../core/types.js';
 import seeds from './sample-cache.json' with { type: 'json' };
@@ -8,7 +8,18 @@ import { createGeminiAdapter } from '../gemini.js';
 import { geocode } from './geocode.js';
 
 export const RATE_LIMIT_REASON='Live checks are limited per visitor to protect the shared free quota; offline engine used.';
-export interface CacheEntry { key:string; cachedAt:string; result:AnalysisResult }
+export const BREAKER_REASON='Gemini is overloaded right now (3 failed calls in the last minute); offline engine used. Try again in about a minute.';
+export const SIMULATED_REASON='SIMULATED OUTAGE (demo): Gemini was not called';
+export const isTransientFailure = (reason: string) => /\b(?:429|503)\b|timed?\s*out|timeout/i.test(reason);
+const BREAKER_WINDOW_MS = 60_000;
+
+export function validateCapacityRequest(raw: unknown): asserts raw is AnalyzeRequest {
+  validateRequest(raw);
+  if (raw.simulateOutage && !SAMPLE_LISTINGS.includes(raw.listing)) {
+    throw new Error('Simulation requires an exact bundled sample');
+  }
+}
+export interface CacheEntry { key:string; cachedAt:string; runId?:string; model?:string; rawExtraction?:unknown; signature?:string; result:AnalysisResult }
 export function cacheKey(req:AnalyzeRequest):string {
   const p=req.profile;
   return createHash('sha256').update(JSON.stringify([normalize(req.listing),p.termStart,p.termEnd,p.campus,p.classStart,req.mode??'live'])).digest('hex');
@@ -27,7 +38,7 @@ export class AnalysisCache {
     return {...structuredClone(entry.result),cached:true,cachedAt:entry.cachedAt};
   }
   put(req:AnalyzeRequest,result:AnalysisResult):void {
-    if(result.mode!=='live'||!result.model||result.cached)return;
+    if(req.simulateOutage||result.simulated||result.mode!=='live'||!result.model||result.cached)return;
     const key=cacheKey(req);
     this.entries.delete(key);
     this.entries.set(key,{key,cachedAt:new Date(this.now()).toISOString(),result:structuredClone(result)});
@@ -46,18 +57,69 @@ export class VisitorBuckets {
     return tokens>=1;
   }
 }
-export function createCapacityAnalyzer(options:{cache?:AnalysisCache;limiter?:VisitorBuckets;llm?:()=>LLMAdapter;geocode?:AnalyzeOptions['geocode']}={}) {
-  const cache=options.cache??new AnalysisCache(),limiter=options.limiter??new VisitorBuckets();
+export function createCapacityAnalyzer(options:{cache?:AnalysisCache;limiter?:VisitorBuckets;llm?:()=>LLMAdapter;geocode?:AnalyzeOptions['geocode'];now?:()=>number}={}) {
+  const now=options.now??Date.now;
+  const cache=options.cache??new AnalysisCache(undefined,now),limiter=options.limiter??new VisitorBuckets(now);
+  let failures: number[] = [];
+  let openUntil: number | undefined;
+  let breakerVersion = 0;
+  let trialInFlight = false;
   const inFlight=new Map<string,{listing:string;promise:Promise<AnalysisResult>}>();
-  const run=async(req:AnalyzeRequest,ip:string):Promise<AnalysisResult>=>{
-    if(req.mode==='offline')return analyze(req);
-    const allowed=limiter.take(ip);
-    const llm=allowed?(options.llm??createGeminiAdapter)():{extract:async()=>{throw new Error(RATE_LIMIT_REASON);}};
-    const result=await analyze(req,{llm,...(allowed?{geocode:options.geocode??geocode}:{})});
-    if(!req.noCache)cache.put(req,result);
-    return result;
+
+  const trip = (at: number) => {
+    openUntil = at + BREAKER_WINDOW_MS;
+    breakerVersion++;
+    failures = [];
+  };
+  const run = async (req: AnalyzeRequest, ip: string): Promise<AnalysisResult> => {
+    if (req.mode === 'offline') return analyze(req);
+    if (openUntil !== undefined && (now() < openUntil || trialInFlight)) {
+      const result = await analyze(req, {
+        llm: { async extract() { throw new Error(BREAKER_REASON); } },
+      });
+      return result.mode === 'offline-fallback' ? { ...result, breaker: 'open' } : result;
+    }
+
+    const allowed = limiter.take(ip);
+    const trial = allowed && openUntil !== undefined;
+    const versionAtStart = breakerVersion;
+    if (trial) trialInFlight = true;
+    try {
+      const llm = allowed
+        ? (options.llm ?? createGeminiAdapter)()
+        : { async extract() { throw new Error(RATE_LIMIT_REASON); } };
+      const result = await analyze(req, {
+        llm,
+        ...(allowed ? { geocode: options.geocode ?? geocode } : {}),
+      });
+      // Requests admitted before a trip cannot extend the cooldown or close the breaker.
+      if (allowed && !result.refused && result.fallbackReason !== RATE_LIMIT_REASON && versionAtStart === breakerVersion) {
+        if (trial) {
+          if (result.mode === 'live') openUntil = undefined;
+          else trip(now());
+        } else if (result.mode === 'offline-fallback' && isTransientFailure(result.fallbackReason ?? '')) {
+          const at = now();
+          failures = failures.filter(failure => at - failure <= BREAKER_WINDOW_MS);
+          failures.push(at);
+          if (failures.length >= 3) trip(at);
+        } else {
+          failures = [];
+        }
+      }
+      if (!req.noCache) cache.put(req, result);
+      return result;
+    } finally {
+      if (trial) trialInFlight = false;
+    }
   };
   return async(req:AnalyzeRequest,ip:string):Promise<AnalysisResult>=>{
+    validateCapacityRequest(req);
+    if (req.simulateOutage) {
+      const result = await analyze({ ...req, mode: 'live' }, {
+        llm: { async extract() { throw new Error(SIMULATED_REASON); } },
+      });
+      return { ...result, simulated: true };
+    }
     if(req.mode==='offline'||req.noCache)return run(req,ip);
     const cached=cache.get(req);if(cached)return cached;
     const key=cacheKey(req),pending=inFlight.get(key);
