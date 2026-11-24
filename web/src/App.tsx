@@ -10,11 +10,11 @@ import {
   undoLogEntryEngine,
 } from './adapter';
 import { AccountabilityDrawer } from './components/AccountabilityDrawer';
-import { BoardingPass } from './components/BoardingPass';
+import { BoardingPass, getLiveWaitStage } from './components/BoardingPass';
 import { HighlightedListing } from './components/HighlightedListing';
 import { ListingEditor } from './components/ListingEditor';
+import { loadInitialState, savePersistedState } from './storage';
 import {
-  DEFAULT_PROFILE,
   type AnalysisResult,
   type DataSourceMode,
   type Decision,
@@ -25,64 +25,13 @@ import {
   type Span,
 } from './types';
 
-const STORAGE_KEY = 'sublet-bouncer:v2';
-
-interface PersistedState {
-  listing: string;
-  profile: ProfileState;
-  dataSource: DataSourceMode;
-  languageLevel: LanguageLevel;
-  drawerOpen: boolean;
-  activeSample: SampleKey | null;
-  result: AnalysisResult | null;
-}
-
-function loadInitialState(fixturesAllowed: boolean): PersistedState {
-  const defaultSource: DataSourceMode = fixturesAllowed ? 'fixtures' : 'api';
-  const fallback: PersistedState = {
-    listing: getSampleListing('tricky'),
-    profile: DEFAULT_PROFILE,
-    dataSource: defaultSource,
-    languageLevel: 'plain',
-    drawerOpen: true,
-    activeSample: 'tricky',
-    result: null,
-  };
-
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return fallback;
-    const parsed = JSON.parse(raw) as Partial<PersistedState>;
-    if (!parsed || typeof parsed.listing !== 'string') {
-      return fallback;
-    }
-    const storedSource = parsed.dataSource ?? defaultSource;
-    const safeSource: DataSourceMode =
-      storedSource === 'offline' ? 'offline' : storedSource === 'fixtures' && fixturesAllowed ? 'fixtures' : 'api';
-    return {
-      listing: parsed.listing,
-      profile: parsed.profile && ['UW', 'WLU'].includes(parsed.profile.campus) &&
-        [parsed.profile.termStart, parsed.profile.termEnd, parsed.profile.classStart].every(v => typeof v === 'string' && v.length > 0)
-        ? parsed.profile : DEFAULT_PROFILE,
-      dataSource: safeSource,
-      languageLevel: parsed.languageLevel === 'simple' ? 'simple' : 'plain',
-      drawerOpen: typeof parsed.drawerOpen === 'boolean' ? parsed.drawerOpen : true,
-      activeSample: ['clean', 'tricky', 'scammy'].includes(parsed.activeSample ?? '') ? parsed.activeSample! : null,
-      // Recompute results: storage is untrusted and cached gates may be obsolete.
-      result: null,
-    };
-  } catch {
-    return fallback;
-  }
-}
-
 export const App: React.FC = () => {
   const fixturesAllowed = isFixturesDemoEnabled();
-  const [initial] = useState(() => loadInitialState(fixturesAllowed));
+  const [initial] = useState(() => loadInitialState(fixturesAllowed, getSampleListing('tricky')));
 
   const [listing, setListing] = useState<string>(initial.listing);
   const [profile, setProfile] = useState<ProfileState>(initial.profile);
-  const [analyzedProfile, setAnalyzedProfile] = useState<ProfileState>(initial.profile);
+  const [analyzedProfile, setAnalyzedProfile] = useState<ProfileState>(initial.analyzedProfile);
   const [dataSource, setDataSource] = useState<DataSourceMode>(initial.dataSource);
   const [languageLevel, setLanguageLevel] = useState<LanguageLevel>(initial.languageLevel);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(initial.drawerOpen);
@@ -91,36 +40,54 @@ export const App: React.FC = () => {
   const [notice, setNotice] = useState<string | undefined>(undefined);
   const [engineError, setEngineError] = useState<string | undefined>(undefined);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  const [analyzingSource, setAnalyzingSource] = useState<DataSourceMode>(initial.dataSource);
+  const [elapsedMs, setElapsedMs] = useState<number>(0);
   const [isRewinding, setIsRewinding] = useState<boolean>(false);
   const [lastFixture, setLastFixture] = useState<RegressionFixture | null>(null);
   const [focusedSpan, setFocusedSpan] = useState<Span | null>(null);
   const [focusSeq, setFocusSeq] = useState<number>(0);
   const rewindTimerRef = useRef<number | null>(null);
   const analysisSeqRef = useRef(0);
+  const activeAbortRef = useRef<AbortController | null>(null);
+  const resultRef = useRef<AnalysisResult | null>(initial.result);
   const didAutoRunRef = useRef<boolean>(false);
 
   useEffect(() => {
-    try {
-      const payload: PersistedState = {
-        listing,
-        profile,
-        dataSource,
-        languageLevel,
-        drawerOpen,
-        activeSample,
-        result,
-      };
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    } catch {
-      // Ignore storage quota or private-mode errors per SPEC §6
+    resultRef.current = result;
+  }, [result]);
+
+  useEffect(() => {
+    savePersistedState({
+      listing,
+      profile,
+      analyzedProfile,
+      dataSource,
+      languageLevel,
+      drawerOpen,
+      activeSample,
+      result,
+    });
+  }, [listing, profile, analyzedProfile, dataSource, languageLevel, drawerOpen, activeSample, result]);
+
+  useEffect(() => {
+    if (!isAnalyzing) {
+      setElapsedMs(0);
+      return;
     }
-  }, [listing, profile, dataSource, languageLevel, drawerOpen, activeSample, result]);
+    const startedAt = Date.now();
+    setElapsedMs(0);
+    const id = window.setInterval(() => {
+      setElapsedMs(Date.now() - startedAt);
+    }, 100);
+    return () => window.clearInterval(id);
+  }, [isAnalyzing]);
 
   useEffect(() => {
     return () => {
       if (rewindTimerRef.current !== null) {
         window.clearTimeout(rewindTimerRef.current);
       }
+      activeAbortRef.current?.abort();
     };
   }, []);
 
@@ -130,8 +97,13 @@ export const App: React.FC = () => {
     source: DataSourceMode,
   ) => {
     if (!text.trim()) return;
+    activeAbortRef.current?.abort();
+    const controller = new AbortController();
+    activeAbortRef.current = controller;
+
     const seq = ++analysisSeqRef.current;
     setIsAnalyzing(true);
+    setAnalyzingSource(source);
     setNotice(undefined);
     setEngineError(undefined);
     try {
@@ -142,18 +114,32 @@ export const App: React.FC = () => {
           mode: source === 'api' ? 'live' : 'offline',
         },
         source,
+        { signal: controller.signal },
       );
       if (seq !== analysisSeqRef.current) return;
+      resultRef.current = nextResult;
       setResult(nextResult);
       setAnalyzedProfile(prof);
       setNotice(nextNotice);
       setLastFixture(null);
       setFocusedSpan(null);
     } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return;
       if (seq === analysisSeqRef.current) setNotice(err instanceof Error ? err.message : 'Analysis failed');
     } finally {
-      if (seq === analysisSeqRef.current) setIsAnalyzing(false);
+      if (seq === analysisSeqRef.current) {
+        setIsAnalyzing(false);
+        if (activeAbortRef.current === controller) {
+          activeAbortRef.current = null;
+        }
+      }
     }
+  };
+
+  const handleUseOfflineNow = () => {
+    activeAbortRef.current?.abort();
+    setDataSource('offline');
+    void executeAnalysis(listing, profile, 'offline');
   };
 
   // Run initial analysis automatically on first load when no persisted result exists
@@ -199,14 +185,17 @@ export const App: React.FC = () => {
     setResult(next);
   };
 
-  const handlePerformAction = (actionId: string) => {
-    if (!result) return false;
+  const handlePerformAction = (actionId: string, expectedRunId?: string) => {
+    const current = resultRef.current;
+    if (!current) return false;
+    if (expectedRunId && current.runId !== expectedRunId) return false;
     setEngineError(undefined);
-    const { result: next, error } = performActionEngine(result, actionId);
+    const { result: next, error } = performActionEngine(current, actionId);
     if (error) {
       setEngineError(error);
       return false;
     }
+    resultRef.current = next;
     setResult(next);
     return true;
   };
@@ -417,17 +406,41 @@ export const App: React.FC = () => {
             result={result}
             profile={analyzedProfile}
             isRewinding={isRewinding}
+            isAnalyzing={isAnalyzing}
+            analyzingSource={analyzingSource}
+            elapsedMs={elapsedMs}
             notice={notice}
+            onUseOfflineNow={handleUseOfflineNow}
             onPerformAction={handlePerformAction}
           />
         ) : (
           <article id="boarding-pass" className="boarding-pass" aria-busy="true">
             <div className="pass-top-band">
               <span className="pass-airline">WATERLOO CO-OP GATE PASS</span>
-              <span className="pass-meta-mono">ANALYZING…</span>
+              <span className="pass-meta-mono">
+                {analyzingSource === 'api' ? 'LIVE LLM' : 'OFFLINE'} · {(elapsedMs / 1000).toFixed(1)}s
+              </span>
+            </div>
+            <div className="live-wait-bar" role="status" aria-live="polite" data-testid="live-wait-bar">
+              <div className="live-wait-head">
+                <span className="live-wait-stage">{getLiveWaitStage(elapsedMs, analyzingSource)}</span>
+                <span className="live-wait-timer">{(elapsedMs / 1000).toFixed(1)}s</span>
+              </div>
+              {analyzingSource === 'api' && (
+                <div className="live-wait-actions">
+                  <span className="live-wait-hint">Free-tier Gemini can take up to 20 s.</span>
+                  <button
+                    type="button"
+                    className="btn-offline-now"
+                    onClick={handleUseOfflineNow}
+                  >
+                    Use offline now
+                  </button>
+                </div>
+              )}
             </div>
             <div className="pass-body">
-              <p className="verdict-sub">Checking Ontario RTA clauses, commute, and scam signals…</p>
+              <p className="verdict-sub">Waiting for analysis result…</p>
             </div>
           </article>
         )}

@@ -60,8 +60,11 @@ export function isFixturesDemoEnabled(): boolean {
   }
 }
 
-function matchFixtureForListing(listing: string): AnalysisResult {
+export const CLIENT_LIVE_TIMEOUT_MS = 20_000;
+
+function matchFixtureForListing(listing: string): { result: AnalysisResult; notice?: string } {
   const lower = listing.toLowerCase();
+  let fixture: AnalysisResult;
   if (
     lower.includes('crypto') ||
     lower.includes('telegram') ||
@@ -70,11 +73,8 @@ function matchFixtureForListing(listing: string): AnalysisResult {
     lower.includes('before viewing') ||
     lower.includes('gift card')
   ) {
-    const r = structuredClone(refuseFixtureRaw) as AnalysisResult;
-    r.listing = listing;
-    return r;
-  }
-  if (
+    fixture = structuredClone(refuseFixtureRaw) as AnalysisResult;
+  } else if (
     lower.includes('no pets') ||
     lower.includes('damage deposit') ||
     lower.includes('post-dated') ||
@@ -82,29 +82,53 @@ function matchFixtureForListing(listing: string): AnalysisResult {
     lower.includes('share the kitchen') ||
     lower.includes('share kitchen')
   ) {
-    const r = structuredClone(holdFixtureRaw) as AnalysisResult;
-    r.listing = listing;
-    return r;
+    fixture = structuredClone(holdFixtureRaw) as AnalysisResult;
+  } else {
+    fixture = structuredClone(admitFixtureRaw) as AnalysisResult;
   }
-  const r = structuredClone(admitFixtureRaw) as AnalysisResult;
-  r.listing = listing;
-  return r;
+
+  // Keep the fixture's original listing text so all span offsets stay valid (C5 finding #2).
+  const textDiffers = listing.trim() !== fixture.listing.trim();
+  return {
+    result: fixture,
+    notice: textDiffers
+      ? 'Fixture demo mode displays the matched sample fixture so clause highlight offsets remain accurate.'
+      : undefined,
+  };
 }
 
 export async function runAnalysis(
   req: AnalyzeRequest,
   source: DataSourceMode,
+  options?: { signal?: AbortSignal },
 ): Promise<{ result: AnalysisResult; notice?: string }> {
   if (source === 'fixtures') {
-    return { result: matchFixtureForListing(req.listing) };
+    return matchFixtureForListing(req.listing);
   }
 
   if (source === 'api') {
+    const timeoutController = new AbortController();
+    let timedOut = false;
+    const timeoutId = window.setTimeout(() => {
+      timedOut = true;
+      timeoutController.abort();
+    }, CLIENT_LIVE_TIMEOUT_MS);
+
+    const onExternalAbort = () => timeoutController.abort();
+    if (options?.signal) {
+      if (options.signal.aborted) {
+        window.clearTimeout(timeoutId);
+        throw new DOMException('Analysis aborted', 'AbortError');
+      }
+      options.signal.addEventListener('abort', onExternalAbort, { once: true });
+    }
+
     try {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...req, mode: 'live' }),
+        signal: timeoutController.signal,
       });
       if (!res.ok) {
         const errBody = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
@@ -119,8 +143,13 @@ export async function runAnalysis(
             : undefined,
       };
     } catch (err) {
-      const reason =
-        err instanceof Error
+      // If the user explicitly cancelled (e.g. clicked "Use offline now" or started a new run), propagate AbortError.
+      if (options?.signal?.aborted) {
+        throw new DOMException('Analysis aborted', 'AbortError');
+      }
+      const reason = timedOut
+        ? `Live request timed out after ${Math.round(CLIENT_LIVE_TIMEOUT_MS / 1000)}s; ran offline core engine in browser`
+        : err instanceof Error
           ? `Live API unreachable (${err.message}); ran offline core engine in browser`
           : 'Live API unreachable; ran offline core engine in browser';
       const fallback = await coreAnalyze({ ...req, mode: 'offline' });
@@ -130,6 +159,9 @@ export async function runAnalysis(
         result: fallback,
         notice: reason,
       };
+    } finally {
+      window.clearTimeout(timeoutId);
+      options?.signal?.removeEventListener('abort', onExternalAbort);
     }
   }
 

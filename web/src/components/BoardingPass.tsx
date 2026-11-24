@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AlertTriangle,
   CalendarPlus,
@@ -10,16 +10,117 @@ import {
   ShieldAlert,
   ShieldCheck,
   TrainFront,
+  Zap,
 } from 'lucide-react';
 import { buildViewingIcs, downloadEvidenceCard, downloadTextFile } from '../ics';
-import type { AnalysisResult, ProfileState } from '../types';
+import type { AnalysisResult, DataSourceMode, ProfileState } from '../types';
 
 interface BoardingPassProps {
   result: AnalysisResult;
   profile: ProfileState;
   isRewinding: boolean;
+  isAnalyzing: boolean;
+  analyzingSource: DataSourceMode;
+  elapsedMs: number;
   notice?: string;
-  onPerformAction: (actionId: string) => boolean;
+  onUseOfflineNow: () => void;
+  onPerformAction: (actionId: string, expectedRunId?: string) => boolean;
+}
+
+export function getLiveWaitStage(elapsedMs: number, source: DataSourceMode): string {
+  if (source !== 'api') {
+    return 'Checking Ontario RTA rules and commute offline…';
+  }
+  if (elapsedMs < 3500) {
+    return 'Reading clauses with Gemini…';
+  }
+  if (elapsedMs < 8500) {
+    return 'Verifying every quote against your listing…';
+  }
+  return 'Checking Ontario RTA rules and commute…';
+}
+
+interface FallbackBannerInfo {
+  title: string;
+  body: string;
+  showOfflineExplainer: boolean;
+  rawDetail?: string;
+}
+
+function classifyFallback(
+  mode: AnalysisResult['mode'],
+  rawReason?: string,
+  model?: string,
+): FallbackBannerInfo | null {
+  if (!rawReason && mode !== 'offline-fallback') return null;
+  const text = (rawReason ?? '').toLowerCase();
+
+  // Live mode answered via backup model (primary 429/503/timeout -> fallback model succeeded)
+  if (mode === 'live' && rawReason) {
+    return {
+      title: 'Primary Gemini model was busy — used backup model',
+      body: `Your listing was still analyzed live${model ? ` with ${model}` : ''}.`,
+      showOfflineExplainer: false,
+      rawDetail: rawReason,
+    };
+  }
+
+  // Non-fallback informational notices (e.g. fixture demo mode)
+  if (mode !== 'offline-fallback') {
+    return {
+      title: rawReason ?? '',
+      body: '',
+      showOfflineExplainer: false,
+    };
+  }
+
+  // Offline fallback: distinguish rate-limit/quota vs timeout vs network
+  if (
+    text.includes('429') ||
+    text.includes('503') ||
+    text.includes('quota') ||
+    text.includes('rate limit') ||
+    text.includes('resource_exhausted')
+  ) {
+    return {
+      title: 'Gemini hit its free-tier rate limit',
+      body: 'Switched to the built-in offline engine so your listing was still checked right away.',
+      showOfflineExplainer: true,
+      rawDetail: rawReason,
+    };
+  }
+
+  if (text.includes('timeout') || text.includes('timed out') || text.includes('deadline')) {
+    return {
+      title: 'Live AI took too long to respond',
+      body: 'Switched to the built-in offline engine so the page stays responsive.',
+      showOfflineExplainer: true,
+      rawDetail: rawReason,
+    };
+  }
+
+  if (
+    text.includes('unreachable') ||
+    text.includes('failed to fetch') ||
+    text.includes('network') ||
+    text.includes('not configured') ||
+    text.includes('econnrefused') ||
+    text.includes('http 5')
+  ) {
+    return {
+      title: 'Could not reach the live AI service',
+      body: 'Ran the built-in offline engine in your browser instead.',
+      showOfflineExplainer: true,
+      rawDetail: rawReason,
+    };
+  }
+
+  return {
+    title: 'Live AI was unavailable',
+    body: 'Ran the built-in offline engine in your browser instead.',
+    showOfflineExplainer: true,
+    rawDetail: rawReason,
+  };
 }
 
 const STAMP_TEXT: Record<AnalysisResult['verdict'], string> = {
@@ -58,11 +159,22 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   result,
   profile,
   isRewinding,
+  isAnalyzing,
+  analyzingSource,
+  elapsedMs,
   notice,
+  onUseOfflineNow,
   onPerformAction,
 }) => {
   const [actionError, setActionError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [showWhyOffline, setShowWhyOffline] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCopiedId(null);
+    setActionError(null);
+    setShowWhyOffline(false);
+  }, [result.runId]);
 
   const draftAction = result.actions.find((a) => a.type === 'draft_reply');
   const copyAction = result.actions.find((a) => a.type === 'copy_reply_to_clipboard');
@@ -80,6 +192,8 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
 
   const handleCopy = async () => {
     if (!copyAction || copyAction.status === 'blocked') return;
+    const targetRunId = result.runId;
+    const targetActionId = copyAction.id;
     setActionError(null);
     try {
       await navigator.clipboard.writeText(draftText);
@@ -87,14 +201,16 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
       setActionError('Clipboard unavailable. Select and copy the draft text manually.');
       return;
     }
-    if (!onPerformAction(copyAction.id)) return;
-    setCopiedId(copyAction.id);
-    window.setTimeout(() => setCopiedId(null), 1800);
+    if (!onPerformAction(targetActionId, targetRunId)) return;
+    setCopiedId(targetActionId);
+    window.setTimeout(() => {
+      setCopiedId((prev) => (prev === targetActionId ? null : prev));
+    }, 1800);
   };
 
   const handleExportIcs = () => {
     if (!icsAction || icsAction.status === 'blocked') return;
-    if (!onPerformAction(icsAction.id)) return;
+    if (!onPerformAction(icsAction.id, result.runId)) return;
     const ics =
       typeof icsAction.payload === 'string' && icsAction.payload.includes('BEGIN:VCALENDAR')
         ? icsAction.payload
@@ -105,7 +221,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   const handleSaveEvidence = () => {
     downloadEvidenceCard(result);
     if (evidenceAction && evidenceAction.status !== 'done' && evidenceAction.status !== 'blocked') {
-      onPerformAction(evidenceAction.id);
+      onPerformAction(evidenceAction.id, result.runId);
     }
   };
 
@@ -119,10 +235,8 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
           ? 'bad'
           : 'neutral';
 
-  const fallbackBannerText =
-    result.mode === 'offline-fallback'
-      ? result.fallbackReason ?? notice ?? 'Live LLM unavailable; ran offline engine.'
-      : result.fallbackReason ?? notice;
+  const rawFallbackReason = result.fallbackReason ?? notice;
+  const fallbackInfo = classifyFallback(result.mode, rawFallbackReason, result.model);
 
   const refusalInfo = result.refused ? REFUSAL_COPY[result.refused.reason] : null;
   const shortRunId = result.runId.length > 12 ? result.runId.slice(0, 8) : result.runId;
@@ -132,6 +246,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
       id="boarding-pass"
       className="boarding-pass"
       data-rewinding={isRewinding ? 'true' : 'false'}
+      aria-busy={isAnalyzing ? 'true' : 'false'}
       aria-labelledby="boarding-pass-heading"
     >
       <div className="pass-top-band">
@@ -141,6 +256,24 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
           {result.model ? ` · ${result.model}` : ''}
         </span>
       </div>
+
+      {isAnalyzing && (
+        <div className="live-wait-bar" role="status" aria-live="polite" data-testid="live-wait-bar">
+          <div className="live-wait-head">
+            <span className="live-wait-stage">{getLiveWaitStage(elapsedMs, analyzingSource)}</span>
+            <span className="live-wait-timer">{(elapsedMs / 1000).toFixed(1)}s</span>
+          </div>
+          {analyzingSource === 'api' && (
+            <div className="live-wait-actions">
+              <span className="live-wait-hint">Free-tier Gemini can take up to 20 s.</span>
+              <button type="button" className="btn-offline-now" onClick={onUseOfflineNow}>
+                <Zap size={14} aria-hidden="true" />
+                <span>Use offline now</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="pass-body">
         <div className="verdict-row">
@@ -175,13 +308,43 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
           </div>
         </div>
 
-        {fallbackBannerText && (
-          <div className="banner-alert info" role="status" data-testid="fallback-banner">
+        {fallbackInfo && (
+          <div className="banner-alert info fallback-banner" role="status" data-testid="fallback-banner">
             <Info size={16} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
-            <span>
-              {result.mode === 'offline-fallback' && <strong>Offline fallback: </strong>}
-              {fallbackBannerText}
-            </span>
+            <div className="fallback-banner-body">
+              <div>
+                <strong>
+                  {fallbackInfo.title}
+                  {fallbackInfo.body && !/[.!?]$/.test(fallbackInfo.title) ? '.' : ''}
+                </strong>
+                {fallbackInfo.body ? ` ${fallbackInfo.body}` : ''}
+              </div>
+              {fallbackInfo.showOfflineExplainer && (
+                <div className="fallback-links-row">
+                  <button
+                    type="button"
+                    className="fallback-why-btn"
+                    aria-expanded={showWhyOffline}
+                    aria-controls="why-offline-panel"
+                    onClick={() => setShowWhyOffline((v) => !v)}
+                  >
+                    {showWhyOffline ? 'Hide why offline still works' : 'Why offline still works'}
+                  </button>
+                </div>
+              )}
+              {showWhyOffline && fallbackInfo.showOfflineExplainer && (
+                <div id="why-offline-panel" className="fallback-why-panel">
+                  <p style={{ margin: '0 0 6px 0' }}>
+                    Offline mode runs the same verified 12-section Ontario RTA rule table, Waterloo GTFS
+                    commute lookup, and scam-risk scorer locally in your browser. Live Gemini only adds
+                    extraction for unusual phrasing and paraphrased clauses.
+                  </p>
+                  {fallbackInfo.rawDetail && (
+                    <p className="fallback-tech-detail">Detail: {fallbackInfo.rawDetail}</p>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         )}
 

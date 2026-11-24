@@ -219,7 +219,7 @@ export const AccountabilityDrawer: React.FC<AccountabilityDrawerProps> = ({
                     <span>
                       {dec.id} {dec.label}
                     </span>
-                    <span className={`kind-chip ${dec.kind}`}>{dec.kind}</span>
+                    <span className={`kind-chip ${dec.kind.replace('+', '-')}`}>{dec.kind}</span>
                   </span>
                   <span className={`conf-readout${belowThreshold ? ' warn' : ''}`}>
                     {confPct}%{threshPct !== undefined ? ` / ${threshPct}%` : ''}
