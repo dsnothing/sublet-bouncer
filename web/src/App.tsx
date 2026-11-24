@@ -58,15 +58,18 @@ function loadInitialState(fixturesAllowed: boolean): PersistedState {
     }
     const storedSource = parsed.dataSource ?? defaultSource;
     const safeSource: DataSourceMode =
-      storedSource === 'fixtures' && !fixturesAllowed ? 'api' : storedSource;
+      storedSource === 'offline' ? 'offline' : storedSource === 'fixtures' && fixturesAllowed ? 'fixtures' : 'api';
     return {
       listing: parsed.listing,
-      profile: parsed.profile ?? DEFAULT_PROFILE,
+      profile: parsed.profile && ['UW', 'WLU'].includes(parsed.profile.campus) &&
+        [parsed.profile.termStart, parsed.profile.termEnd, parsed.profile.classStart].every(v => typeof v === 'string' && v.length > 0)
+        ? parsed.profile : DEFAULT_PROFILE,
       dataSource: safeSource,
-      languageLevel: parsed.languageLevel ?? 'plain',
+      languageLevel: parsed.languageLevel === 'simple' ? 'simple' : 'plain',
       drawerOpen: typeof parsed.drawerOpen === 'boolean' ? parsed.drawerOpen : true,
-      activeSample: parsed.activeSample ?? null,
-      result: parsed.result ?? null,
+      activeSample: ['clean', 'tricky', 'scammy'].includes(parsed.activeSample ?? '') ? parsed.activeSample! : null,
+      // Recompute results: storage is untrusted and cached gates may be obsolete.
+      result: null,
     };
   } catch {
     return fallback;
@@ -75,10 +78,11 @@ function loadInitialState(fixturesAllowed: boolean): PersistedState {
 
 export const App: React.FC = () => {
   const fixturesAllowed = isFixturesDemoEnabled();
-  const initial = loadInitialState(fixturesAllowed);
+  const [initial] = useState(() => loadInitialState(fixturesAllowed));
 
   const [listing, setListing] = useState<string>(initial.listing);
   const [profile, setProfile] = useState<ProfileState>(initial.profile);
+  const [analyzedProfile, setAnalyzedProfile] = useState<ProfileState>(initial.profile);
   const [dataSource, setDataSource] = useState<DataSourceMode>(initial.dataSource);
   const [languageLevel, setLanguageLevel] = useState<LanguageLevel>(initial.languageLevel);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(initial.drawerOpen);
@@ -92,6 +96,7 @@ export const App: React.FC = () => {
   const [focusedSpan, setFocusedSpan] = useState<Span | null>(null);
   const [focusSeq, setFocusSeq] = useState<number>(0);
   const rewindTimerRef = useRef<number | null>(null);
+  const analysisSeqRef = useRef(0);
   const didAutoRunRef = useRef<boolean>(false);
 
   useEffect(() => {
@@ -125,6 +130,7 @@ export const App: React.FC = () => {
     source: DataSourceMode,
   ) => {
     if (!text.trim()) return;
+    const seq = ++analysisSeqRef.current;
     setIsAnalyzing(true);
     setNotice(undefined);
     setEngineError(undefined);
@@ -137,12 +143,16 @@ export const App: React.FC = () => {
         },
         source,
       );
+      if (seq !== analysisSeqRef.current) return;
       setResult(nextResult);
+      setAnalyzedProfile(prof);
       setNotice(nextNotice);
       setLastFixture(null);
       setFocusedSpan(null);
+    } catch (err) {
+      if (seq === analysisSeqRef.current) setNotice(err instanceof Error ? err.message : 'Analysis failed');
     } finally {
-      setIsAnalyzing(false);
+      if (seq === analysisSeqRef.current) setIsAnalyzing(false);
     }
   };
 
@@ -190,14 +200,15 @@ export const App: React.FC = () => {
   };
 
   const handlePerformAction = (actionId: string) => {
-    if (!result) return;
+    if (!result) return false;
     setEngineError(undefined);
     const { result: next, error } = performActionEngine(result, actionId);
     if (error) {
       setEngineError(error);
-      return;
+      return false;
     }
     setResult(next);
+    return true;
   };
 
   const handleUndo = (logEntryId: string) => {
@@ -404,7 +415,7 @@ export const App: React.FC = () => {
         {result ? (
           <BoardingPass
             result={result}
-            profile={profile}
+            profile={analyzedProfile}
             isRewinding={isRewinding}
             notice={notice}
             onPerformAction={handlePerformAction}

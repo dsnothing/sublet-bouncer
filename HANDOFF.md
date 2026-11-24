@@ -32,3 +32,20 @@
 - Blind evals/redteam never opened; no /evals, /web, or scam_model edits; .env remains ignored.
 - Git: pull --rebase blocked by concurrent unstaged work; fetch confirmed HEAD=origin/main before explicit-path commit.
 - Risk: paraphrase precision/recall awaits independent C3 evaluation; verbatim evidence verifies text presence, not semantic truth.
+
+## C5 web cross-review (Codex L6)
+- Fixed ICS gate ordering, malformed storage render crash, stale response race, false clipboard success.
+- Build passed; npm test: 64 passed, 1 skipped. Source review only; browser QA remains L5.
+- Findings: evidence/review/C5-web-review.md. Fixed profile/result mismatch; fixture offsets remain.
+- Cache reload recomputes analysis; correction/undo history resets until validated persistence is added.
+
+## C2 deployment fix - Native Node ESM imports (Codex L3)
+- Role/skills: backend runtime fix; systematic-debugging, vercel-functions, deployments-cicd; CLI used (no Vercel connector).
+- Added explicit .js relative imports throughout core/api and JSON import attributes; no generated bundles.
+- Moved json() into api/_lib/http.ts so health no longer loads analyze/Gemini/core.
+- Added native Node regression: per-file TS emission, JSON loading, health 200 and offline analysis 200.
+- Verified: npm test 64 passed / 1 optional live skipped; npm run typecheck and npm run build passed.
+- Production READY: https://sublet-bouncer-4yhxo35yw-david-s10.vercel.app (Vite; build/deploy ~60s).
+- Signed-out production: GET /api/health 200; POST /api/analyze offline 200 mode=offline ADMIT; live 200 mode=live ADMIT.
+- Post-deploy error logs (5m): zero records; monitoring/drains configuration not inspected.
+- Scope risk: CLI uploaded shared checkout including concurrent web edits; web/evals changes excluded from this commit.

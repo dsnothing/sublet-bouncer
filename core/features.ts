@@ -1,5 +1,5 @@
-import type { AnalysisResult } from './types';
-import { findSpan, LIVE_RISK_FIELDS, offlineExtract } from './extract';
+import type { AnalysisResult } from './types.js';
+import { findSpan, LIVE_RISK_FIELDS, offlineExtract } from './extract.js';
 export interface CmhcBenchmarks { median_monthly: { room?: number; bachelor: number; one_bedroom?: number; two_bedroom?: number }; [key:string]: unknown }
 export const FEATURE_NAMES = ['rent_to_median','payment_before_viewing','risky_payment_method','landlord_abroad','off_platform_only','no_address','no_viewing_offered','urgency_language','sob_story_length','early_id_request','amenities_vs_price','duplicate_markers'] as const;
 export type FeatureName = typeof FEATURE_NAMES[number];

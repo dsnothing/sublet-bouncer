@@ -19,7 +19,7 @@ interface BoardingPassProps {
   profile: ProfileState;
   isRewinding: boolean;
   notice?: string;
-  onPerformAction: (actionId: string) => void;
+  onPerformAction: (actionId: string) => boolean;
 }
 
 const STAMP_TEXT: Record<AnalysisResult['verdict'], string> = {
@@ -61,6 +61,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   notice,
   onPerformAction,
 }) => {
+  const [actionError, setActionError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const draftAction = result.actions.find((a) => a.type === 'draft_reply');
@@ -79,24 +80,26 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
 
   const handleCopy = async () => {
     if (!copyAction || copyAction.status === 'blocked') return;
+    setActionError(null);
     try {
       await navigator.clipboard.writeText(draftText);
     } catch {
-      // Clipboard API may be restricted in headless contexts; still record the confirmed action
+      setActionError('Clipboard unavailable. Select and copy the draft text manually.');
+      return;
     }
-    onPerformAction(copyAction.id);
+    if (!onPerformAction(copyAction.id)) return;
     setCopiedId(copyAction.id);
     window.setTimeout(() => setCopiedId(null), 1800);
   };
 
   const handleExportIcs = () => {
     if (!icsAction || icsAction.status === 'blocked') return;
+    if (!onPerformAction(icsAction.id)) return;
     const ics =
       typeof icsAction.payload === 'string' && icsAction.payload.includes('BEGIN:VCALENDAR')
         ? icsAction.payload
         : buildViewingIcs(result, profile);
     downloadTextFile(`sublet-viewing-${result.runId.slice(0, 8)}.ics`, ics, 'text/calendar;charset=utf-8');
-    onPerformAction(icsAction.id);
   };
 
   const handleSaveEvidence = () => {
@@ -332,6 +335,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
               <div>{draftAction?.status === 'undone' ? 'Draft rolled back via Undo.' : draftText}</div>
             </div>
 
+            {actionError && <p role="alert">{actionError}</p>}
             <div className="action-btn-row">
               <button
                 type="button"

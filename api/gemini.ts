@@ -1,5 +1,5 @@
-import { RULE_IDS, type LLMAdapter } from '../core/extract';
-import rules from '../data/rta_rules.json';
+import { RULE_IDS, type LLMAdapter } from '../core/extract.js';
+import rules from '../data/rta_rules.json' with { type: 'json' };
 const span={type:'OBJECT',properties:{text:{type:'STRING'},start:{type:'INTEGER'},end:{type:'INTEGER'}},required:['text','start','end']};
 const field=(type:string)=>({type:'OBJECT',properties:{value:{type},span,confidence:{type:'NUMBER'}},required:['value','span','confidence']});
 export const responseSchema={type:'OBJECT',properties:{fields:{type:'OBJECT',properties:{address:field('STRING'),rent:field('NUMBER'),dates:field('STRING'),deposits:field('STRING'),utilities:field('STRING'),contact_channel:field('STRING'),payment_methods:field('STRING'),viewing_offered:field('BOOLEAN'),owner_lives_in:field('BOOLEAN'),payment_before_viewing:field('BOOLEAN'),landlord_abroad:field('BOOLEAN'),risky_payment_method:field('BOOLEAN')}},clauses:{type:'ARRAY',items:{type:'OBJECT',properties:{span,confidence:{type:'NUMBER'},proposed_rule_id:{type:'STRING',enum:[...RULE_IDS,'none']},rationale:{type:'STRING'}},required:['span','confidence','proposed_rule_id','rationale']}}},required:['fields','clauses']};

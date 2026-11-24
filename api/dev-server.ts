@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { existsSync } from 'node:fs';
-import analyze from './analyze';
-import health from './health';
+import analyze from './analyze.js';
+import health from './health.js';
 if(existsSync('.env'))process.loadEnvFile('.env');
 const server=createServer((req,res)=>{
   const path=new URL(req.url??'/', 'http://localhost').pathname;

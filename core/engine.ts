@@ -1,9 +1,9 @@
-import type { AnalysisResult, AnalyzeRequest, ClauseFinding, Commute, Decision, Escalation } from './types';
-import { data, type Data } from './data';
-import { findSpan, offlineExtract, verifyExtraction, type Extraction, type LLMAdapter } from './extract';
-import { extractFeatures, paymentBeforeViewing } from './features';
-import { hasInjection, refusalReason } from './injection';
-import { refreshActions, appendLog } from './log';
+import type { AnalysisResult, AnalyzeRequest, ClauseFinding, Commute, Decision, Escalation } from './types.js';
+import { data, type Data } from './data.js';
+import { findSpan, offlineExtract, verifyExtraction, type Extraction, type LLMAdapter } from './extract.js';
+import { extractFeatures, paymentBeforeViewing } from './features.js';
+import { hasInjection, refusalReason } from './injection.js';
+import { refreshActions, appendLog } from './log.js';
 export interface AnalyzeOptions { llm?: LLMAdapter; data?: Data; timeoutMs?: number }
 export const newId = () => globalThis.crypto.randomUUID();
 export function validateRequest(raw: unknown): asserts raw is AnalyzeRequest {

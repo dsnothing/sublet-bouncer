@@ -1,8 +1,8 @@
-import rules from '../data/rta_rules.json';
-import model from '../data/scam_model.json';
-import geocodes from '../data/geocode_cache.json';
-import commutes from '../data/commute_table.json';
-import benchmarks from '../data/cmhc_benchmarks.json';
+import rules from '../data/rta_rules.json' with { type: 'json' };
+import model from '../data/scam_model.json' with { type: 'json' };
+import geocodes from '../data/geocode_cache.json' with { type: 'json' };
+import commutes from '../data/commute_table.json' with { type: 'json' };
+import benchmarks from '../data/cmhc_benchmarks.json' with { type: 'json' };
 export interface Data {
   rules: typeof rules;
   model: typeof model;

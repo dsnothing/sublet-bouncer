@@ -1,6 +1,6 @@
-import type { AnalysisResult, AnalyzeRequest, ActionRecord, Decision, LogEntry } from './types';
-import { recomputeVerdict, clauseFindings, lookupCommute, scoreScam, newId } from './engine';
-import { data } from './data';
+import type { AnalysisResult, AnalyzeRequest, ActionRecord, Decision, LogEntry } from './types.js';
+import { recomputeVerdict, clauseFindings, lookupCommute, scoreScam, newId } from './engine.js';
+import { data } from './data.js';
 export interface RegressionFixture { listing:string; decision_id:Decision['id']; expected:unknown }
 type StoredEntry=LogEntry & { inputs_hash?:string; output?:unknown; inverse?:ActionRecord; profile?:AnalyzeRequest['profile']; decision_kind?:Decision['kind'] };
 function hash(s:string) { let n=2166136261; for(const c of s) n=Math.imul(n^c.charCodeAt(0),16777619);return (n>>>0).toString(16); }

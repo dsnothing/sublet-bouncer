@@ -1,5 +1,5 @@
-import type { AnalysisResult, Span } from './types';
-import rules from '../data/rta_rules.json';
+import type { AnalysisResult, Span } from './types.js';
+import rules from '../data/rta_rules.json' with { type: 'json' };
 export const RULE_IDS = rules.rules.map(rule => rule.id);
 export const LIVE_RISK_FIELDS = ['payment_before_viewing', 'landlord_abroad', 'risky_payment_method'] as const;
 export interface Extraction { fields: AnalysisResult['fields']; clauses: { span: Span; confidence: number; proposed_rule_id?: string; rationale?: string }[] }
