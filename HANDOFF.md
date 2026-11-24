@@ -129,3 +129,18 @@
 - ViolationFP15 =14 review proposals(.7)+1 regex; >=.75 precision1/2; zero actual void assertions, precision undefined.
 - Verification:71 tests passed/1 optional skipped; root/eval strict typechecks; frozen hash+verifier reproduction matched; no secrets tracked.
 - Risks: synthetic-only model, material RTA/commute unknowns, low proposal precision and quota limits; no post-holdout tuning.
+
+## C2d - General precision fixes (Codex L3)
+- Skills: systematic-debugging (trace/reproduce), karpathy-guidelines (scope); explicit Node PATH needed, no provider calls.
+- Added scoped field concepts/negation and currency normalization, rule concept/permission gates with rejected llm+rules logs, contact-stripped language checks; D6 and proposal 0.7 unchanged.
+- Verified: 101 tests passed, 1 optional skipped; root + dev-eval strict typechecks/build green; clean-clone npm install/test/typecheck/build passed, API health/web HTTP200; no frontend edits or deploy.
+- DEV-only paired replay from saved Lite raw responses (gold 26/40, v1 18/24, v2 26/30); missing live responses use offline fallback. Labels unchanged; v3 never opened.
+| Dev / mode | Fields correct before -> after | Violation P/R before -> after | Verdict correct before -> after |
+|---|---|---|---|
+| gold / offline | 138/138 -> 138/138 | 1.000/1.000 -> 1.000/1.000 | 38/40 -> 38/40 |
+| gold / saved replay | 134/138 -> 134/138 | 1.000/1.000 -> 1.000/1.000 | 36/40 -> 36/40 |
+| v1 / offline | 25/68 -> 39/68 | 1.000/.333 -> 1.000/.333 | 12/24 -> 12/24 |
+| v1 / saved replay | 29/68 -> 43/68 | 1.000/.333 -> 1.000/.333 | 12/24 -> 12/24 |
+| v2 / offline | 28/117 -> 61/117 | .500/.111 -> 1.000/.111 | 13/30 -> 15/30 |
+| v2 / saved replay | 43/117 -> 73/117 | .348/.889 -> .636/.778 | 13/30 -> 17/30 |
+- Evidence: evals/precision-dev-{before,after}.json; runner evals/precision_dev.ts. Risks: generic lexicons incomplete, synthetic DEV only, v2 recall loss TP8->7/FN1->2; D4/D5 unknowns still hold. No generalization claim.

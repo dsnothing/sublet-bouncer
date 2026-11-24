@@ -1,4 +1,5 @@
 import type { AnalysisResult, Span } from './types.js';
+import { booleanEvidence, evidenceClauses, rentEvidence } from './evidence.js';
 import rules from '../data/rta_rules.json' with { type: 'json' };
 export const RULE_IDS = rules.rules.map(rule => rule.id);
 export const LIVE_RISK_FIELDS = ['payment_before_viewing', 'landlord_abroad', 'risky_payment_method'] as const;
@@ -25,6 +26,13 @@ export function offlineExtract(listing: string): Extraction {
   add('payment_methods', /(?:crypto(?:currency)?|bitcoin|gift\s*cards?|wire\s*transfer|e-transfer|cash|cheques?)/i);
   add('viewing_offered', /(?:no\s+viewings?|viewing\s+(?:available|offered|welcome)|(?:book|arrange|schedule)\s+(?:a\s+)?viewing|view\s+before\s+pay)/i, m => !/^no\b/i.test(m[0]));
   add('owner_lives_in', /(?:owner|landlord)\s+(?:(?:does\s+not|doesn't)\s+live\s+(?:here|there|in)|(?:lives?|living)\s+(?:here|there|in|with)|(?:shares?|sharing)\s+(?:the\s+)?(?:kitchen|bathroom))|shar(?:e|ing)\s+(?:a\s+|the\s+)?(?:kitchen|bathroom)\s+with\s+(?:the\s+)?(?:owner|landlord)/i, m => !/does\s+not|doesn't/i.test(m[0]));
+  // Preserve explicit residence/viewing paraphrases without treating an owner
+  // mentioned solely as a contact as a resident.
+  for (const name of ['viewing_offered','owner_lives_in']) {
+    const clause=evidenceClauses(listing).find(s=>booleanEvidence(name,s)!==undefined &&
+      (name!=='owner_lives_in'||/\b(?:liv\w*|resid\w*|shar\w*|on\s+prem\w*|occup\w*|off[ -]site|elsewhere)\b/i.test(s)));
+    if(clause){const span=findSpan(listing,clause.trim());if(span)fields[name]={value:booleanEvidence(name,clause),span,confidence:.9};}
+  }
   return { fields, clauses: [] };
 }
 export function verifyExtraction(raw: unknown, listing: string): { extraction: Extraction; issues: string[] } {
@@ -39,13 +47,18 @@ export function verifyExtraction(raw: unknown, listing: string): { extraction: E
     if ((LIVE_RISK_FIELDS as readonly string[]).includes(name) && typeof f.value !== 'boolean') throw new Error('Invalid risk boolean');
     const span = findSpan(listing, f.span.text);
     if (!span) { issues.push(`Dropped ${name}: evidence is absent from the listing`); continue; }
-    // Values controlling policy must agree with a deterministic reading of their cited evidence.
-    let parsed = offlineExtract(span.text).fields[name];
-    if (name === 'rent' && !parsed) {
-      const contextual = offlineExtract(listing).fields.rent;
-      if (contextual?.span && span.start >= contextual.span.start && span.end <= contextual.span.end) parsed = contextual;
+    if(name==='rent'){
+      const values=rentEvidence(span.text);
+      if(!values.length){
+        const contextual=offlineExtract(listing).fields.rent;
+        if(contextual?.span && span.start>=contextual.span.start && span.end<=contextual.span.end)values.push(Number(contextual.value));
+      }
+      if(typeof f.value!=='number'||!values.includes(f.value)){issues.push(`Dropped ${name}: value conflicts with evidence`);continue;}
     }
-    if (['rent','owner_lives_in','viewing_offered'].includes(name) && (!parsed || parsed.value !== f.value)) { issues.push(`Dropped ${name}: value conflicts with evidence`); continue; }
+    if(['owner_lives_in','viewing_offered'].includes(name)) {
+      const supported=booleanEvidence(name,span.text);
+      if(typeof f.value!=='boolean'||supported===undefined||supported!==f.value){issues.push(`Dropped ${name}: value conflicts with evidence`);continue;}
+    }
     if (['address','contact_channel'].includes(name) && (typeof f.value !== 'string' || !normalize(span.text).toLowerCase().includes(normalize(f.value).toLowerCase()))) { issues.push(`Dropped ${name}: value conflicts with evidence`); continue; }
     fields[name] = { ...f, span };
   }

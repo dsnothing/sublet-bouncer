@@ -4,6 +4,7 @@ import { findSpan, offlineExtract, verifyExtraction, type Extraction, type LLMAd
 import { extractFeatures, paymentBeforeViewing } from './features.js';
 import { hasInjection, refusalReason } from './injection.js';
 import { refreshActions, appendLog } from './log.js';
+import { negatedRestriction } from './evidence.js';
 export const LLM_TIMEOUT_MS = 20000;
 export interface AnalyzeOptions { llm?: LLMAdapter; data?: Data; timeoutMs?: number }
 export const newId = () => globalThis.crypto.randomUUID();
@@ -11,7 +12,7 @@ export function validateRequest(raw: unknown): asserts raw is AnalyzeRequest {
   const r = raw as AnalyzeRequest;
   if (!r || typeof r.listing !== 'string' || r.listing.length > 50000 || !r.profile || !['UW','WLU'].includes(r.profile.campus) || !/^\d{2}:\d{2}$/.test(r.profile.classStart) || Number(r.profile.classStart.slice(0,2))>23 || Number(r.profile.classStart.slice(3))>59 || ![r.profile.termStart,r.profile.termEnd].every(s => /^\d{4}-\d{2}-\d{2}$/.test(s) && !Number.isNaN(Date.parse(s))) || r.profile.termEnd < r.profile.termStart || (r.mode !== undefined && !['live','offline'].includes(r.mode))) throw new Error('Invalid listing, profile, or mode');
 }
-export function clauseFindings(listing: string, db: Data, applicability: AnalysisResult['rtaApplies'], proposals: Extraction['clauses'] = []): ClauseFinding[] {
+export function clauseFindings(listing: string, db: Data, applicability: AnalysisResult['rtaApplies'], proposals: Extraction['clauses'] = [], reject?: (ruleId:string,reason:string)=>void): ClauseFinding[] {
   const findings: ClauseFinding[] = [];
   for (const rule of db.rules.rules) {
     let found = false;
@@ -20,6 +21,7 @@ export function clauseFindings(listing: string, db: Data, applicability: Analysi
       for (const pattern of patterns) {
         const matches = [...listing.matchAll(new RegExp(pattern,'gi'))].filter(m => m[0].length);
         for (const m of matches) {
+          if(negatedRestriction(listing,m.index!,m.index!+m[0].length,rule.id))continue;
           const status = rule.status === 'info' ? 'ok' : rule.status as ClauseFinding['status'];
           findings.push({span:{text:m[0],start:m.index!,end:m.index!+m[0].length},ruleId:rule.id,status:status==='void' && applicability!=='applies'?'questionable':status,section:rule.section,lesson:rule.lesson_plain+(status==='void'&&applicability!=='applies'?' RTA applicability needs confirmation.':''),lessonSimple:rule.lesson_simple_english,sourceUrl:rule.source_url,confidence});
           found = true;
@@ -31,7 +33,13 @@ export function clauseFindings(listing: string, db: Data, applicability: Analysi
   for (const proposal of proposals) {
     const rule = db.rules.rules.find(rule=>rule.id===proposal.proposed_rule_id);
     const span = findSpan(listing,proposal.span.text);
-    if (!rule || !span || findings.some(f=>f.ruleId===rule.id)) continue;
+    if (!rule || !span) continue;
+    const concept=rule.concept_terms.map(term=>new RegExp(term,'i').exec(span.text)).find(Boolean);
+    const conceptNegated=concept && rule.id!=='no_pets' && negatedRestriction(listing,span.start+concept.index,span.start+concept.index+concept[0].length,rule.id);
+    if(!concept || conceptNegated || negatedRestriction(listing,span.start,span.end,rule.id) || negatedRestriction(span.text,0,span.text.length,rule.id)) {
+      reject?.(rule.id,'Evidence lacks the rule concept or negates/permits the suspected restriction');continue;
+    }
+    if(findings.some(f=>f.ruleId===rule.id))continue;
     findings.push({span,ruleId:rule.id,status:'questionable',section:rule.section,lesson:rule.lesson_plain,lessonSimple:rule.lesson_simple_english,sourceUrl:rule.source_url,confidence:.7});
   }
   return findings;
@@ -99,9 +107,14 @@ export async function analyze(req: AnalyzeRequest, options: AnalyzeOptions = {})
   r.rtaApplies=owner?.value===true?'may_not_apply':owner?.value===false?'applies':'unknown';
   if(r.rtaApplies==='unknown') esc('D5','Does the owner share a kitchen or bathroom?',[],['Owner shares kitchen/bath','Owner does not share','Unsure']);
   if(r.rtaApplies==='may_not_apply') r.couldNotCheck.push('Shared kitchen/bath with owner: RTA may not apply under s.5(i)');
-  if(!refused) r.clauses=clauseFindings(req.listing,db,r.rtaApplies,extraction.clauses);
+  const rejectedProposals:{ruleId:string;reason:string}[]=[];
+  if(!refused) r.clauses=clauseFindings(req.listing,db,r.rtaApplies,extraction.clauses,(ruleId,reason)=>rejectedProposals.push({ruleId,reason}));
   for(const c of r.clauses) if(c.confidence<.75) esc('D2',c.confidence===.7?`The bouncer thinks this may concern ${db.rules.rules.find(rule=>rule.id===c.ruleId)?.title} (${c.section}). Confirm?`:`Confirm clause: ${c.span.text}`,[c.span]);
   decision('D2','Clause legality',r.clauses,r.clauses.length?Math.min(...r.clauses.map(c=>c.confidence)):1,.75);
+  for(const rejection of rejectedProposals){
+    const entry=appendLog(r,'decision','D2',`Rejected proposal ${rejection.ruleId}: ${rejection.reason}`);
+    entry.decision_kind='llm+rules';entry.output={outcome:'rejected',...rejection};
+  }
   if(!refused) r.scam=scoreScam(req.listing,r.fields,db);
   if(r.scam.band==='escalate') esc('D3','Verify listing identity and arrange a viewing before proceeding');
   decision('D3','Scam risk',r.scam,1,.7);

@@ -1,0 +1,84 @@
+{
+  "phase": "before",
+  "method": "Offline and paired saved raw extraction replay, no new provider calls; development data only",
+  "splits": {
+    "gold": {
+      "offline": {
+        "n": 40,
+        "rawN": 26,
+        "field_correct": 138,
+        "field_total": 138,
+        "verdict_correct": 38,
+        "tp": 16,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1
+      },
+      "replay": {
+        "n": 40,
+        "rawN": 26,
+        "field_correct": 134,
+        "field_total": 138,
+        "verdict_correct": 36,
+        "tp": 16,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1,
+        "recall": 1
+      }
+    },
+    "v1": {
+      "offline": {
+        "n": 24,
+        "rawN": 18,
+        "field_correct": 25,
+        "field_total": 68,
+        "verdict_correct": 12,
+        "tp": 3,
+        "fp": 0,
+        "fn": 6,
+        "precision": 1,
+        "recall": 0.3333333333333333
+      },
+      "replay": {
+        "n": 24,
+        "rawN": 18,
+        "field_correct": 29,
+        "field_total": 68,
+        "verdict_correct": 12,
+        "tp": 3,
+        "fp": 0,
+        "fn": 6,
+        "precision": 1,
+        "recall": 0.3333333333333333
+      }
+    },
+    "v2": {
+      "offline": {
+        "n": 30,
+        "rawN": 26,
+        "field_correct": 28,
+        "field_total": 117,
+        "verdict_correct": 13,
+        "tp": 1,
+        "fp": 1,
+        "fn": 8,
+        "precision": 0.5,
+        "recall": 0.1111111111111111
+      },
+      "replay": {
+        "n": 30,
+        "rawN": 26,
+        "field_correct": 43,
+        "field_total": 117,
+        "verdict_correct": 13,
+        "tp": 8,
+        "fp": 15,
+        "fn": 1,
+        "precision": 0.34782608695652173,
+        "recall": 0.8888888888888888
+      }
+    }
+  }
+}
