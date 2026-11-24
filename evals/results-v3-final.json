@@ -78751,5 +78751,7 @@
         "verified_detection_rate": 1
       }
     }
-  }
+  },
+  "harness_git_blob_sha256": "a095c6effc69b5802aea1100dc687c1b2625ec689f9c017c85589557c76f3aec",
+  "harness_hash_note": "harness_sha256 is executed Windows CRLF bytes; harness_git_blob_sha256 is LF-normalized committed Git blob; normalized text is identical."
 }

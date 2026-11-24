@@ -162,3 +162,5 @@ Harness SHA-256: `64773be1939bb0fee4dbac7e14c93085281ea316d70161c2abe0babc96aeca
 - Independent Python set arithmetic checked every variant violation TP/FP/FN and verdict accuracy; all 3x3 matrices reconcile to row counts; source, fixture and harness hashes verified.
 - One-shot source/rules/data/labels remain frozen; only runner/report/JSON delivered.
 - Synthetic small sample; provider failures and uncertain judgments limit interpretation; no post-v3 tuning authorized.
+
+Hash representation: `harness_sha256` above records the executed Windows CRLF bytes. Git normalizes that runner to LF; the committed blob SHA-256 is `a095c6effc69b5802aea1100dc687c1b2625ec689f9c017c85589557c76f3aec` (`harness_git_blob_sha256` in JSON). The normalized texts were compared byte-for-byte and are identical. Source/fixture hashes likewise record the clean Windows worktree bytes.
