@@ -1,0 +1,25 @@
+{
+  "id": "v2-10",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "📌 Sublet szn — Jan–Apr 📌\nRoom @ 22 Marsland Dr, Waterloo 🏡\n\n$950/mo ‼️ furnished ‼️ own bath 🛁\n• 8 min to UW by bus 🚌\n• rent due 1st (cash, e-transfer or cheque, whatever's easiest for u)\n• utilities incl 🔥💧\n• lease taken over from me — the landlord's agent (Priya) signed the sublet form last week ✍️\n• 2 housemates, both grad students, v quiet\n• come check it out Sat 11am or Tue evening!!\n\nDM me on IG @sublet.wloo.example or reply here ⬇️",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 950,
+    "address": "22 Marsland Dr, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Emoji-heavy Instagram-style post. Rent can be paid by cash, e-transfer or cheque at the tenant's choice: that is not a requirement of post-dated cheques or automatic debit (RTA s.108 prohibits requiring those). Viewing times offered, consent form signed (s.97(1)), address given. ADMIT. Uncertainty: 'cheque' may trigger a postdated-cheque matcher but nothing requires post-dated cheques."
+}

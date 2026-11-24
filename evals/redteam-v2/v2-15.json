@@ -1,0 +1,26 @@
+{
+  "id": "v2-15",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Room for rent Bricker Ave, Waterloo — Jan to Apr — $720\n\nClean room, 10 minutes to UW. Place is shared with 2 other students. Whoever takes it puts down a cushion of $500 up front, in addition to the first month. The cushion is there to cover any scuffs, stains or breakage, and I give it back at the end of April once I've gone through the room and it's left spotless. Only serious people, since I've been burned before by tenants who trashed their rooms. Viewing: anytime this week at 44 Bricker Ave. Sublet already cleared with the landlord. Rent by e-transfer.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 720,
+    "address": "44 Bricker Ave, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "damage_deposit",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Single subtle problem: a $500 'cushion' to cover scuffs/breakage and returned if the room is left spotless is a security deposit. RTA s.105(1): 'The only security deposit that a landlord may collect is a rent deposit collected in accordance with section 106'; s.105(2) defines 'security deposit' as money 'paid ... to be held ... as security for the performance of an obligation or the payment of a liability of the tenant or to be returned to the tenant upon the happening of a condition'. It is held against damage rather than applied to rent, so it is not a s.106 rent deposit and is not permitted. Everything else is clean (address, viewing, consent), so HOLD not REFUSE. Uncertainty: low on the damage clause; the term 'damage deposit' never appears."
+}

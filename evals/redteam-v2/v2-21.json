@@ -1,0 +1,26 @@
+{
+  "id": "v2-21",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Room on Lester St — $770 — Jan–Apr — 200 block, 278 Lester St Waterloo\n\nRoom in a house with 2 other students. $770/month, utilities incl. I will need one month's rent as a deposit when we sign. I keep the deposit in my own account, and any growth on it is mine: no interest is ever paid to the occupant, and by accepting the room you waive any claim to it. I'll return it in full at end of term. Viewing no problem, text for a time. The landlord is aware of the sublet and has agreed.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 770,
+    "address": "278 Lester St, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "deposit_interest",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "One-month rent deposit is lawful on its own (RTA s.106(1)-(2)), but the term waiving interest conflicts with s.106(6): 'A landlord of a rental unit shall pay interest to the tenant annually on the amount of the rent deposit at a rate equal to the guideline determined under section 120' and s.3(1) (Act applies 'despite any agreement or waiver'). Questionable/void clause so HOLD. Uncertainty: moderate: for a 4-month sublet the interest may be trivial and whether s.106(6) annual interest accrues within 4 months is arguable; the clause is still a waiver of a statutory entitlement. SPEC rule table itself lists deposit interest as a rule to flag."
+}

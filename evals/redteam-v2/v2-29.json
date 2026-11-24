@@ -1,0 +1,27 @@
+{
+  "id": "v2-29",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Winter sublet — Bridgeport Rd — $770/mo — Jan–Apr\n\nRoom in a 3-bedroom house at 55 Bridgeport Rd E, Waterloo. 15 mins to UW by bus. Utilities + wifi included. I'm on a lease with a property manager who has approved the sublet. I'll need a one month rent deposit of $770 when we sign the agreement, which I hold and apply to your last month, and a refundable $40 deposit for the keys and fob, returned when you hand them back. Pets: no pets are permitted in the house, my housemates have allergies, so this is a firm condition of the sublet. Viewing: Thursday evening or Saturday. Rent by e-transfer on the 1st.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 770,
+    "address": "55 Bridgeport Rd E, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "key_deposit",
+    "no_pets",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Mixed clauses: a lawful one-month rent deposit (RTA s.106(1)-(2)), a lawful refundable key deposit (O. Reg. 516/06 s.17 para 3, within the s.134(1) exemption), consent (s.97(1)) and one void clause, the pet ban (RTA s.14: 'A provision in a tenancy agreement prohibiting the presence of animals in or about the residential complex is void'). Allergies don't change the statutory result. The void clause alone drives HOLD. Uncertainty: low on the void clause; the system must not let the two lawful deposits 'cancel' it nor flag them as violations."
+}

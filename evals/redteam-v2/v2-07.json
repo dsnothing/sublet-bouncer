@@ -1,0 +1,25 @@
+{
+  "id": "v2-07",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "sublet jan-apr room in house on columbia st w near uw. 780 dollars a month. utilities incl wifi incl. 5 min walk to campus. quiet street. no smoking pls. just be clean and chill. our house at 305 columbia st w waterloo. 3 of us rent it from a landlord who lives out in cambridge. text for pics and we can book a viewing for a day u can come. also landlord said sublets are fine if we send him your name and student id. thx",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 780,
+    "address": "305 Columbia St W, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Lowercase run-on style. Address, viewing, plausible price, off-site landlord who accepts sublets (RTA s.97(1)). The landlord asking for the subtenant's name and student ID to approve a sublet is a normal consent step, not an early ID/SIN harvest (CAFC bulletin warns about 'rental questionnaire' collecting banking details, income and more before any showing; here no banking/SIN data is requested and the viewing is first). ADMIT. Uncertainty: a scam model that over-weights 'student id' could misfire."
+}

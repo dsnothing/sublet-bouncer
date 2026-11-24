@@ -1,0 +1,26 @@
+{
+  "id": "v2-20",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Furnished room near Laurier/UW — Bricker/Marshall area — Jan–Apr 2027 — $735\n\nOwn room in a 4 person house. Utilities + internet covered. Check it out at 120 Marshall St, Waterloo, evenings or weekends. Move-in is simple: sign the sublet agreement, pay Jan rent, and receive the keys and a fob. There is a $120 key and fob fee at move-in that is charged to every new occupant, and it stays with me, not refundable. Landlord has approved the sublet in writing.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 735,
+    "address": "120 Marshall St, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "key_deposit",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Single subtle problem: a $120 non-refundable key/fob fee charged to every occupant at move-in. RTA s.134(1)(a) bars a landlord collecting 'a fee, premium, commission, bonus, penalty, key deposit or other like amount of money whether or not the money is refundable'; O. Reg. 516/06 s.17 exempts only (para 3) 'a refundable key, remote entry device or card deposit, not greater than the expected direct replacement costs', and (paras 1-2) additional or replacement keys at direct cost. A flat non-refundable move-in key fee fits none of these. Tests whether a system wrongly blesses any 'key' clause as the legal key deposit. Uncertainty: moderate: a system might argue para 1 'additional keys'; the text says it is charged to every occupant for the initial set, not requested."
+}

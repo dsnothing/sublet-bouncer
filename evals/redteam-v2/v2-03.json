@@ -1,0 +1,25 @@
+{
+  "id": "v2-03",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "🏠 SUBLET ALERT 🏠\nWinter 2027 (Jan–Apr)\n\n📍 Room near Phillip St / Columbia St W, 6 min walk to UW 🚶\n💰 $850 all-in (utilities + wifi + laundry)\n🛏️ Queen bed, desk, closet, blackout curtains\n👯 3 other roommates (all UW, 2A/3B co-op, we're chill)\n🔑 Own key, own lock on bedroom door\n🚭 No smoking inside pls\n🗓️ Can do a viewing Sat or Sun!!\n\naddress is 188 Phillip St Waterloo. Rent through e-transfer on the 1st of each month 🙏 (we do Venmo-style stuff all the time lol). The landlord is a company, never on site. Sublet paperwork done thru the landlord's office, they're ok with it ✅\n\nDM if interested!! 💬",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 850,
+    "address": "188 Phillip St, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Emoji/bullet Facebook style with a concrete address and viewing days. Landlord is a company that is not on site (owner_lives_in false) and the sublet is approved (RTA s.97(1)). Monthly e-transfer rent is not restricted by s.108 (only post-dated cheques / automatic debit as a requirement). No deposit, no pressure. ADMIT. The mention of 'Venmo-style' payments is incidental chatter, not a request for an off-platform or untraceable payment before viewing."
+}

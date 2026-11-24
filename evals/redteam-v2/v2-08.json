@@ -1,0 +1,25 @@
+{
+  "id": "v2-08",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "2BR apartment, Erb St W — take over my winter term (Jan 1–Apr 30)\n\nI'm heading to Toronto for co-op so I'm looking for one or two students to take over my two-bedroom at 500 block Erb St W (exact: 531 Erb St W, Unit 14). Rent is $1,900/mo total for the unit ($950 each if two of you), heat and water included, hydro about $70 split. Furnished living room, kitchen fully equipped. Close to the Laurel Creek trails and 15 mins to UW on foot. Landlord lives off-site and has consented to the sublet in writing (I'm happy to show you the email). I'd love to host a viewing in person; if you're out of town we can do a video call and I'll go room by room. Rent by bank transfer, due on the 1st. First month is paid when we both sign the sublet agreement, nothing before.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 1900,
+    "address": "531 Erb St W, Unit 14, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Whole 2-bed at ordinary market rent, address, in-person and video viewing, off-site landlord with written consent (RTA s.97(1)), explicit 'nothing before' signing (the opposite of the CAFC bulletin pattern of sending first and last months' rent before seeing the unit). ADMIT."
+}

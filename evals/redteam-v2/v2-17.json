@@ -1,0 +1,26 @@
+{
+  "id": "v2-17",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Basement room, Westmount Rd area. $700/mo. Jan 1 – Apr 30.\n\nCozy furnished room, own entrance, shared bath with one other student. Address: 303 Westmount Rd S, Waterloo (10 min drive, 15 min bus). Utilities included.\n\nHouse rules (non-negotiable): Rent must land in my account by 9 am on the 1st. If you miss that, I will change the lock on the front door and put your belongings in the garage until the full balance is cleared. No excuses, I need this for my own lease. If you fail to pay by the 5th I'll consider you gone and rent to someone else. Viewing: Saturday. Sublet is fine with the landlord, he doesn't mind who lives here.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 700,
+    "address": "303 Westmount Rd S, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "lockout",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Self-help eviction clause. RTA s.24: 'A landlord shall not alter the locking system on a door giving entry to a rental unit ... during the tenant's occupancy ... without giving the tenant replacement keys'. s.39: 'A landlord shall not recover possession of a rental unit subject to a tenancy unless, (a) the tenant has vacated or abandoned the unit; or (b) an order of the Board evicting the tenant has authorized the possession.' s.40: 'No landlord shall, without legal process, seize a tenant's property for default in the payment of rent'. s.37(1): a tenancy may be terminated only in accordance with the Act. Everything else is ordinary, so HOLD. Uncertainty: low. The word 'eviction' is not used."
+}

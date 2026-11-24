@@ -1,0 +1,25 @@
+{
+  "id": "v2-23",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Room in my family home — Westmount Rd, Waterloo — Jan–Apr — $650/mo\n\nMy parents and I own this house at 520 Westmount Rd S and live in it. I rent out the spare bedroom to a UW student each co-op term. You would share the kitchen and the main bathroom with us (me, my mom and dad). Wifi and utilities included, laundry in the basement. House is calm, no parties. Come and meet the family, any evening, and see the room. Rent by e-transfer on the 1st of the month. A deposit of one month's rent is requested at signing (it's applied to your last month).",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 650,
+    "address": "520 Westmount Rd S, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": true
+  },
+  "clauses": [
+    "owner_shared"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "RTA s.5(i): the Act does not apply to 'living accommodation whose occupant or occupants are required to share a bathroom or kitchen facility with the owner, the owner's spouse, child or parent or the spouse's child or parent, and where the owner, spouse, child or parent lives in the building'. Here the owners (the poster and parents) live in the house and the occupant shares kitchen and bathroom with them, so the tenant protections may not apply; SPEC D5 -> HOLD with 'RTA may not apply' banner. The one-month rent deposit would be lawful if the Act applied (s.106(2)), so it doesn't change the verdict. scam=0 (address, viewing, family). Uncertainty: the poster is the owner's child / the owner; the s.5(i) fit is strong."
+}

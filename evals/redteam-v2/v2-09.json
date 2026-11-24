@@ -1,0 +1,25 @@
+{
+  "id": "v2-09",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "4-bed on Regina St S, spare room, $800\n\nHello, spare room in a 4-bed on Regina St S (the house is 142 Regina St S, Waterloo) for Jan–Apr. $800 incl. internet + utilities. Furnished, own bathroom (ensuite!), 3 min walk to the LRT. The other 3 are co-op students too. Landlord is a retired couple who live in Florida half the year and a local property manager handles the keys & repairs. I'm happy to do a Zoom viewing plus in-person once you're in town. The property manager has approved subletting. No deposits needed from you; just first month by e-transfer once you've seen the room and we've both signed. Thx!",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 800,
+    "address": "142 Regina St S, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Deliberate near-miss for a naive 'landlord abroad' feature: the owners winter in Florida, but a local property manager handles keys and repairs, the room is viewable (Zoom + in person), consent is stated (RTA s.97(1)) and payment is only after viewing and signing. CAFC pattern is different: owner 'currently working overseas' with showings unavailable and keys mailed after payment. ADMIT. Uncertainty: a keyword 'in Florida / half the year' could fire a landlord_abroad flag; the label reflects the full context."
+}

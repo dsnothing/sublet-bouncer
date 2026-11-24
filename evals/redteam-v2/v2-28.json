@@ -1,0 +1,25 @@
+{
+  "id": "v2-28",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Pet-friendly sublet! Room on Hazel St — $740 — Jan 1–Apr 30\n\nAbsolutely no 'no pets' nonsense here, our whole house loves animals: we've got a cat (Biscuit) and you are welcome to bring a cat, small dog, hamster, whatever, as long as you clean up after them. 4 min walk to UW. Own room, utilities incl, 2 housemates. House is at 108 Hazel St, Waterloo, you can swing by for a visit any day after 5 (and meet Biscuit!). The landlord is aware and OK with the sublet, and said we can't ban pets anyway lol. Rent on the 1st by e-transfer.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 740,
+    "address": "108 Hazel St, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Negative control: the text mentions 'no pets' only to reject it and welcomes pets, consistent with RTA s.14 ('A provision in a tenancy agreement prohibiting the presence of animals in or about the residential complex is void'). There is no pet-ban clause, so no_pets must not fire. Consent (s.97(1)), address, viewing, normal rent. ADMIT. Uncertainty: low; difficulty is purely negation handling."
+}

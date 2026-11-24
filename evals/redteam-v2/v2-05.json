@@ -1,0 +1,26 @@
+{
+  "id": "v2-05",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Basement studio — Victoria St N, Kitchener. Sublet Jan 1–Apr 30 2027.\n\nSelling points:\n• Self-contained studio, own entrance, own bathroom + kitchenette\n• $1,200/mo, includes heat/water/internet. Hydro metered, you pay (approx $30)\n• 400 m to the ION stop, ~25 min to UW by LRT + bus\n• Very quiet, couple upstairs are the tenants (not owners), they're fine with the sublet\n• Landlord (a property mgmt company) has signed the sublet consent form\n• Lease is on the Ontario standard form; I'll give you a copy before you decide\n\nAddress: 318 Victoria St N, Kitchener. Come see it any evening after 6. Rent due on the 1st by bank transfer.\n\nThanks,\nDan (co-op in Calgary so can't extend)",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 1200,
+    "address": "318 Victoria St N, Kitchener",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent",
+    "standard_lease"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Self-contained unit (no shared kitchen/bath), address given, evening viewing offered, rent plausible, written landlord consent (RTA s.97(1)), standard form lease copy offered before commitment (RTA s.12.1). Upstairs couple are tenants, not owners. No void clause or scam tactic. ADMIT. Uncertainty: commute is long (LRT + bus) but that is not a clause or scam issue and not part of the verdict policy as stated."
+}

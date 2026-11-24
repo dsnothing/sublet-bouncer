@@ -1,0 +1,25 @@
+{
+  "id": "v2-01",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Reddit r/uwaterloo — [Sublet] Jan–Apr 2027, private room, 3-bed townhouse, Lester St\n\nhey all, im heading out on a co-op in Ottawa so my room is free Jan 1 to Apr 30. $725/mo, hydro+water+wifi included (we split it among the 3 of us so no surprises). Townhouse at 412 Lester St, Waterloo, about a 10 min walk to UW (I go in via the Ring Road side). Two housemates, both UW eng, both on the lease with me. Fully furnished bedroom: desk, bed, dresser. Shared kitchen/bath/laundry among the three of us only, no landlord living here.\n\nThe property manager already approved the sublet by email, I can forward it. Happy to do a Zoom walk-through this week or you can come see it in person, just DM me. Rent by e-transfer on the 1st. Pls only serious ppl, thx!",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 725,
+    "address": "412 Lester St, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Specific address, in-person and video viewing offered, rent near market for a room, landlord consent already obtained (RTA s.97(1): a tenant may sublet 'with the consent of the landlord'; s.97(2) consent not to be unreasonably withheld). Shared spaces are with co-tenants only, not an owner, so the s.5(i) exemption (owner/owner's family sharing kitchen or bathroom) is not engaged. Rent by e-transfer on the 1st is ordinary payment after viewing; s.108 only bars post-dated cheques/automatic debit as a requirement. No void clause, no CAFC rental-scam tactic present (CAFC bulletin: below-market price, owner 'overseas', no showings, keys by courier, funds before viewing). ADMIT."
+}

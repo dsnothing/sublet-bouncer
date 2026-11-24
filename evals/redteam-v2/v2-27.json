@@ -1,0 +1,24 @@
+{
+  "id": "v2-27",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Room available Jan–Apr 2027 near the LRT, Waterloo!\n\nBright furnished bedroom in a 4-bed house, $780/mo, utilities and wifi included. Quiet street. 10 minutes to UW by bike, 3 to the LRT. Three other students (all co-op, all on the lease) and a management company that signs off on sublets, already approved. I'm happy to share more photos, a video walkthrough, or to meet in person at the house. I'd prefer not to put the exact address in a public post, but I'm glad to share it by message once you've said you're interested. Rent after you move in, by e-transfer; nothing is needed up front before we have both signed the sublet.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 780,
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Address is not given; everything else is clean (viewing offered, no money before signing, management company consent per RTA s.97(1)). Per the task's policy HOLD when information that needs a human is missing (e.g. no address). Unlike the pay-to-learn-the-address scam (v2-12) there is no payment condition. Uncertainty: moderate: this can be argued ADMIT after the address is shared; the stated policy puts a missing address at HOLD, and the SPEC D3 lists 'no address' as a scam feature and D4 says an ungeocodable address escalates."
+}

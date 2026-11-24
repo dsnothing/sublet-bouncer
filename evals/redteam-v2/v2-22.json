@@ -1,0 +1,25 @@
+{
+  "id": "v2-22",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Spare room, Sunview St, Waterloo — $700 — Jan–Apr 2027\n\nRoom in an apartment at 351 Sunview St (Unit 6). 3 min to the LRT, 7 to UW. Utilities included, laundry in the building. I'm on the lease (until August) and I've been told by a friend that I can sublet without involving my building manager as long as I'm discreet, so there is no need to bring in the landlord or sign anything with the building. Everything is between us: a one-page note I'll write, and rent by e-transfer on the 1st. If the manager asks, just say you're my cousin visiting. Viewing: whenever you want, text me.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 700,
+    "address": "351 Sunview St, Unit 6, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Instructs the subtenant to conceal the sublet from the landlord. RTA s.97(1): 'A tenant may sublet a rental unit to another person with the consent of the landlord'; s.97(2): consent may not be arbitrarily or unreasonably withheld (the remedy is asking, then applying to the Board under s.98), not avoiding the question. Telling the subtenant to claim to be 'cousin visiting' exposes the subtenant to loss of the room. This is a questionable/problematic arrangement, so HOLD. Uncertainty: HIGH. The RTA does not itself declare the concealment void, it is a risk-flag; the fixture checks whether a system escalates when consent is explicitly absent (sublet_consent informational rule). No scam signals present."
+}

@@ -1,0 +1,26 @@
+{
+  "id": "v2-24",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Room for sublet, Jan 1 – Apr 30, 2027 — Columbia St W — $820\n\nOwn room in a 3 bed at 450 Columbia St W, Waterloo, for $820/month, utilities and wifi included. 12 min walk to UW. Move-in includes a key and a building fob. There's a $50 deposit for the key and fob, which is refunded in full when I get them back at the end of April (not more than it costs to replace them, I checked with the landlord's office). Landlord has approved the sublet. Viewing: this weekend or on video, you pick. Rent by e-transfer on the 1st.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 820,
+    "address": "450 Columbia St W, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "key_deposit",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Negative control for the key-deposit rule. O. Reg. 516/06 s.17 para 3 exempts from RTA s.134(1) 'Payment of a refundable key, remote entry device or card deposit, not greater than the expected direct replacement costs'. Here the $50 deposit is stated refundable and said not to exceed replacement cost. Per the task's verdict policy a legal key deposit alone does not block ADMIT. Consent stated (s.97(1)). ADMIT. Uncertainty: whether the $50 is within direct replacement cost cannot be verified from the text; I rely on the poster's claim."
+}

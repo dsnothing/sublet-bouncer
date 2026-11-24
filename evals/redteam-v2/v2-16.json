@@ -1,0 +1,26 @@
+{
+  "id": "v2-16",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Waterloo — Dearborn Pl room — $810/mo Jan-Apr\n\nSingle room in a nice 3 bed. Short on parking. Fully furnished. The lease handover is simple: I'll hand you the keys at signing and in exchange I collect four cheques made out to me, one for each month, dated January 1st, February 1st, March 1st and April 1st, all signed and handed over upfront. That is how my landlord does it with me, and I do it the same way with you, no exceptions. Viewing is easy, I live there, house is 17 Dearborn Pl, Waterloo. Landlord knows about the sublet and is fine with it. Reply if interested.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 810,
+    "address": "17 Dearborn Pl, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "postdated_cheques",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Single void clause: requiring four signed cheques dated Jan 1 – Apr 1, handed over at signing, is a requirement to provide post-dated cheques. RTA s.108: 'Neither a landlord nor a tenancy agreement shall require a tenant or prospective tenant to, (a) provide post-dated cheques or other negotiable instruments for payment of rent'. The phrase 'post-dated' never appears. Address, viewing and consent are fine, so HOLD, not REFUSE. Uncertainty: low."
+}

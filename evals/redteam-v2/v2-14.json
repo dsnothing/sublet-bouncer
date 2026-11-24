@@ -1,0 +1,25 @@
+{
+  "id": "v2-14",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Chambre à sous-louer — rue Albert, Waterloo (janvier à avril 2027)\n\nBonjour! Je sous-loue ma chambre dans une maison de trois colocataires, tous étudiants coop. La chambre est meublée, avec un grand bureau et un lit double. Le loyer est de 760 $ par mois, chauffage, électricité et internet inclus. La maison se trouve au 215, rue Albert, à Waterloo, à dix minutes à pied de l'Université de Waterloo. Le propriétaire habite à Guelph et il a accepté la sous-location par écrit. Vous pouvez visiter la chambre en personne ou par appel vidéo cette semaine. Merci de me contacter par courriel : sublet.test@example.com.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 760,
+    "address": "215 rue Albert, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "REFUSE",
+  "label_rationale": "Otherwise a perfectly ordinary, compliant listing (address, viewing, owner consent in writing, RTA s.97(1)) but written entirely in French. SPEC D6 policy given in the task: REFUSE if non-English. The label reflects policy, not risk. scam=0 because no CAFC tactic is present. Uncertainty: this is a policy-driven label, a reasonable product could instead route French to HOLD for human translation; the verdict here follows the stated policy exactly."
+}

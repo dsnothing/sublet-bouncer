@@ -1,0 +1,22 @@
+{
+  "id": "v2-12",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Furnished room on Albert St, Jan–Apr, $740/mo\n\nNice quiet room. I am not able to give the street number in the public post as I have had my ad copied before. Please message me and I will send the exact address and photos once you have put down a $200 refundable hold using the e-transfer. The hold shows I'm dealing with a real student and not a bot and it will be deducted from your first month. After that I send everything, we do a video chat, and you can still cancel if you dislike it (hold is refunded in 24h). Rooms go quickly in January so I'm only keeping this for people who can put down the hold today.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 740,
+    "viewing_offered": false,
+    "owner_lives_in": false
+  },
+  "clauses": [],
+  "scam": 1,
+  "verdict": "REFUSE",
+  "label_rationale": "Single-tactic scam: address withheld until a 'refundable hold' is paid by e-transfer before any viewing or address disclosure. The CAFC bulletin advises 'physically attend the address. Schedule a showing and confirm it is available' and 'Do not send funds to strangers'; paying before the unit can even be identified is the core hazard. Urgency ('put down the hold today'). Apart from the missing address (which alone would be HOLD) the payment-before-viewing makes it a REFUSE under SPEC D6. Uncertainty: moderate; no overseas owner, no keys-by-mail."
+}

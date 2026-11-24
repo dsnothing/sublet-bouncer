@@ -1,0 +1,27 @@
+{
+  "id": "v2-30",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Big long post, sorry — Winter 2027 sublet of my 3-bedroom townhouse, Waterloo (Laurelwood area)\n\nHi everyone! I'm a UW 3B student and I just got a co-op offer in Montréal, so I'm looking for one or two people to take over my room (or the whole unit if two of you want it) from January 1 to April 30, 2027. I'll try to answer all the usual questions in this post so we don't have to go back and forth.\n\nTHE PLACE: it's a 3-bedroom, 2.5-bath townhouse at 835 Laurelwood Dr, Waterloo, on the quiet end of the street. Main floor has an open living/dining area and a good-sized kitchen with a dishwasher, the second floor has three bedrooms, and the basement is finished with a rec room and the laundry. My room is the one at the back, queen bed, big desk, bookshelf, closet, and it faces the green space so it's super quiet. There's a small deck, and one parking spot in the driveway if you have a car, plus visitor parking up the street. Bus stop is a 4 minute walk, and I've done the commute to campus in about 22 minutes on the bus many times. Winter mornings are a bit of a pain but it's reliable.\n\nTHE PEOPLE: two other housemates, both are in 4th year, both on the lease. One is a quiet engineer who is on co-op out of town most of the term, the other is a math student who is home a lot. Nobody smokes inside, we have a rotating chore list, and nobody has pets. We aren't picky about guests, just give a heads up.\n\nTHE MONEY: the whole unit is $2,700/month, so my room alone is $900/month, and that includes water, heat, hydro and the wifi, which is capped at a fair-use limit. You'd pay $900 on the 1st of each month by bank transfer. There is no deposit from you beyond the first month since the property manager already has a rent deposit from the original lease. If you take the whole unit, it's $2,700 split however you like.\n\nTHE LANDLORD: the property is owned by a small company. A property manager handles everything and has already agreed in writing to the sublet, and I can forward that email. One thing the manager asked me to pass on, because it's in the house rules we signed: the manager or a contractor may need to come in from time to time, and by taking the room you agree they may enter the unit whenever they need to, at any hour, with or without any prior notice. We have never had a problem with this in practice, and it's just in the lease template they use, which they say is the Ontario standard form.\n\nVIEWING: I'd love to show you around. I'm in Waterloo until Dec 20 and can do evenings and weekends, and I can also do a live video tour if you're out of town. Message me here or at laurelwood.sublet@example.com.\n\nThanks for reading!",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 900,
+    "address": "835 Laurelwood Dr, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "entry_notice",
+    "standard_lease",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Long (>250 words) listing, mostly benign and well detailed (address, viewing, off-site owner company, written consent per RTA s.97(1), standard form lease mention per s.12.1), with ONE buried void clause in paragraph 'THE LANDLORD': entry 'whenever they need to, at any hour, with or without any prior notice'. RTA s.25: 'A landlord may enter a rental unit only in accordance with section 26 or 27'; s.27(1): entry only 'in accordance with written notice given to the tenant at least 24 hours before the time of entry' for the listed purposes; s.26: without notice only in emergency or with tenant consent. A blanket pre-consent waiver is void per s.3(1) ('despite any agreement or waiver to the contrary'). Tests that a system reads to the end of long text. Uncertainty: low-moderate: s.26(1)(b) 'if the tenant consents to the entry' could be argued by a poster, but a standing advance blanket consent in a template is the classic void entry clause."
+}

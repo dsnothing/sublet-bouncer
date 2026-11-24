@@ -1,0 +1,23 @@
+{
+  "id": "v2-25",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Sublet: private room, Fischer-Hallman Rd area — $900/mo — Jan–Apr\n\nLarge room with desk in a 2-bed apartment at 165 Fischer-Hallman Rd, Unit 22, Kitchener. 10 min by bus to UW. Utilities + internet included. The lease says tenants can sublet with landlord consent, and the landlord has given it in writing. To confirm the room, I'm asking for a deposit equal to one month's rent ($900) at signing. It is held and applied to the last month of your stay, and I'll give you a receipt. The remaining rent is $900 on the 1st of each month by e-transfer. Come for a viewing anytime, I'm home most evenings.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 900,
+    "address": "165 Fischer-Hallman Rd, Unit 22, Kitchener",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Negative control for the deposit rules: a rent deposit of exactly one month, taken at signing and applied to the last month, is lawful. RTA s.106(1): 'A landlord may require a tenant to pay a rent deposit ... if the landlord does so on or before entering into the tenancy agreement'; s.106(2): not more than the lesser of one rent period and one month; and s.105(1) allows that deposit. A receipt is provided (s.109). The deposit is not requested before the viewing. ADMIT. Uncertainty: the interest obligation s.106(6) is not mentioned but silence is not a clause. No damage deposit, so clauses is empty."
+}

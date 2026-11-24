@@ -1,0 +1,25 @@
+{
+  "id": "v2-02",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Kijiji — 1 bedroom apartment avail Jan 1 – Apr 30, Univ Ave W.\n\nFurnished 1 bdrm on the 4th floor of 205 University Ave W (I'll give you the unit # when you come see it), 10 min bus to UW, close to the Uptown LRT. $1,650 a month, heat included, hydro is separate abt $40-60 in winter, internet you set up yourself. no smoking in unit. Im a co-op student going to Vancouver so need someone to take over the remaining lease term for winter. In-suite laundry, balcony, one parking spot extra if needed. Message me and we can set up a showing, I'm around on weekends. Building super is aware and has given written ok for a sublet. Serious inquiries only thank u",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 1650,
+    "address": "205 University Ave W, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Typo-ridden Kijiji style. A street address is given (only the unit number is deferred to the viewing, which is normal and still a geocodable building address) and a showing is offered. Rent $1,650 for a furnished 1-bed is in the normal range. Landlord/super written consent stated (RTA s.97(1)). No deposit demands, no pressure, no off-platform payment. No void clause. ADMIT. Uncertainty: a system might treat the missing unit number as a missing address; the label treats a building address as sufficient."
+}

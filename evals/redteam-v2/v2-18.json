@@ -1,0 +1,26 @@
+{
+  "id": "v2-18",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "sublet room, Ezra Ave, $760, avail Jan 1 – Apr 30\n\nHi, renting out my room in a 4 bedroom house at 90 Ezra Ave Waterloo. Rent includes wifi and utilities. House is a bit old and everything is sold in its current condition, meaning whoever takes the room handles any fixes themselves, from a leaky tap to the furnace or the fridge going out; the landlord and I won't be paying or arranging any repairs, and by signing you agree that nothing that breaks is ever our concern. Come by for a viewing any evening. Landlord has OK'd the sublet. Interested? Message me.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 760,
+    "address": "90 Ezra Ave, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "maintenance_waiver",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Void waiver of the landlord's repair duty. RTA s.20(1): 'A landlord is responsible for providing and maintaining a residential complex, including the rental units in it, in a good state of repair and fit for habitation and for complying with health, safety, housing and maintenance standards'; s.3(1): the Act applies 'despite any agreement or waiver to the contrary'. The phrase 'as-is' / 'maintenance waiver' never appears. Remaining features fine, so HOLD. Uncertainty: low-moderate: some sublet fixes within a tenant's own damage (s.34) are lawful but 'furnace' and 'fridge' repairs shifted entirely to the occupant are not."
+}

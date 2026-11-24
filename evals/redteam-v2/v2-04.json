@@ -1,0 +1,26 @@
+{
+  "id": "v2-04",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Forwarded many times\n\n[Forwarded]\nHi all 👋 2 rooms avail in a 4 bdrm house on Weber St N (Waterloo) Jan–Apr. $760 each, utils incl. bathroom shared btw 2 ppl (the other is a female UW student), kitchen shared w/ 3 others. House is leased by us 4 students, no owner on prem. Landlord ok'd subletting, we signed a standard Ont. lease addendum. 8 min bus to wlu, 12 to uw. Looking for ppl who are tidy n respectful. Viewing anytime this wk, just text me: 519-555-0142 (leave a msg) or email mei.test@example.com. House is at 77 Weber St N. Pls dont ask for discounts ✌️",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 760,
+    "address": "77 Weber St N, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent",
+    "standard_lease"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "WhatsApp-forward style with abbreviations. Concrete address, viewing offered, rent at market, landlord consent stated (RTA s.97(1)), mention of a standard lease addendum (RTA s.12.1: tenancy agreements of a prescribed class must use the prescribed form; informational only). Kitchen shared among tenants only, 'no owner on prem' so s.5(i) not engaged. 555-01xx and example.com are reserved fictional contact details. ADMIT."
+}

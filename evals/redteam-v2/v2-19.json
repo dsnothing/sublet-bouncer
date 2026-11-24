@@ -1,0 +1,26 @@
+{
+  "id": "v2-19",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Master bedroom, Keats Way, Waterloo — $1,000/mo, Jan–Apr\n\nLarge master with ensuite, own balcony. Includes everything. 5 min walk to the Ring Road. To lock it in the tenant brings an upfront amount equal to roughly six weeks of rent, on top of the first month, which I hold until the end of April and apply to the last stretch of the stay. Place is at 66 Keats Way, Waterloo. I'm there most days so a viewing is easy, just text me. The landlord is fine with it and I'll show you the approval.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 1000,
+    "address": "66 Keats Way, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "excess_rent_deposit",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Single subtle problem: an upfront amount of 'roughly six weeks of rent' (about $1,500) held and applied to the last stretch is a rent deposit larger than one month. RTA s.106(2): 'The amount of a rent deposit shall not be more than the lesser of the amount of rent for one rent period and the amount of rent for one month.' (and s.105(1) allows no other security deposit). 'Six weeks' avoids the usual 'last month plus' wording. Everything else is fine, so HOLD. Uncertainty: the exact multiple is approximate ('roughly'); still above one month."
+}

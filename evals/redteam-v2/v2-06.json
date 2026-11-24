@@ -1,0 +1,25 @@
+{
+  "id": "v2-06",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v2 fixture (Claude), authored blind to system rules and to v1",
+  "listing": "Room in student house — Hazel St\n\nHi! I'm renting out my room Jan–Apr while on co-op. It's in a 5-bedroom house at 61 Hazel St, Waterloo that five of us co-op/uni students rent from a management company (nobody owner-occupied). Share one kitchen and two bathrooms among the five. Room is $690/month plus about $55 for utilities split, wifi included. Big window, desk, bed frame, mattress. Walking distance to UW (12 mins) and WLU (15). The management company will do a sublet agreement, I've already checked. You can see the room anytime, just text.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 690,
+    "address": "61 Hazel St, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Trap for a mis-fired owner-shared rule: the kitchen and bathrooms are shared, but only among five tenants of a management company; no owner or owner's family lives in the building, so RTA s.5(i) ('required to share a bathroom or kitchen facility with the owner, the owner's spouse, child or parent ... and where the owner ... lives in the building') does not apply. Consent via management (s.97(1)). Rent is plausible. ADMIT. Uncertainty: whether a tester system treats any shared kitchen as owner_shared."
+}
