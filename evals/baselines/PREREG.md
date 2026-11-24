@@ -1,0 +1,15 @@
+﻿# C12 pre-registration — 2026-11-24
+Role: Codex L3; skill: karpathy-guidelines (scoped implementation); gap: live provider availability unknown.
+
+B1 prompt SHA-256: 5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158
+B2 checklist SHA-256: f08aee317ffade1c3b1a3c895d981b44d5237e70a9952683d4a7c543856d5560
+
+run once; no prompt iteration after the first call.
+B1: gemini-3.1-flash-lite, temperature 0, JSON response, minimal thinking, 2048 output-token cap. Same 12 rule titles plus other are supplied, helping the baseline; no verified rule sections or product logic are supplied.
+B2: six card-defined regex flags; REFUSE >=2, HOLD 1, ADMIT 0. No clause detection. RCMP-inspired operationalization, not an RCMP validated score; the source does not specify all six flags or these thresholds.
+Inputs: all 30 frozen evals/redteam-v3 JSON listings and labels. Bouncer rows read from results-v3-final.json at frozen source 9be1f86; never re-run or tune the v3 eval.
+Scoring: exact verdict accuracy including no_answer as wrong; unique rule-id micro precision/recall per listing restricted to void/questionable rules for actual and expected IDs (labels include clauses + info_topics). Unsafe ADMIT: expected HOLD/REFUSE and actual ADMIT. B2 clause scores n/a. Quotes absent after case/whitespace normalization use findSpan; section mismatch is exact normalized section-string inequality against the selected rule section, unknown category counts as unmatched. Call it 'section does not match the verified rule section', never invented law. Wilson 95% intervals, z=1.96, n=30.
+Cache: raw responses and usageMetadata for every attempt; cached errors remain no_answer. Offline reruns never call network; completed rows never re-called. Interrupted attempts are kept and counted; uncertain interrupted calls are not repeated silently.
+Budget: <=50 total live HTTP calls across 30 B1 listings, 10 dev token checks, later 3 sample calls (deferred pending C10), and retries. Reserve 13 calls for dev + later samples, so B1 max 37 HTTP calls. At most 2 retries per listing, >=30 seconds apart, only for 429/503/timeout; >=9 seconds between all B1 starts. Stop retrying when global budget is exhausted. Never call during judging freeze (Nov 28 18:00 ET onward). Unavailable/invalid answers count as wrong. No offline answer is saved as live.
+Token measurement: separate script wraps fetch around unmodified createGeminiAdapter, gemini-3.1-flash-lite primary and same fallback (no alternate-model calls); first 10 dev gold listings only, >=9 seconds pacing, no extra retries. Capture actual HTTP attempts and usage metadata, including failures. Mean/p95 tokens are dev measurements, not frozen-v3 tokens. Missing metadata is unknown, never zero. Price output includes thinking tokens via total minus prompt (fallback candidates+thoughts if total missing). Report list-price estimate; the demo runs on the free tier ($0).
+Publish all results, even ties/losses. No claim of real-world performance; small synthetic post-v3 comparison. Frozen v3 token cost is unavailable; dev proxy clearly labelled. No product changes or 3-sample toggle data in this task.

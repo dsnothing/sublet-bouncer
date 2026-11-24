@@ -1,0 +1,9 @@
+{
+  "model": "gemini-3.1-flash-lite",
+  "input_per_1M": 0.25,
+  "output_per_1M": 1.5,
+  "url": "https://aistudio.google.com/docs/pricing#gemini-3.1-flash-lite",
+  "accessed": "2026-11-24",
+  "currency": "USD",
+  "note": "Standard text prices; output includes thinking tokens. List-price estimate; the demo runs on the free tier ($0)."
+}
