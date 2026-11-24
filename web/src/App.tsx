@@ -473,6 +473,7 @@ export const App: React.FC = () => {
           <BoardingPass
             result={result}
             profile={analyzedProfile}
+            languageLevel={languageLevel}
             isRewinding={isRewinding}
             isAnalyzing={isAnalyzing}
             analyzingSource={analyzingSource}
@@ -483,6 +484,7 @@ export const App: React.FC = () => {
             onRecheckWithGemini={handleRecheckWithGemini}
             onRunFreshCheck={handleRunFreshCheck}
             onPerformAction={handlePerformAction}
+            onFocusSpan={handleFocusSpan}
           />
         ) : (
           <article id="boarding-pass" className="boarding-pass" aria-busy="true">

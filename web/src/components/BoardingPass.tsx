@@ -13,12 +13,14 @@ import {
   TrainFront,
   Zap,
 } from 'lucide-react';
+import { verdictHeadline } from '../../../core/index';
 import { buildViewingIcs, downloadEvidenceCard, downloadTextFile } from '../ics';
-import type { AnalysisResult, DataSourceMode, ProfileState } from '../types';
+import type { AnalysisResult, DataSourceMode, LanguageLevel, ProfileState, Span } from '../types';
 
 interface BoardingPassProps {
   result: AnalysisResult;
   profile: ProfileState;
+  languageLevel: LanguageLevel;
   isRewinding: boolean;
   isAnalyzing: boolean;
   analyzingSource: DataSourceMode;
@@ -29,6 +31,7 @@ interface BoardingPassProps {
   onRecheckWithGemini: () => void;
   onRunFreshCheck: () => void;
   onPerformAction: (actionId: string, expectedRunId?: string) => boolean;
+  onFocusSpan: (span: Span) => void;
 }
 
 export function getLiveWaitStage(elapsedMs: number, source: DataSourceMode): string {
@@ -186,6 +189,7 @@ function formatCachedDate(cachedAt?: string): string | null {
 export const BoardingPass: React.FC<BoardingPassProps> = ({
   result,
   profile,
+  languageLevel,
   isRewinding,
   isAnalyzing,
   analyzingSource,
@@ -196,6 +200,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   onRecheckWithGemini,
   onRunFreshCheck,
   onPerformAction,
+  onFocusSpan,
 }) => {
   const [actionError, setActionError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -297,6 +302,69 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
     ? result.couldNotCheck.filter((item) => item !== confidenceReason)
     : result.couldNotCheck;
   const hasCouldNotCheck = Boolean(confidenceReason) || remainingCouldNotCheck.length > 0;
+  const headline = verdictHeadline(result, languageLevel);
+  const isOutsideOntario = result.escalations.some(
+    (esc) => esc.decisionId === 'D5' && /outside Ontario/i.test(esc.question),
+  );
+
+  const resolveSpanForItem = (item: { ruleId?: string; spanText?: string }): Span | null => {
+    if (!item.spanText) return null;
+    const matchedClause =
+      result.clauses.find(
+        (c) => c.span.text === item.spanText && (!item.ruleId || c.ruleId === item.ruleId),
+      ) ?? result.clauses.find((c) => c.span.text === item.spanText);
+    if (matchedClause) return matchedClause.span;
+    const idx = result.listing.indexOf(item.spanText);
+    if (idx >= 0) {
+      return { start: idx, end: idx + item.spanText.length, text: item.spanText };
+    }
+    return null;
+  };
+
+  const renderHeadlineNodes = (): React.ReactNode => {
+    const linkItems = headline.items
+      .map((item) => ({ item, span: resolveSpanForItem(item) }))
+      .filter((entry): entry is { item: (typeof headline.items)[number]; span: Span } => entry.span !== null);
+
+    if (linkItems.length === 0) {
+      return headline.text;
+    }
+
+    const nodes: React.ReactNode[] = [];
+    let cursor = 0;
+
+    linkItems.forEach(({ item, span }, idx) => {
+      const matchIdx = headline.text.indexOf(item.label, cursor);
+      if (matchIdx === -1) return;
+      if (matchIdx > cursor) {
+        nodes.push(
+          <React.Fragment key={`t-${idx}`}>{headline.text.slice(cursor, matchIdx)}</React.Fragment>,
+        );
+      }
+      nodes.push(
+        <button
+          key={`l-${idx}`}
+          type="button"
+          className="headline-span-link"
+          title={`Jump to "${span.text}" in listing`}
+          onClick={() => onFocusSpan(span)}
+          data-testid="headline-span-link"
+        >
+          {item.label}
+        </button>,
+      );
+      cursor = matchIdx + item.label.length;
+    });
+
+    if (cursor < headline.text.length) {
+      nodes.push(<React.Fragment key="t-end">{headline.text.slice(cursor)}</React.Fragment>);
+    }
+
+    return nodes;
+  };
+
+  const showRecheckBtn = isReducedConfidence && canRecheckWithGemini && !result.refused;
+  const showFreshCheckBtn = isCachedResult && !result.refused;
 
   return (
     <article
@@ -333,35 +401,25 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
       )}
 
       <div className="pass-body">
-        <div className="verdict-row">
-          <div className="verdict-heading-wrap">
-            <h2 id="boarding-pass-heading" className="verdict-route">
-              <span className={extractedAddress ? 'verdict-address' : 'verdict-address unlisted'}>
-                {extractedAddress ?? 'Unlisted address'}
-              </span>
-              <span aria-hidden="true">→</span>
-              <span>{profile.campus}</span>
+        <div className="verdict-hero">
+          <div className="verdict-live-wrap" aria-live="polite" aria-atomic="true">
+            <h2
+              id="boarding-pass-heading"
+              className={`verdict-headline ${result.verdict}${isReducedConfidence ? ' reduced' : ''}`}
+              data-testid="verdict-headline"
+            >
+              {renderHeadlineNodes()}
             </h2>
-            {!extractedAddress && !result.refused && (
-              <p className="verdict-esc-hint">
-                No geocodable street address found — confirm via Escalation Queue or pin a D1 correction.
-              </p>
-            )}
-            <p className="verdict-sub">
-              {profile.termStart} to {profile.termEnd} · Earliest class {profile.classStart}
-            </p>
-          </div>
 
-          <div className="verdict-stamp-col">
-            <div className="verdict-live-wrap" aria-live="polite" aria-atomic="true">
+            <div className="verdict-stamp-col">
               <div
                 key={`${result.runId}-${result.verdict}-${result.verdictConfidence}`}
                 className={`verdict-stamp ${result.verdict}${isReducedConfidence ? ' reduced' : ''}`}
                 data-verdict-confidence={result.verdictConfidence}
               >
-                {result.verdict === 'ADMIT' && <ShieldCheck size={20} aria-hidden="true" />}
-                {result.verdict === 'HOLD' && <AlertTriangle size={20} aria-hidden="true" />}
-                {result.verdict === 'REFUSE' && <ShieldAlert size={20} aria-hidden="true" />}
+                {result.verdict === 'ADMIT' && <ShieldCheck size={16} aria-hidden="true" />}
+                {result.verdict === 'HOLD' && <AlertTriangle size={16} aria-hidden="true" />}
+                {result.verdict === 'REFUSE' && <ShieldAlert size={16} aria-hidden="true" />}
                 <span>{STAMP_TEXT[result.verdict]}</span>
                 {result.verdict === 'ADMIT' && !result.refused && totalNotesCount > 0 && (
                   <span className="sr-only">
@@ -380,31 +438,54 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
                 </span>
               )}
             </div>
-            {isReducedConfidence && canRecheckWithGemini && !result.refused && (
-              <button
-                type="button"
-                className="btn-recheck-gemini"
-                onClick={onRecheckWithGemini}
-                disabled={isAnalyzing}
-                data-testid="recheck-gemini-btn"
-              >
-                <RefreshCw size={13} aria-hidden="true" />
-                <span>Re-check with Gemini</span>
-              </button>
-            )}
-            {isCachedResult && !result.refused && (
-              <button
-                type="button"
-                className="btn-fresh-check"
-                onClick={onRunFreshCheck}
-                disabled={isAnalyzing}
-                data-testid="run-fresh-check-btn"
-              >
-                <RefreshCw size={13} aria-hidden="true" />
-                <span>Run fresh check</span>
-              </button>
-            )}
           </div>
+
+          {(showRecheckBtn || showFreshCheckBtn) && (
+            <div className="verdict-hero-actions">
+              {showRecheckBtn && (
+                <button
+                  type="button"
+                  className="btn-recheck-gemini"
+                  onClick={onRecheckWithGemini}
+                  disabled={isAnalyzing}
+                  data-testid="recheck-gemini-btn"
+                >
+                  <RefreshCw size={13} aria-hidden="true" />
+                  <span>Re-check with Gemini</span>
+                </button>
+              )}
+              {showFreshCheckBtn && (
+                <button
+                  type="button"
+                  className="btn-fresh-check"
+                  onClick={onRunFreshCheck}
+                  disabled={isAnalyzing}
+                  data-testid="run-fresh-check-btn"
+                >
+                  <RefreshCw size={13} aria-hidden="true" />
+                  <span>Run fresh check</span>
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="verdict-meta-row">
+          <div className="verdict-route">
+            <span className={extractedAddress ? 'verdict-address' : 'verdict-address unlisted'}>
+              {extractedAddress ?? 'Unlisted address'}
+            </span>
+            <span aria-hidden="true">→</span>
+            <span>{profile.campus}</span>
+          </div>
+          {!extractedAddress && !result.refused && (
+            <p className="verdict-esc-hint">
+              No geocodable street address found — confirm via Escalation Queue or pin a D1 correction.
+            </p>
+          )}
+          <p className="verdict-sub">
+            {profile.termStart} to {profile.termEnd} · Earliest class {profile.classStart}
+          </p>
         </div>
 
         {fallbackInfo && (
@@ -464,10 +545,17 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
         {!result.refused && result.rtaApplies === 'may_not_apply' && (
           <div className="banner-alert warn" role="status">
             <AlertTriangle size={16} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
-            <span>
-              <strong>RTA s.5(i) exemption may apply:</strong> sharing a kitchen or bathroom with the
-              owner or their immediate family can remove Ontario RTA protections.
-            </span>
+            {isOutsideOntario ? (
+              <span>
+                <strong>Outside Ontario detected:</strong> Ontario&apos;s Residential Tenancies Act may
+                not apply; check local tenancy law before paying anything.
+              </span>
+            ) : (
+              <span>
+                <strong>RTA s.5(i) exemption may apply:</strong> sharing a kitchen or bathroom with the
+                owner or their immediate family can remove Ontario RTA protections.
+              </span>
+            )}
           </div>
         )}
 

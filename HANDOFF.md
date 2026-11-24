@@ -224,3 +224,9 @@
 - Cached 45/50 HTTP attempts. Both B1 HTTP 503 retries succeeded. Frozen Bouncer had 6 provider fallbacks. Offline replay reproduces results and export.
 - Part B data: web/src/data/baseline-samples.json. Use samples.clean/tricky/scammy only when the listing matches exactly. All three match merged C10; recorded verdicts ADMIT/REFUSE/REFUSE.
 - npm test: 312 passed, 1 skipped. Typecheck, build, cache parity and credential scan passed. Synthetic n=30; section mismatches measure exact text agreement. No deploy.
+
+## C10 Part B — Verdict headline & hero UI (Antigravity L4/L5)
+- **Role/skills**: L4/L5 frontend & browser QA; skills: `karpathy-guidelines`, `emil-design-eng`, `unslop-ui`; gap: explicit `C:\Program Files\nodejs` PATH, headless Chrome CDP.
+- **Changed**: Rendered `verdictHeadline(result, languageLevel)` as the primary first-read `<h2>` beside the secondary stamp inside `aria-live="polite"` (`BoardingPass.tsx`, `App.tsx`, `styles.css`), with clickable `.headline-span-link` buttons that scroll to and focus the matching quote in `HighlightedListing`, plus an accurate Outside Ontario warning banner; verified sample labels (`Clean`, `Hidden terms`, `Scammy`).
+- **Verified**: `npm run typecheck`, `npm run build`, and `npm test` (346 passed, 1 skipped) green; headless Chrome CDP at 1280×900 & 375×812 verified stub-live (`hero-live`, `clean`, `scammy`, `jurisdiction`) and simulated-429 `hero-offline`, Simple English toggle, Tab + `:focus-visible` (2px `#7c1d2e`) + click-to-focus clause span, `prefers-reduced-motion` (`1e-05s`), 0 overflow, 0 console errors.
+- **Screenshots**: `evidence/ui/c10-{1280,375}-{hero-live,hero-offline,clean,scammy,jurisdiction}.png` (live views used local `stub-live` `/api/analyze`; `hero-offline` used simulated 429 fallback). No deploy.
