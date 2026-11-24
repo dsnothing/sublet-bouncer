@@ -80,7 +80,7 @@ export async function analyze(req: AnalyzeRequest, options: AnalyzeOptions = {})
     else { let timer: ReturnType<typeof setTimeout>|undefined;
       try {
         const raw=await Promise.race([options.llm.extract(req.listing),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LLM timeout')),options.timeoutMs??12000);})]);
-        ({extraction,issues}=verifyExtraction(raw,req.listing)); mode='live';
+        ({extraction,issues}=verifyExtraction(raw,req.listing)); mode='live'; fallbackReason=options.llm.fallbackReason;
       } catch(error) { mode='offline-fallback';fallbackReason=error instanceof Error?error.message:'LLM request failed'; }
       finally {clearTimeout(timer);}
     }
@@ -88,6 +88,7 @@ export async function analyze(req: AnalyzeRequest, options: AnalyzeOptions = {})
   const r:AnalysisResult={runId:newId(),mode,...(fallbackReason?{fallbackReason}:{}),...(mode==='live'?{model:options.llm?.model??'gemini-3-flash-preview'}:{}),listing:req.listing,fields:refused?{}:extraction.fields,clauses:[],scam:{p:0,band:'proceed',topFeatures:[]},commute:{status:'unknown'},rtaApplies:'unknown',verdict:'HOLD',reasons:[],decisions:[],escalations:[],actions:[],log:[],couldNotCheck:['Ownership, identity, and listing authenticity','Transit service changes; weekday 08:30 schedule only','Legal advice and exceptions beyond the verified rules'],...(refused?{refused:{reason:refused}}:{})};
   const esc=(id:Decision['id'],question:string,evidence:Escalation['evidence']=[],opts=['Confirm','Unable to confirm'])=>r.escalations.push({id:newId(),decisionId:id,question,options:opts,evidence});
   const decision=(id:Decision['id'],label:string,output:unknown,confidence=1,threshold?:number)=>{const d:Decision={id,kind:id==='D1'&&mode==='live'?'llm':id==='D2'&&mode==='live'?'llm+rules':id==='D3'?'model':'rules',label,output,confidence,...(threshold!==undefined?{threshold}:{}),escalated:r.escalations.some(e=>e.decisionId===id),reason:r.escalations.filter(e=>e.decisionId===id).map(e=>e.question).join('; ')||'Policy check complete',evidence:id==='D1'?Object.values(r.fields).flatMap(f=>f.span?[f.span]:[]):id==='D2'?r.clauses.map(c=>c.span):[]};r.decisions.push(d);appendLog(r,'decision',id,label,'agent',confidence,threshold);};
+  if(fallbackReason)appendLog(r,'decision','D1',fallbackReason+(r.model?' (answered by '+r.model+')':''));
   issues.forEach(issue=>{r.couldNotCheck.push(issue);esc('D1',issue);appendLog(r,'decision','D1',issue);});
   for(const [name,f] of Object.entries(r.fields)) if(f.confidence<.8) esc('D1',`Please confirm ${name}`,f.span?[f.span]:[]);
   if (hasInjection(req.listing)) esc('D1','Listing contains instruction-like content; review it as untrusted data');

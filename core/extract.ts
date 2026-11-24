@@ -3,7 +3,7 @@ import rules from '../data/rta_rules.json' with { type: 'json' };
 export const RULE_IDS = rules.rules.map(rule => rule.id);
 export const LIVE_RISK_FIELDS = ['payment_before_viewing', 'landlord_abroad', 'risky_payment_method'] as const;
 export interface Extraction { fields: AnalysisResult['fields']; clauses: { span: Span; confidence: number; proposed_rule_id?: string; rationale?: string }[] }
-export interface LLMAdapter { extract(listing: string): Promise<unknown>; model?: string }
+export interface LLMAdapter { extract(listing: string): Promise<unknown>; model?: string; fallbackReason?: string }
 export const normalize = (s: string) => s.replace(/\s+/g, ' ').trim();
 export function findSpan(listing: string, text: string): Span | undefined {
   if (!normalize(text)) return;

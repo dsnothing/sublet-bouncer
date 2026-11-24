@@ -8,6 +8,24 @@ const profile={termStart:'2027-01-01',termEnd:'2027-04-30',campus:'UW' as const,
 const listing='Room at 203 Lester Street. Rent $850/month. Viewing available. Owner does not live here.';
 afterEach(()=>vi.unstubAllGlobals());
 describe('Gemini adapter',()=>{
+  it('retries rate limits/unavailability on lite within the same budget and records failures',async()=>{
+    for(const status of [429,503]){
+      const requests:RequestInit[]=[];
+      const spy=vi.fn(async(_url:string,init:RequestInit)=>{requests.push(init);return requests.length===1?new Response('',{status}):new Response(JSON.stringify({candidates:[{content:{parts:[{text:'{"fields":{},"clauses":[]}'}]}}]}));});
+      vi.stubGlobal('fetch',spy);
+      const result=await analyze({listing,profile,mode:'live'},{llm:createGeminiAdapter('test-key','gemini-3-flash-preview','gemini-3.1-flash-lite')});
+      expect(result.mode).toBe('live');expect(result.model).toBe('gemini-3.1-flash-lite');
+      expect(result.fallbackReason).toContain(`Gemini HTTP ${status}`);
+      expect(result.log.some(entry=>entry.summary.includes(`Gemini HTTP ${status}`))).toBe(true);
+      expect(spy.mock.calls[1][0]).toContain('/gemini-3.1-flash-lite:');
+      expect(requests[0].signal).toBe(requests[1].signal);
+    }
+    const failures=vi.fn(async()=>new Response('private error',{status:429}));vi.stubGlobal('fetch',failures);
+    const result=await analyze({listing,profile,mode:'live'},{llm:createGeminiAdapter('test-key','gemini-3-flash-preview','gemini-3.1-flash-lite')});
+    expect(failures).toHaveBeenCalledTimes(2);expect(result.mode).toBe('offline-fallback');
+    expect(result.fallbackReason).toContain('gemini-3.1-flash-lite');expect(result.fallbackReason).toContain('Gemini HTTP 429');
+    expect(result.fallbackReason).not.toContain('private error');
+  });
   it('uses schema, temperature zero, bounded signal and header authentication',async()=>{
     const spy=vi.fn(async()=>new Response(JSON.stringify({candidates:[{content:{parts:[{text:'{"fields":{},"clauses":[]}'}]}}]}),{status:200}));vi.stubGlobal('fetch',spy);
     expect(await createGeminiAdapter('test-key').extract(listing)).toEqual({fields:{},clauses:[]});
