@@ -208,6 +208,14 @@
 - Post-v3: no frozen fixtures, labels, harness or results changed, opened, or run. C10 is development work.
 - C5 sample cache seeds are stale and need regeneration in C11. Part B owns UI rendering and visual QA. No deploy.
 
+## C11 Part A — Judge-proof live mode (Codex L3)
+- Role and skills: L3 backend and tests with karpathy-guidelines for scope and acceptance checks. PowerShell search substituted for rg.
+- Added atomic live-only seed recording with raw extraction, model, run ID and decision signature; parity follows current bundled samples.
+- Added an instance-local circuit breaker and exact bundled-sample simulation. Both forced fallback paths skip network requests.
+- API: send `simulateOutage: true`; response has `simulated: true`, `mode: 'offline-fallback'`, reduced confidence and the simulation reason. Breaker bypass returns `breaker: 'open'` and the overload reason.
+- Verified 34 new tests (338 passed, one optional live skipped after C10), typecheck, build, local API and web startup, and the eight-request smoke recorder against a local mock.
+- Lead runs the live seed after engine freeze, then deploys and records production smoke evidence. No live seed, production smoke or deploy performed. Frozen v3 untouched.
+
 ## C12 Part A - Baseline duel (Codex L3, 2026-11-24)
 - Skills: karpathy-guidelines for scope, validate-data for scoring and cost, systematic-debugging for verification. PowerShell used in place of unavailable rg.
 - Prereg 1c22017; run d020109. Kept six completed replies after interruption and resumed at v3-07 before its first request. B1 prompt and B2 checklist hashes match prereg.

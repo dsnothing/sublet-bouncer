@@ -134,6 +134,8 @@ export function validateAndSanitizeResult(raw: unknown): AnalysisResult | null {
   if (raw.fallbackReason !== undefined && typeof raw.fallbackReason !== 'string') return null;
   if (raw.model !== undefined && typeof raw.model !== 'string') return null;
   if (raw.cached !== undefined && typeof raw.cached !== 'boolean') return null;
+  if (raw.simulated !== undefined && typeof raw.simulated !== 'boolean') return null;
+  if (raw.breaker !== undefined && raw.breaker !== 'open') return null;
   if (raw.cachedAt !== undefined && typeof raw.cachedAt !== 'string') return null;
   if (
     typeof raw.verdictConfidence !== 'string' ||
