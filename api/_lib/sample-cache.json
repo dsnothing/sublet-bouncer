@@ -1,1 +1,2019 @@
-[]
+[
+  {
+    "key": "423335f54b937819d45fc9206aa0f90707d56c61382eff3a82391d89792337e7",
+    "cachedAt": "2026-11-24T20:50:33.733Z",
+    "runId": "ceb16c6a-9499-4b41-9359-e0735ff05db6",
+    "model": "gemini-3.1-flash-lite",
+    "rawExtraction": {
+      "fields": {
+        "address": {
+          "value": "250 Lester Street",
+          "span": {
+            "text": "250 Lester Street"
+          },
+          "confidence": 1
+        },
+        "owner_lives_in": {
+          "value": false,
+          "span": {
+            "text": "Owner does not live here"
+          },
+          "confidence": 1
+        },
+        "rent": {
+          "value": 950,
+          "span": {
+            "text": "$950/month"
+          },
+          "confidence": 1
+        },
+        "viewing_offered": {
+          "value": true,
+          "span": {
+            "text": "Viewing available"
+          },
+          "confidence": 1
+        }
+      },
+      "clauses": []
+    },
+    "signature": "{\"fields\":{\"address\":\"250 Lester Street\",\"owner_lives_in\":false,\"rent\":950,\"viewing_offered\":true},\"clauses\":[],\"verdict\":\"ADMIT\"}",
+    "result": {
+      "runId": "ceb16c6a-9499-4b41-9359-e0735ff05db6",
+      "mode": "live",
+      "verdictConfidence": "standard",
+      "model": "gemini-3.1-flash-lite",
+      "listing": "At 250 Lester Street a furnished room is $950/month. January 1 to April 30 2027. Utilities included. Viewing available. Owner does not live here.",
+      "fields": {
+        "address": {
+          "value": "250 Lester Street",
+          "span": {
+            "text": "250 Lester Street",
+            "start": 3,
+            "end": 20
+          },
+          "confidence": 1
+        },
+        "owner_lives_in": {
+          "value": false,
+          "span": {
+            "text": "Owner does not live here",
+            "start": 120,
+            "end": 144
+          },
+          "confidence": 1
+        },
+        "rent": {
+          "value": 950,
+          "span": {
+            "text": "$950/month",
+            "start": 41,
+            "end": 51
+          },
+          "confidence": 1
+        },
+        "viewing_offered": {
+          "value": true,
+          "span": {
+            "text": "Viewing available",
+            "start": 101,
+            "end": 118
+          },
+          "confidence": 1
+        }
+      },
+      "clauses": [],
+      "scam": {
+        "p": 0.019487169952261053,
+        "band": "proceed",
+        "topFeatures": [
+          {
+            "name": "risky_payment_method",
+            "weight": -0.7861835114953301
+          },
+          {
+            "name": "payment_before_viewing",
+            "weight": -0.627992473477126
+          },
+          {
+            "name": "urgency_language",
+            "weight": -0.5767618366759159
+          }
+        ]
+      },
+      "commute": {
+        "status": "feasible",
+        "minutes": 13,
+        "arriveBy": "07:09",
+        "summary": "07:00 departure; walk > campus walk; straight-line walking estimate; allow 4 min walk to origin"
+      },
+      "rtaApplies": "applies",
+      "verdict": "ADMIT",
+      "reasons": [
+        "No flagged clauses or open questions"
+      ],
+      "decisions": [
+        {
+          "id": "D1",
+          "kind": "llm",
+          "label": "Field extraction",
+          "output": {
+            "address": {
+              "value": "250 Lester Street",
+              "span": {
+                "text": "250 Lester Street",
+                "start": 3,
+                "end": 20
+              },
+              "confidence": 1
+            },
+            "owner_lives_in": {
+              "value": false,
+              "span": {
+                "text": "Owner does not live here",
+                "start": 120,
+                "end": 144
+              },
+              "confidence": 1
+            },
+            "rent": {
+              "value": 950,
+              "span": {
+                "text": "$950/month",
+                "start": 41,
+                "end": 51
+              },
+              "confidence": 1
+            },
+            "viewing_offered": {
+              "value": true,
+              "span": {
+                "text": "Viewing available",
+                "start": 101,
+                "end": 118
+              },
+              "confidence": 1
+            }
+          },
+          "confidence": 0.9,
+          "threshold": 0.8,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": [
+            {
+              "text": "250 Lester Street",
+              "start": 3,
+              "end": 20
+            },
+            {
+              "text": "Owner does not live here",
+              "start": 120,
+              "end": 144
+            },
+            {
+              "text": "$950/month",
+              "start": 41,
+              "end": 51
+            },
+            {
+              "text": "Viewing available",
+              "start": 101,
+              "end": 118
+            }
+          ]
+        },
+        {
+          "id": "D2",
+          "kind": "llm+rules",
+          "label": "Clause legality",
+          "output": [],
+          "confidence": 1,
+          "threshold": 0.75,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D3",
+          "kind": "model",
+          "label": "Scam risk",
+          "output": {
+            "p": 0.019487169952261053,
+            "band": "proceed",
+            "topFeatures": [
+              {
+                "name": "risky_payment_method",
+                "weight": -0.7861835114953301
+              },
+              {
+                "name": "payment_before_viewing",
+                "weight": -0.627992473477126
+              },
+              {
+                "name": "urgency_language",
+                "weight": -0.5767618366759159
+              }
+            ]
+          },
+          "confidence": 1,
+          "threshold": 0.7,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D4",
+          "kind": "rules",
+          "label": "Commute feasibility",
+          "output": {
+            "status": "feasible",
+            "minutes": 13,
+            "arriveBy": "07:09",
+            "summary": "07:00 departure; walk > campus walk; straight-line walking estimate; allow 4 min walk to origin"
+          },
+          "confidence": 1,
+          "threshold": 0.8,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D5",
+          "kind": "rules",
+          "label": "RTA applicability",
+          "output": "applies",
+          "confidence": 1,
+          "threshold": 0.8,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D6",
+          "kind": "rules",
+          "label": "Aggregate verdict",
+          "output": {
+            "verdict": "ADMIT",
+            "reasons": [
+              "No flagged clauses or open questions"
+            ]
+          },
+          "confidence": 1,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D7",
+          "kind": "rules",
+          "label": "Action gate",
+          "output": [
+            {
+              "type": "draft_reply",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "save_evidence_card",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "export_viewing_ics",
+              "tier": "confirm",
+              "status": "proposed"
+            },
+            {
+              "type": "copy_reply_to_clipboard",
+              "tier": "confirm",
+              "status": "proposed"
+            }
+          ],
+          "confidence": 1,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        }
+      ],
+      "escalations": [],
+      "actions": [
+        {
+          "id": "c96ee67a-b670-4587-a889-1d5ad2ecb811",
+          "type": "draft_reply",
+          "tier": "auto",
+          "payload": "Hello, could we arrange a viewing and confirm the lease terms, permitted deposits, and landlord consent for this sublet?",
+          "status": "done"
+        },
+        {
+          "id": "380ddc39-f87e-4a89-b3f7-b82b91aba8b0",
+          "type": "save_evidence_card",
+          "tier": "auto",
+          "payload": {
+            "verdict": "ADMIT",
+            "clauses": [],
+            "runId": "ceb16c6a-9499-4b41-9359-e0735ff05db6"
+          },
+          "status": "done"
+        },
+        {
+          "id": "586309b0-23de-4ac3-82cb-5f1eb410916f",
+          "type": "export_viewing_ics",
+          "tier": "confirm",
+          "payload": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sublet Bouncer//Viewing draft//EN\r\nBEGIN:VEVENT\r\nUID:ceb16c6a-9499-4b41-9359-e0735ff05db6@sublet-bouncer\r\nDTSTAMP:20261124T205033Z\r\nDTSTART;VALUE=DATE:20270101\r\nDTEND;VALUE=DATE:20270102\r\nSUMMARY:Proposed sublet viewing - confirm date with landlord\r\nDESCRIPTION:Draft only. No landlord has been contacted.\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+          "status": "proposed"
+        },
+        {
+          "id": "af7ddae5-1e40-419d-995d-fa76e31c2f8f",
+          "type": "copy_reply_to_clipboard",
+          "tier": "confirm",
+          "payload": "Hello, could we arrange a viewing and confirm the lease terms, permitted deposits, and landlord consent for this sublet?",
+          "status": "proposed"
+        }
+      ],
+      "log": [
+        {
+          "id": "267b1c3d-c2dd-4e8f-b54e-a073075e2ac1",
+          "ts": "2026-11-24T20:50:33.576Z",
+          "kind": "decision",
+          "ref": "D1",
+          "actor": "agent",
+          "summary": "Field extraction",
+          "inputs_hash": "2c08b057",
+          "confidence": 0.9,
+          "threshold": 0.8,
+          "output": {
+            "address": {
+              "value": "250 Lester Street",
+              "span": {
+                "text": "250 Lester Street",
+                "start": 3,
+                "end": 20
+              },
+              "confidence": 1
+            },
+            "owner_lives_in": {
+              "value": false,
+              "span": {
+                "text": "Owner does not live here",
+                "start": 120,
+                "end": 144
+              },
+              "confidence": 1
+            },
+            "rent": {
+              "value": 950,
+              "span": {
+                "text": "$950/month",
+                "start": 41,
+                "end": 51
+              },
+              "confidence": 1
+            },
+            "viewing_offered": {
+              "value": true,
+              "span": {
+                "text": "Viewing available",
+                "start": 101,
+                "end": 118
+              },
+              "confidence": 1
+            }
+          },
+          "decision_kind": "llm"
+        },
+        {
+          "id": "2bb448b8-cd1e-40d4-899c-a11ee0700d1c",
+          "ts": "2026-11-24T20:50:33.690Z",
+          "kind": "decision",
+          "ref": "D2",
+          "actor": "agent",
+          "summary": "Clause legality",
+          "inputs_hash": "2c08b057",
+          "confidence": 1,
+          "threshold": 0.75,
+          "output": [],
+          "decision_kind": "llm+rules"
+        },
+        {
+          "id": "ca62d580-55b4-445b-b009-71848731d985",
+          "ts": "2026-11-24T20:50:33.726Z",
+          "kind": "decision",
+          "ref": "D3",
+          "actor": "agent",
+          "summary": "Scam risk",
+          "inputs_hash": "2c08b057",
+          "confidence": 1,
+          "threshold": 0.7,
+          "output": {
+            "p": 0.019487169952261053,
+            "band": "proceed",
+            "topFeatures": [
+              {
+                "name": "risky_payment_method",
+                "weight": -0.7861835114953301
+              },
+              {
+                "name": "payment_before_viewing",
+                "weight": -0.627992473477126
+              },
+              {
+                "name": "urgency_language",
+                "weight": -0.5767618366759159
+              }
+            ]
+          },
+          "decision_kind": "model"
+        },
+        {
+          "id": "40706f91-2948-480f-9320-383a5b11b44f",
+          "ts": "2026-11-24T20:50:33.731Z",
+          "kind": "decision",
+          "ref": "D4",
+          "actor": "agent",
+          "summary": "Commute feasibility",
+          "inputs_hash": "2c08b057",
+          "confidence": 1,
+          "threshold": 0.8,
+          "output": {
+            "status": "feasible",
+            "minutes": 13,
+            "arriveBy": "07:09",
+            "summary": "07:00 departure; walk > campus walk; straight-line walking estimate; allow 4 min walk to origin"
+          },
+          "decision_kind": "rules"
+        },
+        {
+          "id": "91078a79-6e8a-46a9-b558-4b40ac66afc1",
+          "ts": "2026-11-24T20:50:33.732Z",
+          "kind": "decision",
+          "ref": "D5",
+          "actor": "agent",
+          "summary": "RTA applicability",
+          "inputs_hash": "2c08b057",
+          "confidence": 1,
+          "threshold": 0.8,
+          "output": "applies",
+          "decision_kind": "rules"
+        },
+        {
+          "id": "68d40786-48e5-4c82-b4c9-4065a2749771",
+          "ts": "2026-11-24T20:50:33.732Z",
+          "kind": "decision",
+          "ref": "D6",
+          "actor": "agent",
+          "summary": "Aggregate verdict",
+          "inputs_hash": "2c08b057",
+          "confidence": 1,
+          "output": {
+            "verdict": "ADMIT",
+            "reasons": [
+              "No flagged clauses or open questions"
+            ]
+          },
+          "decision_kind": "rules"
+        },
+        {
+          "id": "3b432ec0-6d33-4ec1-a710-7a2d2e164785",
+          "ts": "2026-11-24T20:50:33.733Z",
+          "kind": "action",
+          "ref": "c96ee67a-b670-4587-a889-1d5ad2ecb811",
+          "actor": "agent",
+          "summary": "Created draft_reply",
+          "inputs_hash": "2c08b057",
+          "output": "Hello, could we arrange a viewing and confirm the lease terms, permitted deposits, and landlord consent for this sublet?",
+          "inverse": {
+            "id": "c96ee67a-b670-4587-a889-1d5ad2ecb811",
+            "type": "draft_reply",
+            "tier": "auto",
+            "payload": "Hello, could we arrange a viewing and confirm the lease terms, permitted deposits, and landlord consent for this sublet?",
+            "status": "undone"
+          },
+          "profile": {
+            "termStart": "2027-01-01",
+            "termEnd": "2027-04-30",
+            "campus": "UW",
+            "classStart": "08:30"
+          }
+        },
+        {
+          "id": "5e8d9410-bfc7-431b-bba7-db538808303c",
+          "ts": "2026-11-24T20:50:33.733Z",
+          "kind": "action",
+          "ref": "380ddc39-f87e-4a89-b3f7-b82b91aba8b0",
+          "actor": "agent",
+          "summary": "Created save_evidence_card",
+          "inputs_hash": "2c08b057",
+          "output": {
+            "verdict": "ADMIT",
+            "clauses": [],
+            "runId": "ceb16c6a-9499-4b41-9359-e0735ff05db6"
+          },
+          "inverse": {
+            "id": "380ddc39-f87e-4a89-b3f7-b82b91aba8b0",
+            "type": "save_evidence_card",
+            "tier": "auto",
+            "payload": {
+              "verdict": "ADMIT",
+              "clauses": [],
+              "runId": "ceb16c6a-9499-4b41-9359-e0735ff05db6"
+            },
+            "status": "undone"
+          },
+          "profile": {
+            "termStart": "2027-01-01",
+            "termEnd": "2027-04-30",
+            "campus": "UW",
+            "classStart": "08:30"
+          }
+        },
+        {
+          "id": "8aa73868-100c-4fa5-977b-6540c6c9e815",
+          "ts": "2026-11-24T20:50:33.733Z",
+          "kind": "decision",
+          "ref": "D7",
+          "actor": "agent",
+          "summary": "Action gate",
+          "inputs_hash": "2c08b057",
+          "confidence": 1,
+          "output": [
+            {
+              "type": "draft_reply",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "save_evidence_card",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "export_viewing_ics",
+              "tier": "confirm",
+              "status": "proposed"
+            },
+            {
+              "type": "copy_reply_to_clipboard",
+              "tier": "confirm",
+              "status": "proposed"
+            }
+          ],
+          "decision_kind": "rules"
+        }
+      ],
+      "couldNotCheck": [
+        "Ownership, identity, and listing authenticity",
+        "Transit service changes; weekday 08:30 schedule only",
+        "Legal advice and exceptions beyond the verified rules",
+        "RTA applies unless you'd share a kitchen/bath with the owner"
+      ]
+    }
+  },
+  {
+    "key": "82c6c8fa98b02f89964eab1589df1e13f7478b44e4a9f885dfc9b46dbcfd268e",
+    "cachedAt": "2026-11-24T20:51:17.797Z",
+    "runId": "ce9b81cc-d388-4bcd-9b3d-e2f8dd1987b3",
+    "model": "gemini-3.1-flash-lite",
+    "rawExtraction": {
+      "fields": {
+        "address": {
+          "value": "200 Lester Street",
+          "span": {
+            "text": "200 Lester Street"
+          },
+          "confidence": 1
+        },
+        "owner_lives_in": {
+          "value": false,
+          "span": {
+            "text": "Owner does not live here"
+          },
+          "confidence": 1
+        },
+        "rent": {
+          "value": 900,
+          "span": {
+            "text": "$900"
+          },
+          "confidence": 1
+        },
+        "viewing_offered": {
+          "value": true,
+          "span": {
+            "text": "Viewing any evening this week"
+          },
+          "confidence": 1
+        }
+      },
+      "clauses": [
+        {
+          "span": {
+            "text": "an extra $400 we hold in case anything gets broken"
+          },
+          "proposed_rule_id": "damage_deposit",
+          "confidence": 0.7,
+          "rationale": ""
+        },
+        {
+          "span": {
+            "text": "The landlord can pop in whenever he likes, no need to tell you first."
+          },
+          "proposed_rule_id": "entry_notice",
+          "confidence": 0.7,
+          "rationale": ""
+        }
+      ]
+    },
+    "signature": "{\"fields\":{\"address\":\"200 Lester Street\",\"owner_lives_in\":false,\"rent\":900,\"viewing_offered\":true},\"clauses\":[\"damage_deposit\",\"entry_notice\"],\"verdict\":\"HOLD\"}",
+    "result": {
+      "runId": "ce9b81cc-d388-4bcd-9b3d-e2f8dd1987b3",
+      "mode": "live",
+      "verdictConfidence": "standard",
+      "model": "gemini-3.1-flash-lite",
+      "listing": "Furnished room at 200 Lester Street, $900/month, January 1 to April 30 2027. Viewing any evening this week. Owner does not live here. First month's rent plus an extra $400 we hold in case anything gets broken. The landlord can pop in whenever he likes, no need to tell you first.",
+      "fields": {
+        "address": {
+          "value": "200 Lester Street",
+          "span": {
+            "text": "200 Lester Street",
+            "start": 18,
+            "end": 35
+          },
+          "confidence": 1
+        },
+        "owner_lives_in": {
+          "value": false,
+          "span": {
+            "text": "Owner does not live here",
+            "start": 108,
+            "end": 132
+          },
+          "confidence": 1
+        },
+        "rent": {
+          "value": 900,
+          "span": {
+            "text": "$900",
+            "start": 37,
+            "end": 41
+          },
+          "confidence": 1
+        },
+        "viewing_offered": {
+          "value": true,
+          "span": {
+            "text": "Viewing any evening this week",
+            "start": 77,
+            "end": 106
+          },
+          "confidence": 1
+        }
+      },
+      "clauses": [
+        {
+          "span": {
+            "text": "hold in case anything gets broken",
+            "start": 175,
+            "end": 208
+          },
+          "ruleId": "damage_deposit",
+          "status": "void",
+          "section": "s.105(1)",
+          "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+          "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+          "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+          "confidence": 0.6
+        },
+        {
+          "span": {
+            "text": "landlord can pop in whenever he likes, no need to tell",
+            "start": 214,
+            "end": 268
+          },
+          "ruleId": "entry_notice",
+          "status": "void",
+          "section": "s.27(1); s.26",
+          "lesson": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+          "lessonSimple": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+          "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+          "confidence": 0.6
+        }
+      ],
+      "scam": {
+        "p": 0.021249430459228308,
+        "band": "proceed",
+        "topFeatures": [
+          {
+            "name": "risky_payment_method",
+            "weight": -0.7861835114953301
+          },
+          {
+            "name": "payment_before_viewing",
+            "weight": -0.627992473477126
+          },
+          {
+            "name": "urgency_language",
+            "weight": -0.5767618366759159
+          }
+        ]
+      },
+      "commute": {
+        "status": "feasible",
+        "minutes": 13,
+        "arriveBy": "07:09",
+        "summary": "07:00 departure; walk > campus walk; straight-line walking estimate; allow 4 min walk to origin"
+      },
+      "rtaApplies": "applies",
+      "verdict": "HOLD",
+      "reasons": [
+        "Open questions require confirmation",
+        "Flagged lease clauses need attention"
+      ],
+      "decisions": [
+        {
+          "id": "D1",
+          "kind": "llm",
+          "label": "Field extraction",
+          "output": {
+            "address": {
+              "value": "200 Lester Street",
+              "span": {
+                "text": "200 Lester Street",
+                "start": 18,
+                "end": 35
+              },
+              "confidence": 1
+            },
+            "owner_lives_in": {
+              "value": false,
+              "span": {
+                "text": "Owner does not live here",
+                "start": 108,
+                "end": 132
+              },
+              "confidence": 1
+            },
+            "rent": {
+              "value": 900,
+              "span": {
+                "text": "$900",
+                "start": 37,
+                "end": 41
+              },
+              "confidence": 1
+            },
+            "viewing_offered": {
+              "value": true,
+              "span": {
+                "text": "Viewing any evening this week",
+                "start": 77,
+                "end": 106
+              },
+              "confidence": 1
+            }
+          },
+          "confidence": 0.9,
+          "threshold": 0.8,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": [
+            {
+              "text": "200 Lester Street",
+              "start": 18,
+              "end": 35
+            },
+            {
+              "text": "Owner does not live here",
+              "start": 108,
+              "end": 132
+            },
+            {
+              "text": "$900",
+              "start": 37,
+              "end": 41
+            },
+            {
+              "text": "Viewing any evening this week",
+              "start": 77,
+              "end": 106
+            }
+          ]
+        },
+        {
+          "id": "D2",
+          "kind": "llm+rules",
+          "label": "Clause legality",
+          "output": [
+            {
+              "span": {
+                "text": "hold in case anything gets broken",
+                "start": 175,
+                "end": 208
+              },
+              "ruleId": "damage_deposit",
+              "status": "void",
+              "section": "s.105(1)",
+              "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+              "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+              "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+              "confidence": 0.6
+            },
+            {
+              "span": {
+                "text": "landlord can pop in whenever he likes, no need to tell",
+                "start": 214,
+                "end": 268
+              },
+              "ruleId": "entry_notice",
+              "status": "void",
+              "section": "s.27(1); s.26",
+              "lesson": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+              "lessonSimple": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+              "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+              "confidence": 0.6
+            }
+          ],
+          "confidence": 0.6,
+          "threshold": 0.75,
+          "escalated": true,
+          "reason": "Confirm clause: hold in case anything gets broken; Confirm clause: landlord can pop in whenever he likes, no need to tell",
+          "evidence": [
+            {
+              "text": "hold in case anything gets broken",
+              "start": 175,
+              "end": 208
+            },
+            {
+              "text": "landlord can pop in whenever he likes, no need to tell",
+              "start": 214,
+              "end": 268
+            }
+          ]
+        },
+        {
+          "id": "D3",
+          "kind": "model",
+          "label": "Scam risk",
+          "output": {
+            "p": 0.021249430459228308,
+            "band": "proceed",
+            "topFeatures": [
+              {
+                "name": "risky_payment_method",
+                "weight": -0.7861835114953301
+              },
+              {
+                "name": "payment_before_viewing",
+                "weight": -0.627992473477126
+              },
+              {
+                "name": "urgency_language",
+                "weight": -0.5767618366759159
+              }
+            ]
+          },
+          "confidence": 1,
+          "threshold": 0.7,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D4",
+          "kind": "rules",
+          "label": "Commute feasibility",
+          "output": {
+            "status": "feasible",
+            "minutes": 13,
+            "arriveBy": "07:09",
+            "summary": "07:00 departure; walk > campus walk; straight-line walking estimate; allow 4 min walk to origin"
+          },
+          "confidence": 1,
+          "threshold": 0.8,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D5",
+          "kind": "rules",
+          "label": "RTA applicability",
+          "output": "applies",
+          "confidence": 1,
+          "threshold": 0.8,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D6",
+          "kind": "rules",
+          "label": "Aggregate verdict",
+          "output": {
+            "verdict": "HOLD",
+            "reasons": [
+              "Open questions require confirmation",
+              "Flagged lease clauses need attention"
+            ]
+          },
+          "confidence": 1,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D7",
+          "kind": "rules",
+          "label": "Action gate",
+          "output": [
+            {
+              "type": "draft_reply",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "save_evidence_card",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "export_viewing_ics",
+              "tier": "confirm",
+              "status": "blocked"
+            },
+            {
+              "type": "copy_reply_to_clipboard",
+              "tier": "confirm",
+              "status": "proposed"
+            }
+          ],
+          "confidence": 1,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        }
+      ],
+      "escalations": [
+        {
+          "id": "e69612a2-8901-49f4-b888-037cb7166217",
+          "decisionId": "D2",
+          "blocking": true,
+          "question": "Confirm clause: hold in case anything gets broken",
+          "options": [
+            "Confirm",
+            "Unable to confirm"
+          ],
+          "evidence": [
+            {
+              "text": "hold in case anything gets broken",
+              "start": 175,
+              "end": 208
+            }
+          ]
+        },
+        {
+          "id": "de103bd3-d551-4585-bef8-80ea8a9fa236",
+          "decisionId": "D2",
+          "blocking": true,
+          "question": "Confirm clause: landlord can pop in whenever he likes, no need to tell",
+          "options": [
+            "Confirm",
+            "Unable to confirm"
+          ],
+          "evidence": [
+            {
+              "text": "landlord can pop in whenever he likes, no need to tell",
+              "start": 214,
+              "end": 268
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "daeb4777-56b7-4250-9b3d-0070f2d91780",
+          "type": "draft_reply",
+          "tier": "auto",
+          "payload": "Hello, could we arrange a viewing and confirm the lease terms, permitted deposits, and landlord consent for this sublet?",
+          "status": "done"
+        },
+        {
+          "id": "f871f2fb-4529-4647-8543-2fbed70498d6",
+          "type": "save_evidence_card",
+          "tier": "auto",
+          "payload": {
+            "verdict": "HOLD",
+            "clauses": [
+              {
+                "span": {
+                  "text": "hold in case anything gets broken",
+                  "start": 175,
+                  "end": 208
+                },
+                "ruleId": "damage_deposit",
+                "status": "void",
+                "section": "s.105(1)",
+                "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                "confidence": 0.6
+              },
+              {
+                "span": {
+                  "text": "landlord can pop in whenever he likes, no need to tell",
+                  "start": 214,
+                  "end": 268
+                },
+                "ruleId": "entry_notice",
+                "status": "void",
+                "section": "s.27(1); s.26",
+                "lesson": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+                "lessonSimple": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+                "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                "confidence": 0.6
+              }
+            ],
+            "runId": "ce9b81cc-d388-4bcd-9b3d-e2f8dd1987b3"
+          },
+          "status": "done"
+        },
+        {
+          "id": "27e9e163-2b71-47f3-bc77-523bfe09875e",
+          "type": "export_viewing_ics",
+          "tier": "confirm",
+          "payload": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sublet Bouncer//Viewing draft//EN\r\nBEGIN:VEVENT\r\nUID:ce9b81cc-d388-4bcd-9b3d-e2f8dd1987b3@sublet-bouncer\r\nDTSTAMP:20261124T205117Z\r\nDTSTART;VALUE=DATE:20270101\r\nDTEND;VALUE=DATE:20270102\r\nSUMMARY:Proposed sublet viewing - confirm date with landlord\r\nDESCRIPTION:Draft only. No landlord has been contacted.\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+          "status": "blocked",
+          "blockedReason": "Requires feasible commute, scam risk below 0.30, and no open questions"
+        },
+        {
+          "id": "a44c2533-6c26-4fe6-956f-00c1dcbe8dfe",
+          "type": "copy_reply_to_clipboard",
+          "tier": "confirm",
+          "payload": "Hello, could we arrange a viewing and confirm the lease terms, permitted deposits, and landlord consent for this sublet?",
+          "status": "proposed"
+        }
+      ],
+      "log": [
+        {
+          "id": "ba0b3c64-d558-4015-b0e5-c7e86eb4cf14",
+          "ts": "2026-11-24T20:51:17.780Z",
+          "kind": "decision",
+          "ref": "D1",
+          "actor": "agent",
+          "summary": "Field extraction",
+          "inputs_hash": "34c51709",
+          "confidence": 0.9,
+          "threshold": 0.8,
+          "output": {
+            "address": {
+              "value": "200 Lester Street",
+              "span": {
+                "text": "200 Lester Street",
+                "start": 18,
+                "end": 35
+              },
+              "confidence": 1
+            },
+            "owner_lives_in": {
+              "value": false,
+              "span": {
+                "text": "Owner does not live here",
+                "start": 108,
+                "end": 132
+              },
+              "confidence": 1
+            },
+            "rent": {
+              "value": 900,
+              "span": {
+                "text": "$900",
+                "start": 37,
+                "end": 41
+              },
+              "confidence": 1
+            },
+            "viewing_offered": {
+              "value": true,
+              "span": {
+                "text": "Viewing any evening this week",
+                "start": 77,
+                "end": 106
+              },
+              "confidence": 1
+            }
+          },
+          "decision_kind": "llm"
+        },
+        {
+          "id": "b5b4f937-a76c-483b-bd55-fa033aafa787",
+          "ts": "2026-11-24T20:51:17.793Z",
+          "kind": "decision",
+          "ref": "D2",
+          "actor": "agent",
+          "summary": "Clause legality",
+          "inputs_hash": "34c51709",
+          "confidence": 0.6,
+          "threshold": 0.75,
+          "output": [
+            {
+              "span": {
+                "text": "hold in case anything gets broken",
+                "start": 175,
+                "end": 208
+              },
+              "ruleId": "damage_deposit",
+              "status": "void",
+              "section": "s.105(1)",
+              "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+              "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+              "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+              "confidence": 0.6
+            },
+            {
+              "span": {
+                "text": "landlord can pop in whenever he likes, no need to tell",
+                "start": 214,
+                "end": 268
+              },
+              "ruleId": "entry_notice",
+              "status": "void",
+              "section": "s.27(1); s.26",
+              "lesson": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+              "lessonSimple": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+              "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+              "confidence": 0.6
+            }
+          ],
+          "decision_kind": "llm+rules"
+        },
+        {
+          "id": "e67b076d-1e52-48a3-bba6-cafdfb90c90c",
+          "ts": "2026-11-24T20:51:17.793Z",
+          "kind": "decision",
+          "ref": "D2",
+          "actor": "agent",
+          "summary": "Rejected proposal entry_notice: Evidence lacks the rule concept or negates/permits the suspected restriction",
+          "inputs_hash": "34c51709",
+          "output": {
+            "outcome": "rejected",
+            "ruleId": "entry_notice",
+            "reason": "Evidence lacks the rule concept or negates/permits the suspected restriction"
+          },
+          "decision_kind": "llm+rules"
+        },
+        {
+          "id": "9877339b-ae90-4a53-a368-9ec742b7f7a8",
+          "ts": "2026-11-24T20:51:17.794Z",
+          "kind": "decision",
+          "ref": "D3",
+          "actor": "agent",
+          "summary": "Scam risk",
+          "inputs_hash": "34c51709",
+          "confidence": 1,
+          "threshold": 0.7,
+          "output": {
+            "p": 0.021249430459228308,
+            "band": "proceed",
+            "topFeatures": [
+              {
+                "name": "risky_payment_method",
+                "weight": -0.7861835114953301
+              },
+              {
+                "name": "payment_before_viewing",
+                "weight": -0.627992473477126
+              },
+              {
+                "name": "urgency_language",
+                "weight": -0.5767618366759159
+              }
+            ]
+          },
+          "decision_kind": "model"
+        },
+        {
+          "id": "3294802a-27c0-481b-80ec-416011dea160",
+          "ts": "2026-11-24T20:51:17.795Z",
+          "kind": "decision",
+          "ref": "D4",
+          "actor": "agent",
+          "summary": "Commute feasibility",
+          "inputs_hash": "34c51709",
+          "confidence": 1,
+          "threshold": 0.8,
+          "output": {
+            "status": "feasible",
+            "minutes": 13,
+            "arriveBy": "07:09",
+            "summary": "07:00 departure; walk > campus walk; straight-line walking estimate; allow 4 min walk to origin"
+          },
+          "decision_kind": "rules"
+        },
+        {
+          "id": "90bc91e1-e6c5-4f45-b9a8-5937bae14547",
+          "ts": "2026-11-24T20:51:17.795Z",
+          "kind": "decision",
+          "ref": "D5",
+          "actor": "agent",
+          "summary": "RTA applicability",
+          "inputs_hash": "34c51709",
+          "confidence": 1,
+          "threshold": 0.8,
+          "output": "applies",
+          "decision_kind": "rules"
+        },
+        {
+          "id": "99f7173e-07ef-49fb-931e-9782e5a05fba",
+          "ts": "2026-11-24T20:51:17.795Z",
+          "kind": "decision",
+          "ref": "D6",
+          "actor": "agent",
+          "summary": "Aggregate verdict",
+          "inputs_hash": "34c51709",
+          "confidence": 1,
+          "output": {
+            "verdict": "HOLD",
+            "reasons": [
+              "Open questions require confirmation",
+              "Flagged lease clauses need attention"
+            ]
+          },
+          "decision_kind": "rules"
+        },
+        {
+          "id": "9c24618c-bdf7-4370-bee1-e35595d90d58",
+          "ts": "2026-11-24T20:51:17.795Z",
+          "kind": "action",
+          "ref": "daeb4777-56b7-4250-9b3d-0070f2d91780",
+          "actor": "agent",
+          "summary": "Created draft_reply",
+          "inputs_hash": "34c51709",
+          "output": "Hello, could we arrange a viewing and confirm the lease terms, permitted deposits, and landlord consent for this sublet?",
+          "inverse": {
+            "id": "daeb4777-56b7-4250-9b3d-0070f2d91780",
+            "type": "draft_reply",
+            "tier": "auto",
+            "payload": "Hello, could we arrange a viewing and confirm the lease terms, permitted deposits, and landlord consent for this sublet?",
+            "status": "undone"
+          },
+          "profile": {
+            "termStart": "2027-01-01",
+            "termEnd": "2027-04-30",
+            "campus": "UW",
+            "classStart": "08:30"
+          }
+        },
+        {
+          "id": "daeea522-58be-4035-9eea-991ead8cc918",
+          "ts": "2026-11-24T20:51:17.796Z",
+          "kind": "action",
+          "ref": "f871f2fb-4529-4647-8543-2fbed70498d6",
+          "actor": "agent",
+          "summary": "Created save_evidence_card",
+          "inputs_hash": "34c51709",
+          "output": {
+            "verdict": "HOLD",
+            "clauses": [
+              {
+                "span": {
+                  "text": "hold in case anything gets broken",
+                  "start": 175,
+                  "end": 208
+                },
+                "ruleId": "damage_deposit",
+                "status": "void",
+                "section": "s.105(1)",
+                "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                "confidence": 0.6
+              },
+              {
+                "span": {
+                  "text": "landlord can pop in whenever he likes, no need to tell",
+                  "start": 214,
+                  "end": 268
+                },
+                "ruleId": "entry_notice",
+                "status": "void",
+                "section": "s.27(1); s.26",
+                "lesson": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+                "lessonSimple": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+                "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                "confidence": 0.6
+              }
+            ],
+            "runId": "ce9b81cc-d388-4bcd-9b3d-e2f8dd1987b3"
+          },
+          "inverse": {
+            "id": "f871f2fb-4529-4647-8543-2fbed70498d6",
+            "type": "save_evidence_card",
+            "tier": "auto",
+            "payload": {
+              "verdict": "HOLD",
+              "clauses": [
+                {
+                  "span": {
+                    "text": "hold in case anything gets broken",
+                    "start": 175,
+                    "end": 208
+                  },
+                  "ruleId": "damage_deposit",
+                  "status": "void",
+                  "section": "s.105(1)",
+                  "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                  "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                  "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                  "confidence": 0.6
+                },
+                {
+                  "span": {
+                    "text": "landlord can pop in whenever he likes, no need to tell",
+                    "start": 214,
+                    "end": 268
+                  },
+                  "ruleId": "entry_notice",
+                  "status": "void",
+                  "section": "s.27(1); s.26",
+                  "lesson": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+                  "lessonSimple": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+                  "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                  "confidence": 0.6
+                }
+              ],
+              "runId": "ce9b81cc-d388-4bcd-9b3d-e2f8dd1987b3"
+            },
+            "status": "undone"
+          },
+          "profile": {
+            "termStart": "2027-01-01",
+            "termEnd": "2027-04-30",
+            "campus": "UW",
+            "classStart": "08:30"
+          }
+        },
+        {
+          "id": "3c9d2dba-50e1-460e-834e-55f256bea6fd",
+          "ts": "2026-11-24T20:51:17.797Z",
+          "kind": "decision",
+          "ref": "D7",
+          "actor": "agent",
+          "summary": "Action gate",
+          "inputs_hash": "34c51709",
+          "confidence": 1,
+          "output": [
+            {
+              "type": "draft_reply",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "save_evidence_card",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "export_viewing_ics",
+              "tier": "confirm",
+              "status": "blocked"
+            },
+            {
+              "type": "copy_reply_to_clipboard",
+              "tier": "confirm",
+              "status": "proposed"
+            }
+          ],
+          "decision_kind": "rules"
+        }
+      ],
+      "couldNotCheck": [
+        "Ownership, identity, and listing authenticity",
+        "Transit service changes; weekday 08:30 schedule only",
+        "Legal advice and exceptions beyond the verified rules",
+        "RTA applies unless you'd share a kitchen/bath with the owner"
+      ]
+    }
+  },
+  {
+    "key": "a25ddd5576e3e5f82f4cadf85bd0834fd8ae1be7aeb64e670c6b11b07f4a1e25",
+    "cachedAt": "2026-11-24T20:51:33.832Z",
+    "runId": "e9a488b7-ddac-4c96-9457-a0969ff21c5d",
+    "model": "gemini-3.1-flash-lite",
+    "rawExtraction": {
+      "fields": {
+        "rent": {
+          "value": 450,
+          "span": {
+            "text": "$450"
+          },
+          "confidence": 1
+        },
+        "viewing_offered": {
+          "value": false,
+          "span": {
+            "text": "Send deposit before viewing"
+          },
+          "confidence": 0.9
+        }
+      },
+      "clauses": [
+        {
+          "span": {
+            "text": "Send deposit before viewing"
+          },
+          "proposed_rule_id": "damage_deposit",
+          "confidence": 0.7,
+          "rationale": ""
+        }
+      ]
+    },
+    "signature": "{\"fields\":{\"rent\":450},\"clauses\":[\"damage_deposit\"],\"verdict\":\"REFUSE\"}",
+    "result": {
+      "runId": "e9a488b7-ddac-4c96-9457-a0969ff21c5d",
+      "mode": "live",
+      "verdictConfidence": "standard",
+      "model": "gemini-3.1-flash-lite",
+      "listing": "Private room $450/month. No address yet. I am away. Send deposit before viewing by crypto. WhatsApp only. Act now.",
+      "fields": {
+        "rent": {
+          "value": 450,
+          "span": {
+            "text": "$450",
+            "start": 13,
+            "end": 17
+          },
+          "confidence": 1
+        }
+      },
+      "clauses": [
+        {
+          "span": {
+            "text": "Send deposit before viewing",
+            "start": 52,
+            "end": 79
+          },
+          "ruleId": "damage_deposit",
+          "status": "questionable",
+          "section": "s.105(1)",
+          "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+          "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+          "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+          "confidence": 0.7
+        }
+      ],
+      "scam": {
+        "p": 0.998103883184412,
+        "band": "block",
+        "topFeatures": [
+          {
+            "name": "urgency_language",
+            "weight": 1.4120720828962077
+          },
+          {
+            "name": "payment_before_viewing",
+            "weight": 1.397789699029732
+          },
+          {
+            "name": "risky_payment_method",
+            "weight": 0.9229110787119091
+          }
+        ]
+      },
+      "commute": {
+        "status": "unknown",
+        "summary": "Full address needed"
+      },
+      "rtaApplies": "applies",
+      "verdict": "REFUSE",
+      "reasons": [
+        "Scam risk exceeds the block threshold",
+        "Payment requested before viewing"
+      ],
+      "decisions": [
+        {
+          "id": "D1",
+          "kind": "llm",
+          "label": "Field extraction",
+          "output": {
+            "rent": {
+              "value": 450,
+              "span": {
+                "text": "$450",
+                "start": 13,
+                "end": 17
+              },
+              "confidence": 1
+            }
+          },
+          "confidence": 0.9,
+          "threshold": 0.8,
+          "escalated": true,
+          "reason": "Dropped viewing_offered: value conflicts with evidence; Please confirm address",
+          "evidence": [
+            {
+              "text": "$450",
+              "start": 13,
+              "end": 17
+            }
+          ]
+        },
+        {
+          "id": "D2",
+          "kind": "llm+rules",
+          "label": "Clause legality",
+          "output": [
+            {
+              "span": {
+                "text": "Send deposit before viewing",
+                "start": 52,
+                "end": 79
+              },
+              "ruleId": "damage_deposit",
+              "status": "questionable",
+              "section": "s.105(1)",
+              "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+              "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+              "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+              "confidence": 0.7
+            }
+          ],
+          "confidence": 0.7,
+          "threshold": 0.75,
+          "escalated": true,
+          "reason": "The bouncer thinks this may concern Damage/security deposit (s.105(1)). Confirm?",
+          "evidence": [
+            {
+              "text": "Send deposit before viewing",
+              "start": 52,
+              "end": 79
+            }
+          ]
+        },
+        {
+          "id": "D3",
+          "kind": "model",
+          "label": "Scam risk",
+          "output": {
+            "p": 0.998103883184412,
+            "band": "block",
+            "topFeatures": [
+              {
+                "name": "urgency_language",
+                "weight": 1.4120720828962077
+              },
+              {
+                "name": "payment_before_viewing",
+                "weight": 1.397789699029732
+              },
+              {
+                "name": "risky_payment_method",
+                "weight": 0.9229110787119091
+              }
+            ]
+          },
+          "confidence": 1,
+          "threshold": 0.7,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D4",
+          "kind": "rules",
+          "label": "Commute feasibility",
+          "output": {
+            "status": "unknown",
+            "summary": "Full address needed"
+          },
+          "confidence": 0,
+          "threshold": 0.8,
+          "escalated": true,
+          "reason": "Confirm a geocodable address and commute",
+          "evidence": []
+        },
+        {
+          "id": "D5",
+          "kind": "rules",
+          "label": "RTA applicability",
+          "output": "applies",
+          "confidence": 0,
+          "threshold": 0.8,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D6",
+          "kind": "rules",
+          "label": "Aggregate verdict",
+          "output": {
+            "verdict": "REFUSE",
+            "reasons": [
+              "Scam risk exceeds the block threshold",
+              "Payment requested before viewing"
+            ]
+          },
+          "confidence": 1,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        },
+        {
+          "id": "D7",
+          "kind": "rules",
+          "label": "Action gate",
+          "output": [
+            {
+              "type": "draft_reply",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "save_evidence_card",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "export_viewing_ics",
+              "tier": "confirm",
+              "status": "blocked"
+            },
+            {
+              "type": "copy_reply_to_clipboard",
+              "tier": "confirm",
+              "status": "proposed"
+            }
+          ],
+          "confidence": 1,
+          "escalated": false,
+          "reason": "Policy check complete",
+          "evidence": []
+        }
+      ],
+      "escalations": [
+        {
+          "id": "ab8ee993-6280-4bcb-ace1-a01dba8e7a99",
+          "decisionId": "D1",
+          "blocking": false,
+          "question": "Dropped viewing_offered: value conflicts with evidence",
+          "options": [
+            "Confirm",
+            "Unable to confirm"
+          ],
+          "evidence": []
+        },
+        {
+          "id": "5370df1f-1625-4a8a-bfa3-d3765be0529c",
+          "decisionId": "D1",
+          "blocking": true,
+          "question": "Please confirm address",
+          "options": [
+            "Confirm",
+            "Unable to confirm"
+          ],
+          "evidence": []
+        },
+        {
+          "id": "9b9aff6a-1e56-4d3c-b51f-5563589b139d",
+          "decisionId": "D2",
+          "blocking": true,
+          "question": "The bouncer thinks this may concern Damage/security deposit (s.105(1)). Confirm?",
+          "options": [
+            "Confirm",
+            "Unable to confirm"
+          ],
+          "evidence": [
+            {
+              "text": "Send deposit before viewing",
+              "start": 52,
+              "end": 79
+            }
+          ]
+        },
+        {
+          "id": "3b72aaf9-2a84-4d1d-b175-6174d47ccbb5",
+          "decisionId": "D4",
+          "blocking": false,
+          "question": "Confirm a geocodable address and commute",
+          "options": [
+            "Unable to confirm"
+          ],
+          "evidence": []
+        }
+      ],
+      "actions": [
+        {
+          "id": "571bc404-908a-4990-aa05-e0208459901f",
+          "type": "draft_reply",
+          "tier": "auto",
+          "payload": "I will not send payment or identity documents before verifying the listing and viewing the property. Please offer a viewing.",
+          "status": "done"
+        },
+        {
+          "id": "21ffd179-4147-463d-8aa4-fb040d36478f",
+          "type": "save_evidence_card",
+          "tier": "auto",
+          "payload": {
+            "verdict": "REFUSE",
+            "clauses": [
+              {
+                "span": {
+                  "text": "Send deposit before viewing",
+                  "start": 52,
+                  "end": 79
+                },
+                "ruleId": "damage_deposit",
+                "status": "questionable",
+                "section": "s.105(1)",
+                "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                "confidence": 0.7
+              }
+            ],
+            "runId": "e9a488b7-ddac-4c96-9457-a0969ff21c5d"
+          },
+          "status": "done"
+        },
+        {
+          "id": "2bfb25c9-ac26-4271-9eb0-17057710c081",
+          "type": "export_viewing_ics",
+          "tier": "confirm",
+          "payload": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sublet Bouncer//Viewing draft//EN\r\nBEGIN:VEVENT\r\nUID:e9a488b7-ddac-4c96-9457-a0969ff21c5d@sublet-bouncer\r\nDTSTAMP:20261124T205133Z\r\nDTSTART;VALUE=DATE:20270101\r\nDTEND;VALUE=DATE:20270102\r\nSUMMARY:Proposed sublet viewing - confirm date with landlord\r\nDESCRIPTION:Draft only. No landlord has been contacted.\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+          "status": "blocked",
+          "blockedReason": "Requires feasible commute, scam risk below 0.30, and no open questions"
+        },
+        {
+          "id": "4f8cc420-ce9e-402e-a887-ea056806260e",
+          "type": "copy_reply_to_clipboard",
+          "tier": "confirm",
+          "payload": "I will not send payment or identity documents before verifying the listing and viewing the property. Please offer a viewing.",
+          "status": "proposed"
+        }
+      ],
+      "log": [
+        {
+          "id": "92f4fa2e-82eb-427c-bdec-200164e7f84c",
+          "ts": "2026-11-24T20:51:33.830Z",
+          "kind": "decision",
+          "ref": "D1",
+          "actor": "agent",
+          "summary": "Dropped viewing_offered: value conflicts with evidence",
+          "inputs_hash": "f3267bd9"
+        },
+        {
+          "id": "0a548991-020a-4e94-8aee-898ee275aa27",
+          "ts": "2026-11-24T20:51:33.830Z",
+          "kind": "decision",
+          "ref": "D1",
+          "actor": "agent",
+          "summary": "Field extraction",
+          "inputs_hash": "f3267bd9",
+          "confidence": 0.9,
+          "threshold": 0.8,
+          "output": {
+            "rent": {
+              "value": 450,
+              "span": {
+                "text": "$450",
+                "start": 13,
+                "end": 17
+              },
+              "confidence": 1
+            }
+          },
+          "decision_kind": "llm"
+        },
+        {
+          "id": "a78955cb-2491-491e-9a2d-90a006688343",
+          "ts": "2026-11-24T20:51:33.832Z",
+          "kind": "decision",
+          "ref": "D2",
+          "actor": "agent",
+          "summary": "Clause legality",
+          "inputs_hash": "f3267bd9",
+          "confidence": 0.7,
+          "threshold": 0.75,
+          "output": [
+            {
+              "span": {
+                "text": "Send deposit before viewing",
+                "start": 52,
+                "end": 79
+              },
+              "ruleId": "damage_deposit",
+              "status": "questionable",
+              "section": "s.105(1)",
+              "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+              "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+              "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+              "confidence": 0.7
+            }
+          ],
+          "decision_kind": "llm+rules"
+        },
+        {
+          "id": "c5b74bb8-ad5a-44be-9826-6b88e99ab66f",
+          "ts": "2026-11-24T20:51:33.832Z",
+          "kind": "decision",
+          "ref": "D3",
+          "actor": "agent",
+          "summary": "Scam risk",
+          "inputs_hash": "f3267bd9",
+          "confidence": 1,
+          "threshold": 0.7,
+          "output": {
+            "p": 0.998103883184412,
+            "band": "block",
+            "topFeatures": [
+              {
+                "name": "urgency_language",
+                "weight": 1.4120720828962077
+              },
+              {
+                "name": "payment_before_viewing",
+                "weight": 1.397789699029732
+              },
+              {
+                "name": "risky_payment_method",
+                "weight": 0.9229110787119091
+              }
+            ]
+          },
+          "decision_kind": "model"
+        },
+        {
+          "id": "b4cbf6ba-cad3-406f-adcd-d63da87850a4",
+          "ts": "2026-11-24T20:51:33.832Z",
+          "kind": "decision",
+          "ref": "D4",
+          "actor": "agent",
+          "summary": "Commute feasibility",
+          "inputs_hash": "f3267bd9",
+          "confidence": 0,
+          "threshold": 0.8,
+          "output": {
+            "status": "unknown",
+            "summary": "Full address needed"
+          },
+          "decision_kind": "rules"
+        },
+        {
+          "id": "9f141b76-87c3-42e8-9c7f-85fcaecb509b",
+          "ts": "2026-11-24T20:51:33.832Z",
+          "kind": "decision",
+          "ref": "D5",
+          "actor": "agent",
+          "summary": "RTA applicability",
+          "inputs_hash": "f3267bd9",
+          "confidence": 0,
+          "threshold": 0.8,
+          "output": "applies",
+          "decision_kind": "rules"
+        },
+        {
+          "id": "43965995-77f3-4f4d-82fa-a7a96ff1cd1b",
+          "ts": "2026-11-24T20:51:33.832Z",
+          "kind": "decision",
+          "ref": "D6",
+          "actor": "agent",
+          "summary": "Aggregate verdict",
+          "inputs_hash": "f3267bd9",
+          "confidence": 1,
+          "output": {
+            "verdict": "REFUSE",
+            "reasons": [
+              "Scam risk exceeds the block threshold",
+              "Payment requested before viewing"
+            ]
+          },
+          "decision_kind": "rules"
+        },
+        {
+          "id": "84d96352-6e34-4289-a636-08d332fb56a6",
+          "ts": "2026-11-24T20:51:33.832Z",
+          "kind": "action",
+          "ref": "571bc404-908a-4990-aa05-e0208459901f",
+          "actor": "agent",
+          "summary": "Created draft_reply",
+          "inputs_hash": "f3267bd9",
+          "output": "I will not send payment or identity documents before verifying the listing and viewing the property. Please offer a viewing.",
+          "inverse": {
+            "id": "571bc404-908a-4990-aa05-e0208459901f",
+            "type": "draft_reply",
+            "tier": "auto",
+            "payload": "I will not send payment or identity documents before verifying the listing and viewing the property. Please offer a viewing.",
+            "status": "undone"
+          },
+          "profile": {
+            "termStart": "2027-01-01",
+            "termEnd": "2027-04-30",
+            "campus": "UW",
+            "classStart": "08:30"
+          }
+        },
+        {
+          "id": "1b8c6a48-9581-40ec-bc8d-e3b502d9e21a",
+          "ts": "2026-11-24T20:51:33.832Z",
+          "kind": "action",
+          "ref": "21ffd179-4147-463d-8aa4-fb040d36478f",
+          "actor": "agent",
+          "summary": "Created save_evidence_card",
+          "inputs_hash": "f3267bd9",
+          "output": {
+            "verdict": "REFUSE",
+            "clauses": [
+              {
+                "span": {
+                  "text": "Send deposit before viewing",
+                  "start": 52,
+                  "end": 79
+                },
+                "ruleId": "damage_deposit",
+                "status": "questionable",
+                "section": "s.105(1)",
+                "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                "confidence": 0.7
+              }
+            ],
+            "runId": "e9a488b7-ddac-4c96-9457-a0969ff21c5d"
+          },
+          "inverse": {
+            "id": "21ffd179-4147-463d-8aa4-fb040d36478f",
+            "type": "save_evidence_card",
+            "tier": "auto",
+            "payload": {
+              "verdict": "REFUSE",
+              "clauses": [
+                {
+                  "span": {
+                    "text": "Send deposit before viewing",
+                    "start": 52,
+                    "end": 79
+                  },
+                  "ruleId": "damage_deposit",
+                  "status": "questionable",
+                  "section": "s.105(1)",
+                  "lesson": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                  "lessonSimple": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+                  "sourceUrl": "https://www.ontario.ca/laws/statute/06r17",
+                  "confidence": 0.7
+                }
+              ],
+              "runId": "e9a488b7-ddac-4c96-9457-a0969ff21c5d"
+            },
+            "status": "undone"
+          },
+          "profile": {
+            "termStart": "2027-01-01",
+            "termEnd": "2027-04-30",
+            "campus": "UW",
+            "classStart": "08:30"
+          }
+        },
+        {
+          "id": "1179a780-7756-4b0b-bdf7-3b6d90c1c73f",
+          "ts": "2026-11-24T20:51:33.832Z",
+          "kind": "decision",
+          "ref": "D7",
+          "actor": "agent",
+          "summary": "Action gate",
+          "inputs_hash": "f3267bd9",
+          "confidence": 1,
+          "output": [
+            {
+              "type": "draft_reply",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "save_evidence_card",
+              "tier": "auto",
+              "status": "done"
+            },
+            {
+              "type": "export_viewing_ics",
+              "tier": "confirm",
+              "status": "blocked"
+            },
+            {
+              "type": "copy_reply_to_clipboard",
+              "tier": "confirm",
+              "status": "proposed"
+            }
+          ],
+          "decision_kind": "rules"
+        }
+      ],
+      "couldNotCheck": [
+        "Ownership, identity, and listing authenticity",
+        "Transit service changes; weekday 08:30 schedule only",
+        "Legal advice and exceptions beyond the verified rules",
+        "Dropped viewing_offered: value conflicts with evidence",
+        "RTA applies unless you'd share a kitchen/bath with the owner",
+        "Confirm a geocodable address and commute"
+      ]
+    }
+  }
+]
