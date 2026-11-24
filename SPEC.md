@@ -54,6 +54,16 @@ Codex must not invent sections. Anything not verified is dropped from v1.
 
 Scam features (D3; design informed by Canadian Anti-Fraud Centre advisories): rent/CMHC median ratio, payment before viewing, wire/gift card/crypto/e-transfer-deposit request, landlord abroad/"I'm away", off-platform-only contact (WhatsApp/Telegram/email only), no address, no viewing offered, urgency language, over-long sob story, request for ID/SIN early, too-good amenities vs price, copy-paste/listing duplication markers. Training data is ~200 **synthetic** labelled listings from `scripts/gen_training.ts` (template-based, seeded) and must be disclosed as synthetic. Report AUC on the held-out gold set, never on training data.
 
+### 3b. Escalation policy v2 (lead decision 2026-11-24, from the v2 dev-set error analysis)
+Root cause: every benign ADMIT→HOLD error was blocked by D5 `unknown` (the listing is silent on owner-sharing, which is normal). Most were also blocked by D4 `unknown` (our own geocode gaps). Neither is a risk signal about the listing.
+- Every Escalation gets `blocking: boolean`. **D6 issues HOLD only for blocking escalations.** Non-blocking ones appear in the UI as "Notes to confirm" and in `couldNotCheck`, and they still gate actions (D7).
+- **D5:** the RTA applies by default. `may_not_apply` → blocking escalation only when there is evidence the owner lives there (owner/landlord/homeowner/live-in mentioned as resident) together with shared kitchen/bath, or unclear sharing. Silence → `applies` with an info note ("RTA applies unless you'd share a kitchen/bath with the owner").
+- **D4:** `unknown` commute → non-blocking (the system couldn't check it; this says nothing about the listing). `.ics` export still requires feasible or tight. Address normalization: expand St/Ave/Rd/Dr/Blvd/Cres/N/S/E/W and strip unit numbers. Add a server-side live geocode fallback (Nominatim, generic UA, ≤1 req/s, 5 s timeout, in-memory cache); a failure stays non-blocking unknown.
+- **D1:** low-confidence or dropped fields are non-blocking, except **missing address** (blocking: a student can't view or verify a place without one).
+- **D2:** rule proposals (0.7) stay **blocking** review questions (owner decision, docs/HUMAN-REVIEW.md #4). Info topics (key_deposit, owner_shared, sublet_consent, standard_lease) are never blocking and never count as violations.
+- **D3 / D6 REFUSE:** add a general CAFC red flag. A request for SIN, ID, bank or card details **before any viewing** → REFUSE, same as payment-before-viewing.
+- Injection → blocking. Non-English → refused (unchanged).
+
 ## 4. Permission matrix and action log (D7)
 | action | tier | precondition |
 |---|---|---|
