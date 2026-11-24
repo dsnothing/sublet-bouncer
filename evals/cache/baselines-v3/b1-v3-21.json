@@ -1,0 +1,38 @@
+{
+  "id": "v3-21",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "0382c574cd2002f498bb7fc06072805ea9e165e73ef98fef7704213d7b94e009",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:24:23.916Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"the written agreement states that the tenant takes care of and pays for any minor plumbing leaks, appliance breakdowns, or heating fixes during the 4 months so the owner doesn't have to deal with repairs.\\\",\\n      \\\"category\\\": \\\"maintenance_waiver\\\",\\n      \\\"section\\\": \\\"Section 20\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfROR9M7GDJVo4WsimOvi6GguW15fEkX1LK8CfWDovhmc/hhesYMLODOB70UT1UvO7pFm4Ek3gsXqy1t00CPTjiUnNs/qRQgEida9BaZCsQPwzcGI2OShtaLY6DZ/zSZgmRFNduFeP7Uo1iSL5d/c6eqeZFjvdiy9T3jTuJg4tUS7w7aSYwJE/EG/oDpYRmjEo91YpwUaxADtZF+atVSz0ZtaRQ==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 447,\n    \"candidatesTokenCount\": 98,\n    \"totalTokenCount\": 545,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 447\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"d_IFa7CAEuHFxdIPqqO4kQ4\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 447,
+        "candidatesTokenCount": 98,
+        "totalTokenCount": 545,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 447
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "maintenance_waiver",
+        "quote": "the written agreement states that the tenant takes care of and pays for any minor plumbing leaks, appliance breakdowns, or heating fixes during the 4 months so the owner doesn't have to deal with repairs.",
+        "section": "Section 20"
+      }
+    ]
+  }
+}

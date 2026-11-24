@@ -1,0 +1,44 @@
+{
+  "id": "sample-tricky",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "6f8cf323dde88c36e5650be16ddb1750a455948c124ebfd1a7ad9e55074d4f9f",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "9f1533ab6d4286f94130b166f224080efaf9acce1aa804c06a32584183eefd20",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:29:03.279Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"First month's rent plus an extra $400 we hold in case anything gets broken.\\\",\\n      \\\"category\\\": \\\"damage_deposit\\\",\\n      \\\"section\\\": \\\"Section 105\\\"\\n    },\\n    {\\n      \\\"quote\\\": \\\"The landlord can pop in whenever he likes, no need to tell you first.\\\",\\n      \\\"category\\\": \\\"entry_notice\\\",\\n      \\\"section\\\": \\\"Section 26\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRN+C1BAPd58XCysuQT9VbaDFF5cxl5RgF6nxXGjL7Wrw4oLVP6EGgspaC9RndYappaZ6kiLozkffnTT/iSC0P8xb72hTP9JWdFu4FobZyHz3WkYgyk48EURuUcEaSQFffWMSryumER6V6qzMLpsHPNFNQ7AFo6zd4jy1a65BD7E4+VOF9WiPxamxHfl5EMdPaQNTRF0a2KJWB21rlMP0oy1aw==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 351,\n    \"candidatesTokenCount\": 126,\n    \"totalTokenCount\": 477,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 351\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"jvMFa6T1Kd6FytMPp8fcmQU\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 351,
+        "candidatesTokenCount": 126,
+        "totalTokenCount": 477,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 351
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "damage_deposit",
+        "quote": "First month's rent plus an extra $400 we hold in case anything gets broken.",
+        "section": "Section 105"
+      },
+      {
+        "ruleId": "entry_notice",
+        "quote": "The landlord can pop in whenever he likes, no need to tell you first.",
+        "section": "Section 26"
+      }
+    ]
+  },
+  "listing": "Furnished room at 200 Lester Street, $900/month, January 1 to April 30 2027. Viewing any evening this week. Owner does not live here. First month's rent plus an extra $400 we hold in case anything gets broken. The landlord can pop in whenever he likes, no need to tell you first."
+}

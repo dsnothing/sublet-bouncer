@@ -1,0 +1,53 @@
+{
+  "model": "gemini-3.1-flash-lite",
+  "date": "2026-11-24",
+  "samples": {
+    "clean": {
+      "listing": "At 250 Lester Street a furnished room is $950/month. January 1 to April 30 2027. Utilities included. Viewing available. Owner does not live here.",
+      "model": "gemini-3.1-flash-lite",
+      "recordedAt": "2026-11-24T20:28:54.274Z",
+      "rawAnswer": "{\"verdict\":\"ADMIT\",\"clauses\":[]}",
+      "verdict": "ADMIT",
+      "clauses": []
+    },
+    "tricky": {
+      "listing": "Furnished room at 200 Lester Street, $900/month, January 1 to April 30 2027. Viewing any evening this week. Owner does not live here. First month's rent plus an extra $400 we hold in case anything gets broken. The landlord can pop in whenever he likes, no need to tell you first.",
+      "model": "gemini-3.1-flash-lite",
+      "recordedAt": "2026-11-24T20:29:03.279Z",
+      "rawAnswer": "{\n  \"verdict\": \"REFUSE\",\n  \"clauses\": [\n    {\n      \"quote\": \"First month's rent plus an extra $400 we hold in case anything gets broken.\",\n      \"category\": \"damage_deposit\",\n      \"section\": \"Section 105\"\n    },\n    {\n      \"quote\": \"The landlord can pop in whenever he likes, no need to tell you first.\",\n      \"category\": \"entry_notice\",\n      \"section\": \"Section 26\"\n    }\n  ]\n}",
+      "verdict": "REFUSE",
+      "clauses": [
+        {
+          "category": "damage_deposit",
+          "quote": "First month's rent plus an extra $400 we hold in case anything gets broken.",
+          "section": "Section 105",
+          "inListing": true,
+          "matchesRule": false
+        },
+        {
+          "category": "entry_notice",
+          "quote": "The landlord can pop in whenever he likes, no need to tell you first.",
+          "section": "Section 26",
+          "inListing": true,
+          "matchesRule": false
+        }
+      ]
+    },
+    "scammy": {
+      "listing": "Private room $450/month. No address yet. I am away. Send deposit before viewing by crypto. WhatsApp only. Act now.",
+      "model": "gemini-3.1-flash-lite",
+      "recordedAt": "2026-11-24T20:29:12.281Z",
+      "rawAnswer": "{\"verdict\":\"REFUSE\",\"clauses\":[{\"quote\":\"Send deposit before viewing by crypto.\",\"category\":\"damage_deposit\",\"section\":\"Section 105\"}]}",
+      "verdict": "REFUSE",
+      "clauses": [
+        {
+          "category": "damage_deposit",
+          "quote": "Send deposit before viewing by crypto.",
+          "section": "Section 105",
+          "inListing": true,
+          "matchesRule": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "v3-20",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "203a9387f958cccf37a097bf526ad1920ec70f9b1b684c11fb4b5aa369ee429a",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:24:14.885Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"our lease lets the landlord pop into our bedrooms anytime during the week for quick checks or to show rooms to Fall applicants as long as he shoots us a text an hour or two beforehand.\\\",\\n      \\\"category\\\": \\\"entry_notice\\\",\\n      \\\"section\\\": \\\"Section 26\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRMl3YI6lPkY1l/WOrkg2j6mW4E4PqrTomv6avmmFtFqg95PMndybx+Mldqk6dHQv9RjoyXZLmbd3KdLKNWLf5ueldE6FXU6eH4yzd3s8ZOZ/v7ynsWhX95ZnELLChRuDETVhk1CsRmkDKzTG0P7+IUkScGdY3X+SGpYYmwsYnyIDYtEg/ARnA726YfSzzHEi6ARjgHVOpWqw++heymO4n8CHA==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 449,\n    \"candidatesTokenCount\": 93,\n    \"totalTokenCount\": 542,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 449\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"bvIFa9jaDsCk5NoPgvu2sA4\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 449,
+        "candidatesTokenCount": 93,
+        "totalTokenCount": 542,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 449
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "entry_notice",
+        "quote": "our lease lets the landlord pop into our bedrooms anytime during the week for quick checks or to show rooms to Fall applicants as long as he shoots us a text an hour or two beforehand.",
+        "section": "Section 26"
+      }
+    ]
+  }
+}

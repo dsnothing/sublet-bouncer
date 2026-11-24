@@ -1,0 +1,48 @@
+{
+  "id": "v3-14",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "06a47b1bbe07b0859e5e37be67c0f1033afb92ca7de881b33bf4d9d5ec37b810",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:23:20.371Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"whoever pays first gets it!\\\",\\n      \\\"category\\\": \\\"other\\\",\\n      \\\"section\\\": \\\"RTA Section 105\\\"\\n    },\\n    {\\n      \\\"quote\\\": \\\"send $640 via bank wire or USDT crypto\\\",\\n      \\\"category\\\": \\\"excess_rent_deposit\\\",\\n      \\\"section\\\": \\\"RTA Section 106\\\"\\n    },\\n    {\\n      \\\"quote\\\": \\\"send... a clear photo of your passport and Social Insurance Number (SIN) for our fast-track screening.\\\",\\n      \\\"category\\\": \\\"other\\\",\\n      \\\"section\\\": \\\"Personal Information Protection and Electronic Documents Act (PIPEDA)\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRNV+t6wrZDQ/k58jr9KibbLjiGkvMZ4OjCerZ1JQEzChkkdfyHOQ8+t2zQyjakEsEv1Zv6cs/FLf2jdoVcja5wIVHbHoO+HMZfeRhq0nndUFabhaFfMeTqMGUkgPPfpxLAqKRXBwbT9Yc7XP1ffpVEQwLyKvUOet4SdVsgDc5oIYHoPWfB+4A8tVaP5syKZ3XoNzNER0D9gYj/ldk1MOb4eKg==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 453,\n    \"candidatesTokenCount\": 173,\n    \"totalTokenCount\": 626,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 453\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"N_IFa8PlKuaFytMPj_bUkAs\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 453,
+        "candidatesTokenCount": 173,
+        "totalTokenCount": 626,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 453
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "other",
+        "quote": "whoever pays first gets it!",
+        "section": "RTA Section 105"
+      },
+      {
+        "ruleId": "excess_rent_deposit",
+        "quote": "send $640 via bank wire or USDT crypto",
+        "section": "RTA Section 106"
+      },
+      {
+        "ruleId": "other",
+        "quote": "send... a clear photo of your passport and Social Insurance Number (SIN) for our fast-track screening.",
+        "section": "Personal Information Protection and Electronic Documents Act (PIPEDA)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "sample-scammy",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "5e2bd61b788c497eb46fed68dfd65507655b9c59d7f1fdafd09b9693ed6ba47a",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "9f1533ab6d4286f94130b166f224080efaf9acce1aa804c06a32584183eefd20",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:29:12.281Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\\"verdict\\\":\\\"REFUSE\\\",\\\"clauses\\\":[{\\\"quote\\\":\\\"Send deposit before viewing by crypto.\\\",\\\"category\\\":\\\"damage_deposit\\\",\\\"section\\\":\\\"Section 105\\\"}]}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRNVVFCwHHABNFbxQwoZ2lpw5ki92jOHcjFohlZUC3MBb3031XR0sBQ1JvZXzk92sX5FUZsX1ru/CAufBKFOhfm90xhCUjEX4VP8iUT5VbGUzq9Oh/nMJXj8sr+KHn1+kMXJbg5UA4SHCi8KQ65lzJzS7AgidCk8RaDmcnaYAH8cyYQpsvMmG3MpHtrN/MBPpuROx7b3gjemLVJVjl4n4B+oRg==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 301,\n    \"candidatesTokenCount\": 35,\n    \"totalTokenCount\": 336,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 301\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"l_MFa5vkKKe9xdIP38uy0AU\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 301,
+        "candidatesTokenCount": 35,
+        "totalTokenCount": 336,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 301
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "damage_deposit",
+        "quote": "Send deposit before viewing by crypto.",
+        "section": "Section 105"
+      }
+    ]
+  },
+  "listing": "Private room $450/month. No address yet. I am away. Send deposit before viewing by crypto. WhatsApp only. Act now."
+}

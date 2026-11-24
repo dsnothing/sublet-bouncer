@@ -1,0 +1,38 @@
+{
+  "id": "v3-13",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "238423073398e9ef7343435ba4a3018c5ec438e437bab5dd8b06f7d4474f28c0",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:23:11.363Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"please send the first month's $590 via Interac e-Transfer right away to dublin.owner27@example.com to secure the apartment, and I will overnight the keys and lease packet by FedEx once payment clears.\\\",\\n      \\\"category\\\": \\\"other\\\",\\n      \\\"section\\\": \\\"N/A\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRNvgvcFl1xguiiWaJsEaeThcsEx5yFd056oo/YEo81xBNp0VKGEcgMy5PSyWZQJk457Q/uuh8VT5ncTDjJtRN9O4vPg5Zt5MQkveI12/xpntUe2/YylgSDtqvsZzNbZmA3Q8d48XxEcr7bDwLqsET/Q6kixytuSHs1QN3d5Lj3WkJkJsasQM/IxikTkfvUfK1T4BPJkKKFH5GvsGLQGLmmNmQ==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 466,\n    \"candidatesTokenCount\": 103,\n    \"totalTokenCount\": 569,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 466\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"LvIFa8jVLa6iuMYPmtfKuQ4\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 466,
+        "candidatesTokenCount": 103,
+        "totalTokenCount": 569,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 466
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "other",
+        "quote": "please send the first month's $590 via Interac e-Transfer right away to dublin.owner27@example.com to secure the apartment, and I will overnight the keys and lease packet by FedEx once payment clears.",
+        "section": "N/A"
+      }
+    ]
+  }
+}

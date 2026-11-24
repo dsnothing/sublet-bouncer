@@ -1,0 +1,38 @@
+{
+  "id": "v3-19",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "7529bb898c3cdf3087524848ea1a6ae2e3065d1b42c1fd6cd613dd79db3265d6",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:24:05.424Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"HOLD\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"the property manager insists on either handing over four cheques pre-dated for the 1st of Jan–Apr at key pickup, or enrolling in mandatory automatic bank withdrawals through their payment portal\\\",\\n      \\\"category\\\": \\\"postdated_cheques\\\",\\n      \\\"section\\\": \\\"Section 108\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRMBOT9oN3LLEoGht0kgdj8dFhRhsNodIaXjM9k1XOkrDun7OTJnMDldm1lNl4h6X44igesnXSunOAk3XH0dTVOBUH7MVvyH3QFev0jxLA0XSDtJNFwilX399nXUUHeGnwNPalhMKK03mW+qx0IP9Tn2YqSoYNotnlrnH6Qsfxcl2eCY+F0uD4fEQcOW5zBATfxS2yq65fBXqCp3DYJOe1Sxug==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 462,\n    \"candidatesTokenCount\": 97,\n    \"totalTokenCount\": 559,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 462\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"ZPIFa--mNej8ytMPsZ30mQQ\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 462,
+        "candidatesTokenCount": 97,
+        "totalTokenCount": 559,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 462
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "HOLD",
+    "clauses": [
+      {
+        "ruleId": "postdated_cheques",
+        "quote": "the property manager insists on either handing over four cheques pre-dated for the 1st of Jan–Apr at key pickup, or enrolling in mandatory automatic bank withdrawals through their payment portal",
+        "section": "Section 108"
+      }
+    ]
+  }
+}

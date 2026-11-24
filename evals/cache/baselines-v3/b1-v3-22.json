@@ -1,0 +1,48 @@
+{
+  "id": "v3-22",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "eec3e3f95c5df004757101aedce6b001d85e7b489aafa85e7576d2dd02dcbbc7",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:24:32.911Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"tenant must pay a rent deposit equal to two months' rent ($2,100) upfront.\\\",\\n      \\\"category\\\": \\\"excess_rent_deposit\\\",\\n      \\\"section\\\": \\\"Section 106\\\"\\n    },\\n    {\\n      \\\"quote\\\": \\\"The rent deposit earns zero interest and is strictly non-refundable under any circumstances.\\\",\\n      \\\"category\\\": \\\"deposit_interest\\\",\\n      \\\"section\\\": \\\"Section 106\\\"\\n    },\\n    {\\n      \\\"quote\\\": \\\"if rent is more than 5 days overdue, management will immediately deactivate your smart-lock code and remove your belongings from the room without waiting on a Landlord and Tenant Board hearing.\\\",\\n      \\\"category\\\": \\\"lockout\\\",\\n      \\\"section\\\": \\\"Section 24\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRNfKBfzryaMY7gjVR0vldWSGvS0lCvc8lfkKJhLMW5khlIxHL70AtKZPxcgIQnIdYtLeRizZd8B/rWjBcw+Z9r6Sn68gX7lIx7gaNHvTDwTiOL9LMEatIcQqda0nOTYjazqggEMA5iooynQrtQbUVRj3wiBqNH5I6N5XMacI23OuBAw7+VHk5Xy/TxtZ4207kGjcw2ty0d8tU6W8uDOS7rZ6A==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 477,\n    \"candidatesTokenCount\": 199,\n    \"totalTokenCount\": 676,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 477\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"gPIFa8HoEJ2-uMYP1PLW6Ao\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 477,
+        "candidatesTokenCount": 199,
+        "totalTokenCount": 676,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 477
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "excess_rent_deposit",
+        "quote": "tenant must pay a rent deposit equal to two months' rent ($2,100) upfront.",
+        "section": "Section 106"
+      },
+      {
+        "ruleId": "deposit_interest",
+        "quote": "The rent deposit earns zero interest and is strictly non-refundable under any circumstances.",
+        "section": "Section 106"
+      },
+      {
+        "ruleId": "lockout",
+        "quote": "if rent is more than 5 days overdue, management will immediately deactivate your smart-lock code and remove your belongings from the room without waiting on a Landlord and Tenant Board hearing.",
+        "section": "Section 24"
+      }
+    ]
+  }
+}

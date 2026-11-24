@@ -1,0 +1,38 @@
+{
+  "id": "v3-18",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "567c6e6f38d6ba40029b17ddfd22ec6e088bfe5e468cda8b79e797782e813541",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:23:56.418Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"HOLD\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"the landlord has a strict furry-friends-free rule, so no animals of any kind (cats, dogs, or caged pets) are allowed in the suite.\\\",\\n      \\\"category\\\": \\\"no_pets\\\",\\n      \\\"section\\\": \\\"Section 76\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRMXfviOASPFHl/G6Tzm9GEj7WS3Gxr2wuzqqXzMKxYAn7seqP1bbL8x/o+NuKYbRgwuZ8VZln/Bptsj+OCacRQoTXZjMfnvzslLfPclSi0b7IdKEY13CDUfdt1Vj1LQyGAJVr2y9JgtCFsiS7bNPzCpi1yH1fcIZ9DI5J+eQaisjeW3DN8N1zTieqO1WO7I97AIRtog+wnZKj97e8VD/9BWcg==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 456,\n    \"candidatesTokenCount\": 88,\n    \"totalTokenCount\": 544,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 456\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"W_IFa5SNNN6yytMPjsey-Q4\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 456,
+        "candidatesTokenCount": 88,
+        "totalTokenCount": 544,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 456
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "HOLD",
+    "clauses": [
+      {
+        "ruleId": "no_pets",
+        "quote": "the landlord has a strict furry-friends-free rule, so no animals of any kind (cats, dogs, or caged pets) are allowed in the suite.",
+        "section": "Section 76"
+      }
+    ]
+  }
+}

@@ -1,0 +1,962 @@
+{
+  "post_v3": true,
+  "run_date": "2026-11-24",
+  "started_at": "2026-11-24T20:19:15.107Z",
+  "synthetic": true,
+  "n": 30,
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "prereg_sha256": "767da8bf259b7f8cb53905ed6282293d306689af65666d4101c949448c1746df",
+  "harness_sha256": "2c671a451e596a2de21ca3735764644be5b8519712fafb5ad6ff5518237b2818",
+  "live_harness_revisions": [
+    {
+      "sha256": "9265edcd2738ba09a27c61be9e44bfa86ed88b8ed72e001bc8fc3c976b01787f",
+      "rows": 6
+    },
+    {
+      "sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+      "rows": 24
+    }
+  ],
+  "scoring_sha256": "7d764f1aea47f4f7fc757542546e50ef2a585e92bfc71fd441e2807fbf1c5f1c",
+  "frozen_source": "9be1f86f3ccad188f3512f82ef23fd28573272bf",
+  "frozen_results_sha256": "42d7f1bb0502335e7570005adf2c0e75281874671306a5a44653a5bc130bcbe3",
+  "systems": {
+    "b2": {
+      "n": 30,
+      "correct": 18,
+      "verdict_accuracy": 0.6,
+      "wilson95": [
+        0.42320052498273836,
+        0.7540960567391659
+      ],
+      "tp": null,
+      "fp": null,
+      "fn": null,
+      "precision": null,
+      "recall": null,
+      "unsafe_admit": 9,
+      "quotes_not_in_listing": 0,
+      "section_mismatches": 0,
+      "no_answer": 0
+    },
+    "b1": {
+      "n": 30,
+      "correct": 20,
+      "verdict_accuracy": 0.6666666666666666,
+      "wilson95": [
+        0.48779725813830266,
+        0.807697044731538
+      ],
+      "tp": 13,
+      "fp": 3,
+      "fn": 0,
+      "precision": 0.8125,
+      "recall": 1,
+      "unsafe_admit": 4,
+      "quotes_not_in_listing": 1,
+      "section_mismatches": 19,
+      "no_answer": 0
+    },
+    "offline": {
+      "n": 30,
+      "correct": 23,
+      "verdict_accuracy": 0.7666666666666667,
+      "wilson95": [
+        0.5907132766967574,
+        0.8820776078949878
+      ],
+      "tp": 5,
+      "fp": 0,
+      "fn": 8,
+      "precision": 1,
+      "recall": 0.38461538461538464,
+      "unsafe_admit": 4,
+      "quotes_not_in_listing": 0,
+      "section_mismatches": 0,
+      "no_answer": 0
+    },
+    "live": {
+      "n": 30,
+      "correct": 24,
+      "verdict_accuracy": 0.8,
+      "wilson95": [
+        0.6269395261897256,
+        0.9049502189759876
+      ],
+      "tp": 7,
+      "fp": 2,
+      "fn": 6,
+      "precision": 0.7777777777777778,
+      "recall": 0.5384615384615384,
+      "unsafe_admit": 2,
+      "quotes_not_in_listing": 0,
+      "section_mismatches": 0,
+      "no_answer": 0
+    }
+  },
+  "rows": {
+    "b1": [
+      {
+        "id": "v3-01",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-02",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-03",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-04",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-05",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-06",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-07",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-08",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-09",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-10",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-11",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-12",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-13",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "other",
+              "quote": "please send the first month's $590 via Interac e-Transfer right away to dublin.owner27@example.com to secure the apartment, and I will overnight the keys and lease packet by FedEx once payment clears.",
+              "section": "N/A"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-14",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "other",
+              "quote": "whoever pays first gets it!",
+              "section": "RTA Section 105"
+            },
+            {
+              "ruleId": "excess_rent_deposit",
+              "quote": "send $640 via bank wire or USDT crypto",
+              "section": "RTA Section 106"
+            },
+            {
+              "ruleId": "other",
+              "quote": "send... a clear photo of your passport and Social Insurance Number (SIN) for our fast-track screening.",
+              "section": "Personal Information Protection and Electronic Documents Act (PIPEDA)"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-15",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "damage_deposit",
+              "quote": "just shoot over a $450 Interac e-Transfer upfront before seeing the place so I know you're serious",
+              "section": "Section 105"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-16",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "excess_rent_deposit",
+              "quote": "please send two months' rent ($1,150) upfront as a rent deposit",
+              "section": "Section 106"
+            },
+            {
+              "ruleId": "damage_deposit",
+              "quote": "PLUS a $500 refundable damage deposit",
+              "section": "Section 105"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-17",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "damage_deposit",
+              "quote": "they hold a $300 room-condition bond at move-in that gets refunded in May after they inspect the walls, carpet, and desk for wear and tear",
+              "section": "Section 105"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-18",
+        "result": {
+          "verdict": "HOLD",
+          "clauses": [
+            {
+              "ruleId": "no_pets",
+              "quote": "the landlord has a strict furry-friends-free rule, so no animals of any kind (cats, dogs, or caged pets) are allowed in the suite.",
+              "section": "Section 76"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-19",
+        "result": {
+          "verdict": "HOLD",
+          "clauses": [
+            {
+              "ruleId": "postdated_cheques",
+              "quote": "the property manager insists on either handing over four cheques pre-dated for the 1st of Jan–Apr at key pickup, or enrolling in mandatory automatic bank withdrawals through their payment portal",
+              "section": "Section 108"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-20",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "entry_notice",
+              "quote": "our lease lets the landlord pop into our bedrooms anytime during the week for quick checks or to show rooms to Fall applicants as long as he shoots us a text an hour or two beforehand.",
+              "section": "Section 26"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-21",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "maintenance_waiver",
+              "quote": "the written agreement states that the tenant takes care of and pays for any minor plumbing leaks, appliance breakdowns, or heating fixes during the 4 months so the owner doesn't have to deal with repairs.",
+              "section": "Section 20"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-22",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "excess_rent_deposit",
+              "quote": "tenant must pay a rent deposit equal to two months' rent ($2,100) upfront.",
+              "section": "Section 106"
+            },
+            {
+              "ruleId": "deposit_interest",
+              "quote": "The rent deposit earns zero interest and is strictly non-refundable under any circumstances.",
+              "section": "Section 106"
+            },
+            {
+              "ruleId": "lockout",
+              "quote": "if rent is more than 5 days overdue, management will immediately deactivate your smart-lock code and remove your belongings from the room without waiting on a Landlord and Tenant Board hearing.",
+              "section": "Section 24"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-23",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-24",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-25",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-26",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-27",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-28",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "damage_deposit",
+              "quote": "Refundable $250 furniture & wall damage security deposit (held until post-move-out inspection)",
+              "section": "Section 105"
+            },
+            {
+              "ruleId": "no_pets",
+              "quote": "Strict no-pets clause in the lease (no dogs, cats, or other animals permitted in the unit)",
+              "section": "Section 76"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v3-29",
+        "result": {
+          "verdict": "ADMIT",
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-30",
+        "result": {
+          "verdict": "REFUSE",
+          "clauses": [
+            {
+              "ruleId": "deposit_interest",
+              "quote": "the landlord specifies that no annual interest is paid on the deposit",
+              "section": "RTA s. 106(6)"
+            },
+            {
+              "ruleId": "excess_rent_deposit",
+              "quote": "it is strictly non-refundable if your co-op plans change",
+              "section": "RTA s. 105"
+            }
+          ]
+        }
+      }
+    ],
+    "b2": [
+      {
+        "id": "v3-01",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-02",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-03",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-04",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-05",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-06",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-07",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-08",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-09",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-10",
+        "result": {
+          "verdict": "HOLD",
+          "flags": [
+            "landlord_away"
+          ],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-11",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-12",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-13",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-14",
+        "result": {
+          "verdict": "REFUSE",
+          "flags": [
+            "risky_payment",
+            "urgency",
+            "messaging_only"
+          ],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-15",
+        "result": {
+          "verdict": "HOLD",
+          "flags": [
+            "payment_before_viewing"
+          ],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-16",
+        "result": {
+          "verdict": "REFUSE",
+          "flags": [
+            "landlord_away",
+            "risky_payment",
+            "urgency"
+          ],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-17",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-18",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-19",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-20",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-21",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-22",
+        "result": {
+          "verdict": "HOLD",
+          "flags": [
+            "urgency"
+          ],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-23",
+        "result": {
+          "verdict": "HOLD",
+          "flags": [
+            "no_address"
+          ],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-24",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-25",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-26",
+        "result": {
+          "verdict": "HOLD",
+          "flags": [
+            "urgency"
+          ],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-27",
+        "result": {
+          "verdict": "REFUSE",
+          "flags": [
+            "landlord_away",
+            "no_address"
+          ],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-28",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-29",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      },
+      {
+        "id": "v3-30",
+        "result": {
+          "verdict": "ADMIT",
+          "flags": [],
+          "clauses": []
+        }
+      }
+    ]
+  },
+  "b1_failures": {
+    "http429": 0,
+    "http503": 2,
+    "timeout": 0,
+    "retries": 2,
+    "interrupted": 0
+  },
+  "recovered_checkpoints": [
+    "v3-07"
+  ],
+  "frozen_bouncer_modes": {
+    "live": 23,
+    "offline-fallback": 6,
+    "offline": 1
+  },
+  "b1_tokens": {
+    "checks": 30,
+    "measured_checks": 28,
+    "http_attempts": 32,
+    "metadata_responses": 30,
+    "missing_usage": 2,
+    "mean_prompt": 449.2857142857143,
+    "mean_output": 55.67857142857143,
+    "mean_total": 504.9642857142857,
+    "p95": 630
+  },
+  "bouncer_dev_tokens": {
+    "checks": 10,
+    "measured_checks": 10,
+    "http_attempts": 10,
+    "metadata_responses": 10,
+    "missing_usage": 0,
+    "mean_prompt": 245.2,
+    "mean_output": 199.5,
+    "mean_total": 444.7,
+    "p95": 474
+  },
+  "bouncer_dev_adapter_sha256": "afee757f85f6a926b7fd66e2756b5974c1f3cc0c2c2ae240845c2c68ce08d5b8",
+  "bouncer_dev_successful_checks": 10,
+  "calls": [
+    {
+      "kind": "b1",
+      "id": "v3-01",
+      "at": "2026-11-24T20:19:15.107Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-02",
+      "at": "2026-11-24T20:19:24.110Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-03",
+      "at": "2026-11-24T20:19:33.129Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-04",
+      "at": "2026-11-24T20:19:42.134Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-05",
+      "at": "2026-11-24T20:19:51.141Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-06",
+      "at": "2026-11-24T20:20:00.152Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-07",
+      "at": "2026-11-24T20:22:13.954Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-08",
+      "at": "2026-11-24T20:22:22.971Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-09",
+      "at": "2026-11-24T20:22:31.996Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-10",
+      "at": "2026-11-24T20:22:41.003Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-11",
+      "at": "2026-11-24T20:22:53.338Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-12",
+      "at": "2026-11-24T20:23:02.344Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-13",
+      "at": "2026-11-24T20:23:11.361Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-14",
+      "at": "2026-11-24T20:23:20.368Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-15",
+      "at": "2026-11-24T20:23:29.377Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-16",
+      "at": "2026-11-24T20:23:38.385Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-17",
+      "at": "2026-11-24T20:23:47.399Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-18",
+      "at": "2026-11-24T20:23:56.415Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-19",
+      "at": "2026-11-24T20:24:05.420Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-20",
+      "at": "2026-11-24T20:24:14.880Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-21",
+      "at": "2026-11-24T20:24:23.901Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-22",
+      "at": "2026-11-24T20:24:32.908Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-23",
+      "at": "2026-11-24T20:24:41.919Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-23",
+      "at": "2026-11-24T20:25:12.223Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-24",
+      "at": "2026-11-24T20:25:21.237Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-25",
+      "at": "2026-11-24T20:25:30.260Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-26",
+      "at": "2026-11-24T20:25:39.266Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-27",
+      "at": "2026-11-24T20:25:48.283Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-28",
+      "at": "2026-11-24T20:25:57.285Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-29",
+      "at": "2026-11-24T20:26:06.295Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-30",
+      "at": "2026-11-24T20:26:15.302Z"
+    },
+    {
+      "kind": "b1",
+      "id": "v3-30",
+      "at": "2026-11-24T20:26:46.225Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-01",
+      "at": "2026-11-24T20:27:13.630Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-02",
+      "at": "2026-11-24T20:27:22.649Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-03",
+      "at": "2026-11-24T20:27:31.658Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-04",
+      "at": "2026-11-24T20:27:40.672Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-05",
+      "at": "2026-11-24T20:27:49.688Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-06",
+      "at": "2026-11-24T20:27:58.693Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-07",
+      "at": "2026-11-24T20:28:07.709Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-08",
+      "at": "2026-11-24T20:28:16.716Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-09",
+      "at": "2026-11-24T20:28:25.720Z"
+    },
+    {
+      "kind": "bouncer-dev-tokens",
+      "id": "gold-10",
+      "at": "2026-11-24T20:28:34.731Z"
+    },
+    {
+      "kind": "sample",
+      "id": "sample-clean",
+      "at": "2026-11-24T20:28:54.274Z"
+    },
+    {
+      "kind": "sample",
+      "id": "sample-tricky",
+      "at": "2026-11-24T20:29:03.279Z"
+    },
+    {
+      "kind": "sample",
+      "id": "sample-scammy",
+      "at": "2026-11-24T20:29:12.281Z"
+    }
+  ],
+  "pricing": {
+    "model": "gemini-3.1-flash-lite",
+    "input_per_1M": 0.25,
+    "output_per_1M": 1.5,
+    "url": "https://aistudio.google.com/docs/pricing#gemini-3.1-flash-lite",
+    "accessed": "2026-11-24",
+    "currency": "USD",
+    "note": "Standard text prices; output includes thinking tokens. List-price estimate; the demo runs on the free tier ($0)."
+  },
+  "cost_per_check_usd": {
+    "b1": 0.00019583928571428573,
+    "bouncer_dev": 0.00036055,
+    "b2": 0,
+    "offline": 0
+  }
+}

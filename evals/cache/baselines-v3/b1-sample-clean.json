@@ -1,0 +1,33 @@
+{
+  "id": "sample-clean",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "b19afcd798e0b6fa6a38510038e95b53f2b4e660fb39770222372f4267b1f210",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "9f1533ab6d4286f94130b166f224080efaf9acce1aa804c06a32584183eefd20",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:28:54.274Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\\"verdict\\\":\\\"ADMIT\\\",\\\"clauses\\\":[]}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRPEhZP2TtwECq7q4anPXMgjzjB9mKABBaeJ+RGnrc/j8zyNJevBpQQ9YdJdjh/2BKTMrmSWaHjA6Uaf42ccURKeHGc4azM6lgJ5K6T4Kn6y8vE/PAF7HRSM3zU+q/z5pMWIZrKLyZyXXRhJznvX0Xkc41tYBnjvFNC6d76xSvLMkXrBQYyPNCXgsR25qggTU/zr1tMb71yDwy1Yz1ccVDvlZg==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 315,\n    \"candidatesTokenCount\": 11,\n    \"totalTokenCount\": 326,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 315\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"hfMFa4mmMPmE1sgP5Zfa4Q4\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 315,
+        "candidatesTokenCount": 11,
+        "totalTokenCount": 326,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 315
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "ADMIT",
+    "clauses": []
+  },
+  "listing": "At 250 Lester Street a furnished room is $950/month. January 1 to April 30 2027. Utilities included. Viewing available. Owner does not live here."
+}

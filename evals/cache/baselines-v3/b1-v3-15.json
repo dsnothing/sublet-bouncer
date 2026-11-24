@@ -1,0 +1,38 @@
+{
+  "id": "v3-15",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "2315d970ab019f0c134d58a8fa153fdec3866538dbb1d80d3ab2628573ba75f4",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:23:29.379Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"just shoot over a $450 Interac e-Transfer upfront before seeing the place so I know you're serious\\\",\\n      \\\"category\\\": \\\"damage_deposit\\\",\\n      \\\"section\\\": \\\"Section 105\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRNOYL6jchPAA6ebsrIZGS6OP64EjdQ2QMD0pOK0TVltm/Io8humQiDlxr8poqGT7/y8PJbsmtsp1h3QoEmf2cxs4jq4jVTFFehB3oCxVNwsqO4b72tzqGRr4zrvkWVzv21XCUqg4E2i75lmJ5ZOY31t/EDtuGnVzzGCK/nM0IhOK3lvPC2kae94Bh7wySIoqMFwLaV1YAORAakiZR2DR25adQ==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 493,\n    \"candidatesTokenCount\": 83,\n    \"totalTokenCount\": 576,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 493\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"QPIFa9rfLaGUytMPxZ-g4A4\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 493,
+        "candidatesTokenCount": 83,
+        "totalTokenCount": 576,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 493
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "damage_deposit",
+        "quote": "just shoot over a $450 Interac e-Transfer upfront before seeing the place so I know you're serious",
+        "section": "Section 105"
+      }
+    ]
+  }
+}

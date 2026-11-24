@@ -1,0 +1,32 @@
+{
+  "id": "v3-09",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "e4bb58a62564d47622c91054292c5bce4412fdc766b7a114f6b7790096f104f5",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:22:32.023Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"ADMIT\\\",\\n  \\\"clauses\\\": []\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRO3Yd1B3BLcDciWSXFg0B27QYl+JAOVaRy7eQN8xU8Tiq+BxjMQkoiD6B/+KrD5+iUsSXVU4Zr8IKb6F9KXyDa6wX3hXcCSlDwMxm6NVMCq9WIMKWrI1raYRwZKzva3iRd+frK7zD7jNnUpk//b7jwocX4gtpn/n3xI4oG2SihHUy3mOJYr7hBKn4MfkEM/5M4bE44I4xRNE9CPzzQ5yoxy8Q==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 447,\n    \"candidatesTokenCount\": 20,\n    \"totalTokenCount\": 467,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 447\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"B_IFa9HUGoutuMYPo_PSiA8\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 447,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 467,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 447
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "ADMIT",
+    "clauses": []
+  }
+}

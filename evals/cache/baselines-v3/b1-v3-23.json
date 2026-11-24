@@ -1,0 +1,39 @@
+{
+  "id": "v3-23",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "3b7ab5348eced970c1264a54a8a429f66416b66b5673c964b7c9b0cc0fcce1d2",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:24:41.922Z",
+      "status": 503,
+      "raw": "{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "usageMetadata": null,
+      "error": "HTTP 503"
+    },
+    {
+      "at": "2026-11-24T20:25:12.226Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"ADMIT\\\",\\n  \\\"clauses\\\": []\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRP+/TB7eNck31Skwo/6mNA1TQLfMBROkAriugEA2Z9duzpSR61Vwm6f+Vc3+l1rucK4zBhLmQXIPQxdfgjx85tM/OZ8OWsb9yvPJgBdJpe/rD1KkojbptVe1V0FX+mca83eFKPAkeDVQPHKOj5igyylAcsHjcTqHE7rfBscvUzd3+Pbyxaa+MnETsa/vj1i0mS00aVCHx9kdNLkppxf6SIclw==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 447,\n    \"candidatesTokenCount\": 20,\n    \"totalTokenCount\": 467,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 447\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"p_IFa86mLa-5wbUPhu-rOA\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 447,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 467,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 447
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "ADMIT",
+    "clauses": []
+  }
+}

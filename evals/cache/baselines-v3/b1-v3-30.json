@@ -1,0 +1,50 @@
+{
+  "id": "v3-30",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "84888ea29d21fbc86a9a5ff0e41eacaed9869094ab306b3bf955409166fb91ca",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:26:15.305Z",
+      "status": 503,
+      "raw": "{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "usageMetadata": null,
+      "error": "HTTP 503"
+    },
+    {
+      "at": "2026-11-24T20:26:46.228Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"the landlord specifies that no annual interest is paid on the deposit\\\",\\n      \\\"category\\\": \\\"deposit_interest\\\",\\n      \\\"section\\\": \\\"RTA s. 106(6)\\\"\\n    },\\n    {\\n      \\\"quote\\\": \\\"it is strictly non-refundable if your co-op plans change\\\",\\n      \\\"category\\\": \\\"excess_rent_deposit\\\",\\n      \\\"section\\\": \\\"RTA s. 105\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRNGJfZI29rot6cQKdfdw4hRhjZ4f3QAHq1mYkLLBfDJbRZaaN3z0BPVKop6fnzScwkQ7XRnl9ie5G3D8/BG+o5qvRe+Gpb9QK7zNzT6vBRRWQmSX0rE/jvIQZTqdr/eBpNlDSXCAm430nGscuICFXYDAW6zrcq/TH3yIXkKenP5OBrieA7aPrSCUPQiGXAwT3G+q32/Pkn4NFKagUviFQM9jA==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 1061,\n    \"candidatesTokenCount\": 128,\n    \"totalTokenCount\": 1189,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 1061\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"BfMFa_SMK6KLytMP-p_T-A4\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 1061,
+        "candidatesTokenCount": 128,
+        "totalTokenCount": 1189,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1061
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "deposit_interest",
+        "quote": "the landlord specifies that no annual interest is paid on the deposit",
+        "section": "RTA s. 106(6)"
+      },
+      {
+        "ruleId": "excess_rent_deposit",
+        "quote": "it is strictly non-refundable if your co-op plans change",
+        "section": "RTA s. 105"
+      }
+    ]
+  }
+}

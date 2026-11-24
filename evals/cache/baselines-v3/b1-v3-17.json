@@ -1,0 +1,38 @@
+{
+  "id": "v3-17",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "f243fbec7d62c3552f53685ca7e65811c0a88441200fafa3dc89a19c0ed2c03f",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:23:47.406Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"they hold a $300 room-condition bond at move-in that gets refunded in May after they inspect the walls, carpet, and desk for wear and tear\\\",\\n      \\\"category\\\": \\\"damage_deposit\\\",\\n      \\\"section\\\": \\\"Section 105\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRO1/O1HnJ5jFPCraz7AYrAk+ojITCgjaDBUDRLiTLRWEwAD7UBZl8FOjqg+/xA2azsjYgkCa5w65o7GjXxsq+cPWPzWgOWhhTWkX9OTpU8ekPezLk4JmGl53QPRdmRzBobRB4Yo4zgkgB7JCutJMmp3Q/1VX8skp1p/mXOWtMkNFP8xItkJCu5wyawkdqdcHQszS6dnVvz3JR/1UNXPzsy2IQ==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 454,\n    \"candidatesTokenCount\": 92,\n    \"totalTokenCount\": 546,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 454\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"UvIFa63eM67UiLMP-NvYqQ8\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 454,
+        "candidatesTokenCount": 92,
+        "totalTokenCount": 546,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 454
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "damage_deposit",
+        "quote": "they hold a $300 room-condition bond at move-in that gets refunded in May after they inspect the walls, carpet, and desk for wear and tear",
+        "section": "Section 105"
+      }
+    ]
+  }
+}

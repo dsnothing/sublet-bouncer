@@ -1,0 +1,43 @@
+{
+  "id": "v3-16",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_sha256": "5989a440862aab2b2348dd5351357cc0d2d79211925ea27bf704386163975158",
+  "listing_sha256": "f7f26f1fda137d30cebc8a762d6a66165380b6a3d80ec16cfdba9655b6594aeb",
+  "prereg_commit": "1c22017cdd1be2ab63b414a6193ca0d2e7951278",
+  "harness_sha256": "981b119c3114c7cbf45fe9ca3246d4cb24989cfcbcf86e83d5599e22ae12f9c5",
+  "complete": true,
+  "attempts": [
+    {
+      "at": "2026-11-24T20:23:38.388Z",
+      "status": 200,
+      "raw": "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"{\\n  \\\"verdict\\\": \\\"REFUSE\\\",\\n  \\\"clauses\\\": [\\n    {\\n      \\\"quote\\\": \\\"please send two months' rent ($1,150) upfront as a rent deposit\\\",\\n      \\\"category\\\": \\\"excess_rent_deposit\\\",\\n      \\\"section\\\": \\\"Section 106\\\"\\n    },\\n    {\\n      \\\"quote\\\": \\\"PLUS a $500 refundable damage deposit\\\",\\n      \\\"category\\\": \\\"damage_deposit\\\",\\n      \\\"section\\\": \\\"Section 105\\\"\\n    }\\n  ]\\n}\",\n            \"thoughtSignature\": \"EqkBCqYBAWkUfRPhxttVRfsgjqvXoOheV7AKa2ThmtittU8jLopMfbfOtopEHFVu1j/tQ23TC3aG+IzYj6TEAnvvIu0XMVJg5UbAn5gvo0Ye1qnLdSTYZjqgXhSZZJeYMjf4jHC//bM5eg0oSBUg2RZ7BLYWzxH1jdM57jAEY2r4l2RfBQW7Zj/mY+Ru59ywRwj3IdaZKRdTTo5VKnNTmmROBPmrUYFg1ZKf1g==\"\n          }\n        ],\n        \"role\": \"model\"\n      },\n      \"finishReason\": \"STOP\",\n      \"index\": 0\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\": 460,\n    \"candidatesTokenCount\": 122,\n    \"totalTokenCount\": 582,\n    \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 460\n      }\n    ],\n    \"serviceTier\": \"standard\"\n  },\n  \"modelVersion\": \"gemini-3.1-flash-lite\",\n  \"responseId\": \"SfIFa5OkL6HhytMPv_vtuAk\"\n}\n",
+      "usageMetadata": {
+        "promptTokenCount": 460,
+        "candidatesTokenCount": 122,
+        "totalTokenCount": 582,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 460
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "result": {
+    "verdict": "REFUSE",
+    "clauses": [
+      {
+        "ruleId": "excess_rent_deposit",
+        "quote": "please send two months' rent ($1,150) upfront as a rent deposit",
+        "section": "Section 106"
+      },
+      {
+        "ruleId": "damage_deposit",
+        "quote": "PLUS a $500 refundable damage deposit",
+        "section": "Section 105"
+      }
+    ]
+  }
+}
