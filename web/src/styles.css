@@ -843,7 +843,8 @@ button:disabled {
   gap: 10px;
 }
 
-.verdict-stamp-col:has(.verdict-stamp.reduced) {
+.verdict-stamp-col:has(.verdict-stamp.reduced),
+.verdict-stamp-col:has(.saved-result-tag) {
   flex: 1 1 100%;
   flex-direction: row;
   align-items: center;
@@ -858,7 +859,8 @@ button:disabled {
   gap: 10px;
 }
 
-.confidence-tag {
+.confidence-tag,
+.saved-result-tag {
   font-size: 11px;
   font-weight: 600;
   color: #334155;
@@ -869,7 +871,8 @@ button:disabled {
   line-height: 1.35;
 }
 
-.btn-recheck-gemini {
+.btn-recheck-gemini,
+.btn-fresh-check {
   min-height: 36px;
   padding: 0 11px;
   border-radius: var(--r-sm);
@@ -884,7 +887,13 @@ button:disabled {
   transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
 }
 
-.btn-recheck-gemini:disabled {
+.btn-fresh-check {
+  border-color: var(--border-strong);
+  color: var(--ink);
+}
+
+.btn-recheck-gemini:disabled,
+.btn-fresh-check:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -892,6 +901,9 @@ button:disabled {
 @media (hover: hover) and (pointer: fine) {
   .btn-recheck-gemini:hover:not(:disabled) {
     background: var(--rope-soft);
+  }
+  .btn-fresh-check:hover:not(:disabled) {
+    background: #eef2f6;
   }
 }
 

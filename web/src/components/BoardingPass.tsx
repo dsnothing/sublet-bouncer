@@ -27,6 +27,7 @@ interface BoardingPassProps {
   canRecheckWithGemini: boolean;
   onUseOfflineNow: () => void;
   onRecheckWithGemini: () => void;
+  onRunFreshCheck: () => void;
   onPerformAction: (actionId: string, expectedRunId?: string) => boolean;
 }
 
@@ -77,7 +78,16 @@ function classifyFallback(
     };
   }
 
-  // Offline fallback: distinguish rate-limit/quota vs timeout vs network
+  // Offline fallback: distinguish visitor limit vs Gemini rate-limit/quota vs timeout vs network
+  if (text.includes('limited per visitor') || text.includes('per visitor')) {
+    return {
+      title: "You've used this visitor's live checks for now.",
+      body: 'The offline engine answered; try again in a few minutes.',
+      showOfflineExplainer: true,
+      rawDetail: rawReason,
+    };
+  }
+
   if (
     text.includes('429') ||
     text.includes('503') ||
@@ -158,6 +168,21 @@ const REFUSAL_COPY: Record<
   },
 };
 
+function formatCachedDate(cachedAt?: string): string | null {
+  if (!cachedAt) return null;
+  const ms = Date.parse(cachedAt);
+  if (!Number.isFinite(ms)) return null;
+  try {
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(new Date(ms));
+  } catch {
+    return cachedAt.slice(0, 10);
+  }
+}
+
 export const BoardingPass: React.FC<BoardingPassProps> = ({
   result,
   profile,
@@ -169,6 +194,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   canRecheckWithGemini,
   onUseOfflineNow,
   onRecheckWithGemini,
+  onRunFreshCheck,
   onPerformAction,
 }) => {
   const [actionError, setActionError] = useState<string | null>(null);
@@ -253,6 +279,15 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
 
   const refusalInfo = result.refused ? REFUSAL_COPY[result.refused.reason] : null;
   const shortRunId = result.runId.length > 12 ? result.runId.slice(0, 8) : result.runId;
+  const isCachedResult = result.cached === true;
+  const cachedDate = isCachedResult ? formatCachedDate(result.cachedAt) : null;
+  const savedResultLabel = isCachedResult
+    ? [
+        'Saved live result',
+        result.model ?? 'gemini-3.1-flash-lite',
+        ...(cachedDate ? [cachedDate] : []),
+      ].join(' · ')
+    : null;
   const isReducedConfidence = result.verdictConfidence === 'reduced';
   const confidenceReason = isReducedConfidence
     ? result.verdictConfidenceReason ??
@@ -274,7 +309,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
       <div className="pass-top-band">
         <span className="pass-airline">WATERLOO CO-OP GATE PASS</span>
         <span className="pass-meta-mono">
-          {shortRunId} · {result.mode.toUpperCase()}
+          {shortRunId} · {isCachedResult ? 'SAVED LIVE' : result.mode.toUpperCase()}
           {result.model ? ` · ${result.model}` : ''}
         </span>
       </div>
@@ -339,6 +374,11 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
                   Checked offline — exact wording only
                 </span>
               )}
+              {savedResultLabel && (
+                <span className="saved-result-tag" data-testid="saved-result-tag">
+                  {savedResultLabel}
+                </span>
+              )}
             </div>
             {isReducedConfidence && canRecheckWithGemini && !result.refused && (
               <button
@@ -350,6 +390,18 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
               >
                 <RefreshCw size={13} aria-hidden="true" />
                 <span>Re-check with Gemini</span>
+              </button>
+            )}
+            {isCachedResult && !result.refused && (
+              <button
+                type="button"
+                className="btn-fresh-check"
+                onClick={onRunFreshCheck}
+                disabled={isAnalyzing}
+                data-testid="run-fresh-check-btn"
+              >
+                <RefreshCw size={13} aria-hidden="true" />
+                <span>Run fresh check</span>
               </button>
             )}
           </div>

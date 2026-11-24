@@ -192,3 +192,9 @@
 - Env: GEMINI_API_KEY; GEMINI_MODEL=gemini-3.1-flash-lite; GEMINI_FALLBACK_MODEL=gemini-3-flash-preview. No new env vars.
 - Seed intentionally empty under mock-only verification; lead must run documented seed command with genuine live credentials, commit output, then deploy. UI cache labeling belongs to Antigravity.
 - Limits: cache/limiter/coalescing are per instance (reset on cold start, no global coordination); noCache still rate limited. Post-v3 only: frozen v3 not opened/run/tuned. No deployment.
+
+## C4f — Honest "saved result" labelling + visitor-limit copy (Antigravity L4+L5)
+- **Role/skills**: L4+L5 frontend & browser QA; skills: `karpathy-guidelines`, `unslop-ui`, `emil-design-eng`; gap: explicit `C:\Program Files\nodejs` PATH, headless Chrome CDP.
+- **Changed**: Added calm `"Saved live result · <model> · <date>"` tag inside `aria-live="polite"`, `SAVED LIVE` top-band / `· SAVED` mobile pill, `"Run fresh check"` button sending `noCache: true` (honoured by `api/analyze.ts` + `capacity.ts`), visitor-limit fallback copy (`"You've used this visitor's live checks for now. The offline engine answered; try again in a few minutes."`), and `cached`/`cachedAt` storage validation (`BoardingPass.tsx`, `App.tsx`, `storage.ts`, `styles.css`).
+- **Verified**: `npm run typecheck`, `npm run build`, `npm test` (221 passed, 1 skipped) green; headless Chrome CDP at 1280×900 & 375×812 verified cached tag in `aria-live`, `noCache: true` dispatch, visitor-limit banner, `prefers-reduced-motion: reduce` (`1e-05s`), 0 overflow, 0 console errors.
+- **Screenshots**: `evidence/ui/c4f-{1280-cached,375-cached,1280-visitor-limit,375-visitor-limit}.png`. No deploy.

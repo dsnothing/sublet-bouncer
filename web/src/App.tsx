@@ -133,6 +133,7 @@ export const App: React.FC = () => {
     text: string,
     prof: ProfileState,
     source: DataSourceMode,
+    options?: { noCache?: boolean },
   ) => {
     if (!text.trim()) return;
     activeAbortRef.current?.abort();
@@ -150,6 +151,7 @@ export const App: React.FC = () => {
           listing: text,
           profile: prof,
           mode: source === 'api' ? 'live' : 'offline',
+          ...(options?.noCache ? { noCache: true } : {}),
         },
         source,
         { signal: controller.signal },
@@ -183,6 +185,11 @@ export const App: React.FC = () => {
   const handleRecheckWithGemini = () => {
     setDataSource('api');
     void executeAnalysis(listing, profile, 'api');
+  };
+
+  const handleRunFreshCheck = () => {
+    setDataSource('api');
+    void executeAnalysis(listing, profile, 'api', { noCache: true });
   };
 
   // Run initial analysis automatically on first load when no persisted result exists
@@ -407,7 +414,9 @@ export const App: React.FC = () => {
             {result
               ? result.verdictConfidence === 'reduced'
                 ? `${result.verdict} · OFFLINE`
-                : result.verdict
+                : result.cached
+                  ? `${result.verdict} · SAVED`
+                  : result.verdict
               : 'CHECKING'}
           </span>
           {result && !result.refused && (
@@ -472,6 +481,7 @@ export const App: React.FC = () => {
             canRecheckWithGemini={apiReachable}
             onUseOfflineNow={handleUseOfflineNow}
             onRecheckWithGemini={handleRecheckWithGemini}
+            onRunFreshCheck={handleRunFreshCheck}
             onPerformAction={handlePerformAction}
           />
         ) : (
