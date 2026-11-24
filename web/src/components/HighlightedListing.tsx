@@ -238,7 +238,7 @@ export const HighlightedListing: React.FC<HighlightedListingProps> = ({
         >
           <div className="lesson-popover-header">
             <span className={`lesson-section-chip ${activeClause.status}`}>
-              {activeClause.section ? `RTA s.${activeClause.section}` : 'RTA Note'} ·{' '}
+              {activeClause.section ? `RTA ${/^s\./i.test(activeClause.section) ? activeClause.section : `s.${activeClause.section}`}` : 'RTA Note'} ·{' '}
               {activeClause.status.toUpperCase()}
             </span>
             <button
