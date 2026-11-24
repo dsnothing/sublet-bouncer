@@ -5,7 +5,7 @@ Submissions open **Nov 28 12:00am ET** and close **Dec 1 3:30am ET** (Devpost sc
 > **Status: DRAFT. Items marked ⏳ are not done yet and must not be claimed until they exist in git with dates inside Nov 28–30.**
 
 ## Pre-existing vs new work (required disclosure)
-- **Pre-existing (built from Nov 24, before submissions opened on Nov 28):** the core engine (typed decisions D1–D7, permission gate, action log with undo, "Bouncer was wrong" correction flow), the web interface, the data tables, 160 automated tests, the evaluation harness and three evaluation sets. The same core is entered in two other hackathons (Global AI Builder's Challenge, IdeaLab Hacks), each with its own write-up and video.
+- **Pre-existing (built from Nov 24, before submissions opened on Nov 28):** the core engine (typed decisions D1–D7, permission gate, action log with undo, "Bouncer was wrong" correction flow), the web interface, the data tables, 370 automated tests, the evaluation harness and three evaluation sets. Also built before Nov 28 (Nov 24): a one-line verdict headline, an Ontario-only guard, saved live sample results with a circuit breaker and labelled simulated outage, and a plain-chatbot baseline comparison (`evals/RESULTS-BASELINES.md`). The same core is entered in two other hackathons (Global AI Builder's Challenge, IdeaLab Hacks), each with its own write-up and video.
 - **New during the Hack Days (Nov 28–30):** ⏳ policy versioning (every verdict records the rule-table version that produced it), ⏳ a "learned corrections" registry that replays past human corrections against new rule versions, ⏳ a batch triage queue for many listings, ⏳ the recorded wrong-decision recovery, ⏳ final test evidence. *Fill in only what ships, with commit SHAs and dates.*
 
 ## What it does (a real workflow, not a chatbot)
@@ -33,8 +33,10 @@ Details with code references: `docs/DECISION-MAP.md`.
 Details: `docs/ACCOUNTABILITY.md`.
 
 ## Testing Evidence
-- **160 automated tests** (1 optional live test skipped without a key), including failure-oriented ones: model timeout falls back to offline, malformed model output rejected, span not in listing dropped, non-English refused, prompt injection held, forbidden send throws, ungeocodable address does not guess, rate limit (429) falls back, correction rolls back and emits a fixture.
+- **370 automated tests** (1 optional live test skipped without a key), including failure-oriented ones: model timeout falls back to offline, malformed model output rejected, span not in listing dropped, non-English refused, prompt injection held, forbidden send throws, ungeocodable address does not guess, rate limit (429) falls back, correction rolls back and emits a fixture.
 - **Held-out evaluation:** 30 blind listings, one shot, source frozen: 24/30 verdicts correct live (80%) and 23/30 offline (77%); report `evals/RESULTS-v3-FINAL.md`. Earlier blind runs scored 43% before general fixes (disclosed in the history table).
+- **Baseline comparison (pre-existing, post-v3, v3 not re-run):** on the same 30 listings a plain chatbot prompt scored 20/30 and found all 13 labelled violations (recall 1.00); Bouncer scored 23/30 offline and 24/30 live with recall 0.38 / 0.54, and had 2 unsafe ADMITs live vs 4 for the chatbot (offline: 4). Intervals overlap; the claim is code-verified quotes and sections, not that Bouncer beats a chatbot (`evals/RESULTS-BASELINES.md`).
+- **Failure handling on demand (pre-existing):** a labelled "Simulate a Gemini outage" control and a circuit breaker exercise the offline fallback; production smoke evidence is `evidence/prod-smoke-2026-11-24T21-16-01-968Z.json`.
 - **One recorded example of the system handling an incorrect decision:** ⏳ *to be recorded Nov 28–30* (video of "Bouncer was wrong": the log rewinds, the draft un-writes itself, the rule is corrected and a regression test appears). The mechanism exists today; the recording does not.
 
 ## Why it should score on the criteria
