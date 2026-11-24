@@ -36,7 +36,11 @@ export function verifyExtraction(raw: unknown, listing: string): { extraction: E
     const span = findSpan(listing, f.span.text);
     if (!span) { issues.push(`Dropped ${name}: evidence is absent from the listing`); continue; }
     // Values controlling policy must agree with a deterministic reading of their cited evidence.
-    const parsed = offlineExtract(span.text).fields[name];
+    let parsed = offlineExtract(span.text).fields[name];
+    if (name === 'rent' && !parsed) {
+      const contextual = offlineExtract(listing).fields.rent;
+      if (contextual?.span && span.start >= contextual.span.start && span.end <= contextual.span.end) parsed = contextual;
+    }
     if (['rent','owner_lives_in','viewing_offered'].includes(name) && (!parsed || parsed.value !== f.value)) { issues.push(`Dropped ${name}: value conflicts with evidence`); continue; }
     if (['address','contact_channel'].includes(name) && (typeof f.value !== 'string' || !normalize(span.text).toLowerCase().includes(normalize(f.value).toLowerCase()))) { issues.push(`Dropped ${name}: value conflicts with evidence`); continue; }
     fields[name] = { ...f, span };

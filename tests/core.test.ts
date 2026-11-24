@@ -45,5 +45,7 @@ describe('failures and conservative policy',()=>{
   it('a high-risk correction produces only safe reply drafting',async()=>{const {result}=markWrong(await run(),'D3',.95);expect(result.actions.find(a=>a.type==='draft_reply')?.payload).toContain('will not send payment');});
   it('recomputes legality and verdict after correcting RTA applicability',async()=>{const r=await run(clean.replace('Owner does not live here','Sharing the kitchen with the owner')+' No pets allowed.');const corrected=markWrong(r,'D5','applies').result;expect(corrected.clauses.some(c=>c.status==='void')).toBe(true);expect(corrected.verdict).toBe('HOLD');expect(corrected.log.slice(0,r.log.length)).toEqual(r.log);});
   it('escalates low-confidence live fields',async()=>{const r=await live({extract:async()=>({fields:{rent:{value:850,span:{text:'$850/month'},confidence:.6}},clauses:[]})});expect(r.escalations.some(e=>e.decisionId==='D1'&&e.question.includes('rent'))).toBe(true);});
+  it('accepts a numeric rent span within a verified currency expression',()=>{const e=verifyExtraction({fields:{rent:{value:850,span:{text:'850'},confidence:1}},clauses:[]},clean);expect(e.extraction.fields.rent.value).toBe(850);});
+  it('does not interpret an address number as rent',()=>{const e=verifyExtraction({fields:{rent:{value:203,span:{text:'203'},confidence:1}},clauses:[]},clean);expect(e.extraction.fields.rent).toBeUndefined();});
 });
 
