@@ -1,6 +1,6 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
-import { SAMPLE_LISTINGS } from '../adapter';
+import { CloudOff, ShieldCheck } from 'lucide-react';
+import { isBundledSampleListing, SAMPLE_LISTINGS } from '../adapter';
 import type { ProfileState, SampleKey } from '../types';
 
 interface ListingEditorProps {
@@ -11,6 +11,7 @@ interface ListingEditorProps {
   activeSample: SampleKey | null;
   onSelectSample: (key: SampleKey) => void;
   onAnalyze: () => void;
+  onSimulateOutage: () => void;
   isAnalyzing: boolean;
 }
 
@@ -24,8 +25,15 @@ export const ListingEditor: React.FC<ListingEditorProps> = ({
   activeSample,
   onSelectSample,
   onAnalyze,
+  onSimulateOutage,
   isAnalyzing,
 }) => {
+  const canSimulateOutage = isBundledSampleListing(listing);
+  const simulateDisabled = isAnalyzing || !canSimulateOutage;
+  const simulateTooltip = canSimulateOutage
+    ? 'Runs the real offline fallback chain on this bundled sample without calling Gemini.'
+    : 'Simulated outage is available only on bundled sample listings, not pasted text.';
+
   return (
     <section aria-labelledby="listing-editor-heading">
       <div className="panel-heading">
@@ -50,6 +58,28 @@ export const ListingEditor: React.FC<ListingEditorProps> = ({
             </button>
           );
         })}
+      </div>
+
+      <div className="sample-utility-row">
+        <span className="simulate-btn-wrap" title={simulateTooltip}>
+          <button
+            type="button"
+            className="btn-simulate-outage"
+            onClick={onSimulateOutage}
+            disabled={simulateDisabled}
+            title={simulateTooltip}
+            aria-describedby={!canSimulateOutage ? 'simulate-outage-hint' : undefined}
+            data-testid="simulate-outage-btn"
+          >
+            <CloudOff size={14} aria-hidden="true" />
+            <span>Simulate a Gemini outage</span>
+          </button>
+        </span>
+        {!canSimulateOutage && (
+          <span id="simulate-outage-hint" className="simulate-outage-hint">
+            Bundled samples only
+          </span>
+        )}
       </div>
 
       <label className="field-label" htmlFor="listing-textarea">

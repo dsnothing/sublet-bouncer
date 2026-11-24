@@ -293,7 +293,51 @@ button:disabled {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.sample-utility-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
   margin-bottom: 12px;
+}
+
+.simulate-btn-wrap {
+  display: inline-flex;
+}
+
+.btn-simulate-outage {
+  min-height: 36px;
+  padding: 0 11px;
+  border-radius: var(--r-sm);
+  border: 1px dashed var(--border-strong);
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-simulate-outage:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.simulate-outage-hint {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-simulate-outage:hover:not(:disabled) {
+    border-color: var(--ink);
+    background: var(--ticket-alt);
+    color: var(--ink);
+  }
 }
 
 .sample-btn {
@@ -631,6 +675,16 @@ button:disabled {
   justify-content: space-between;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.pass-top-band.simulated {
+  background: #334155;
+  border-bottom: 2px dashed #94a3b8;
+}
+
+.pass-top-band.simulated .pass-meta-mono {
+  color: #f1f5f9;
+  font-weight: 700;
 }
 
 .pass-airline {
@@ -1003,6 +1057,47 @@ button:disabled {
   background: #edf2f9;
   border-color: #bfd0e6;
   color: #1e3a5f;
+}
+
+.banner-alert.simulated {
+  background: #f8fafc;
+  border: 1px dashed #64748b;
+  color: #1e293b;
+}
+
+.banner-alert.breaker {
+  background: #f5f3ef;
+  border-color: #c8b69a;
+  color: #3f2d14;
+}
+
+.simulated-pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  margin-right: 6px;
+  border-radius: 4px;
+  background: #334155;
+  color: #ffffff;
+  vertical-align: 1px;
+}
+
+.simulated-api-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #334155;
+  background: #e2e8f0;
+  border-radius: 4px;
+  padding: 3px 7px;
+  align-self: flex-start;
+  word-break: break-word;
+}
+
+.recheck-btn-label {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Live wait state bar */

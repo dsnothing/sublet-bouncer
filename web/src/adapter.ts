@@ -50,6 +50,14 @@ export function getSampleListing(key: SampleKey): string {
   return SAMPLE_LISTINGS[key].listing;
 }
 
+export function isBundledSampleListing(listing: string): boolean {
+  return (
+    listing === SAMPLE_LISTINGS.clean.listing ||
+    listing === SAMPLE_LISTINGS.tricky.listing ||
+    listing === SAMPLE_LISTINGS.scammy.listing
+  );
+}
+
 export function isFixturesDemoEnabled(): boolean {
   if (typeof window === 'undefined') return false;
   try {

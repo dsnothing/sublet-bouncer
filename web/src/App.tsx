@@ -133,7 +133,7 @@ export const App: React.FC = () => {
     text: string,
     prof: ProfileState,
     source: DataSourceMode,
-    options?: { noCache?: boolean },
+    options?: { noCache?: boolean; simulateOutage?: boolean },
   ) => {
     if (!text.trim()) return;
     activeAbortRef.current?.abort();
@@ -152,6 +152,7 @@ export const App: React.FC = () => {
           profile: prof,
           mode: source === 'api' ? 'live' : 'offline',
           ...(options?.noCache ? { noCache: true } : {}),
+          ...(options?.simulateOutage ? { simulateOutage: true } : {}),
         },
         source,
         { signal: controller.signal },
@@ -190,6 +191,11 @@ export const App: React.FC = () => {
   const handleRunFreshCheck = () => {
     setDataSource('api');
     void executeAnalysis(listing, profile, 'api', { noCache: true });
+  };
+
+  const handleSimulateOutage = () => {
+    setDataSource('api');
+    void executeAnalysis(listing, profile, 'api', { simulateOutage: true });
   };
 
   // Run initial analysis automatically on first load when no persisted result exists
@@ -412,11 +418,13 @@ export const App: React.FC = () => {
             }${result?.verdictConfidence === 'reduced' ? ' reduced' : ''}`}
           >
             {result
-              ? result.verdictConfidence === 'reduced'
-                ? `${result.verdict} · OFFLINE`
-                : result.cached
-                  ? `${result.verdict} · SAVED`
-                  : result.verdict
+              ? result.simulated
+                ? `${result.verdict} · SIMULATED`
+                : result.verdictConfidence === 'reduced'
+                  ? `${result.verdict} · OFFLINE`
+                  : result.cached
+                    ? `${result.verdict} · SAVED`
+                    : result.verdict
               : 'CHECKING'}
           </span>
           {result && !result.refused && (
@@ -458,6 +466,7 @@ export const App: React.FC = () => {
             activeSample={activeSample}
             onSelectSample={handleSelectSample}
             onAnalyze={handleAnalyze}
+            onSimulateOutage={handleSimulateOutage}
             isAnalyzing={isAnalyzing}
           />
           <HighlightedListing

@@ -48,6 +48,7 @@ export function getLiveWaitStage(elapsedMs: number, source: DataSourceMode): str
 }
 
 interface FallbackBannerInfo {
+  kind: 'info' | 'simulated' | 'breaker';
   title: string;
   body: string;
   showOfflineExplainer: boolean;
@@ -58,13 +59,38 @@ function classifyFallback(
   mode: AnalysisResult['mode'],
   rawReason?: string,
   model?: string,
+  simulated?: boolean,
+  breaker?: AnalysisResult['breaker'],
 ): FallbackBannerInfo | null {
+  if (simulated === true) {
+    return {
+      kind: 'simulated',
+      title: 'Simulated outage: Gemini was not called.',
+      body: "This is the offline engine's answer, shown the way a real outage would be.",
+      showOfflineExplainer: true,
+      rawDetail: rawReason ?? 'SIMULATED OUTAGE (demo): Gemini was not called',
+    };
+  }
+
+  if (breaker === 'open' || (rawReason ?? '').startsWith('Gemini is overloaded right now')) {
+    return {
+      kind: 'breaker',
+      title:
+        rawReason ??
+        'Gemini is overloaded right now (3 failed calls in the last minute); offline engine used. Try again in about a minute.',
+      body: '',
+      showOfflineExplainer: true,
+      rawDetail: rawReason,
+    };
+  }
+
   if (!rawReason && mode !== 'offline-fallback') return null;
   const text = (rawReason ?? '').toLowerCase();
 
   // Live mode answered via backup model (primary 429/503/timeout -> fallback model succeeded)
   if (mode === 'live' && rawReason) {
     return {
+      kind: 'info',
       title: 'Primary Gemini model was busy — used backup model',
       body: `Your listing was still analyzed live${model ? ` with ${model}` : ''}.`,
       showOfflineExplainer: false,
@@ -75,6 +101,7 @@ function classifyFallback(
   // Non-fallback informational notices (e.g. fixture demo mode)
   if (mode !== 'offline-fallback') {
     return {
+      kind: 'info',
       title: rawReason ?? '',
       body: '',
       showOfflineExplainer: false,
@@ -84,6 +111,7 @@ function classifyFallback(
   // Offline fallback: distinguish visitor limit vs Gemini rate-limit/quota vs timeout vs network
   if (text.includes('limited per visitor') || text.includes('per visitor')) {
     return {
+      kind: 'info',
       title: "You've used this visitor's live checks for now.",
       body: 'The offline engine answered; try again in a few minutes.',
       showOfflineExplainer: true,
@@ -99,6 +127,7 @@ function classifyFallback(
     text.includes('resource_exhausted')
   ) {
     return {
+      kind: 'info',
       title: 'Gemini hit its free-tier rate limit',
       body: 'Switched to the built-in offline engine so your listing was still checked right away.',
       showOfflineExplainer: true,
@@ -108,6 +137,7 @@ function classifyFallback(
 
   if (text.includes('timeout') || text.includes('timed out') || text.includes('deadline')) {
     return {
+      kind: 'info',
       title: 'Live AI took too long to respond',
       body: 'Switched to the built-in offline engine so the page stays responsive.',
       showOfflineExplainer: true,
@@ -124,6 +154,7 @@ function classifyFallback(
     text.includes('http 5')
   ) {
     return {
+      kind: 'info',
       title: 'Could not reach the live AI service',
       body: 'Ran the built-in offline engine in your browser instead.',
       showOfflineExplainer: true,
@@ -132,6 +163,7 @@ function classifyFallback(
   }
 
   return {
+    kind: 'info',
     title: 'Live AI was unavailable',
     body: 'Ran the built-in offline engine in your browser instead.',
     showOfflineExplainer: true,
@@ -206,11 +238,36 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showWhyOffline, setShowWhyOffline] = useState<boolean>(false);
 
+  const rawFallbackReason = result.fallbackReason ?? notice;
+  const isSimulatedOutage = result.simulated === true;
+  const isBreakerOpen =
+    result.breaker === 'open' || (rawFallbackReason ?? '').startsWith('Gemini is overloaded right now');
+
+  const [breakerCooldownSec, setBreakerCooldownSec] = useState<number>(() => (isBreakerOpen ? 60 : 0));
+
   useEffect(() => {
     setCopiedId(null);
     setActionError(null);
     setShowWhyOffline(false);
   }, [result.runId]);
+
+  useEffect(() => {
+    if (!isBreakerOpen) {
+      setBreakerCooldownSec(0);
+      return;
+    }
+    setBreakerCooldownSec(60);
+    const id = window.setInterval(() => {
+      setBreakerCooldownSec((prev) => {
+        if (prev <= 1) {
+          window.clearInterval(id);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [result.runId, isBreakerOpen]);
 
   const draftAction = result.actions.find((a) => a.type === 'draft_reply');
   const copyAction = result.actions.find((a) => a.type === 'copy_reply_to_clipboard');
@@ -271,8 +328,13 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
           ? 'bad'
           : 'neutral';
 
-  const rawFallbackReason = result.fallbackReason ?? notice;
-  const fallbackInfo = classifyFallback(result.mode, rawFallbackReason, result.model);
+  const fallbackInfo = classifyFallback(
+    result.mode,
+    rawFallbackReason,
+    result.model,
+    result.simulated,
+    result.breaker,
+  );
 
   const noteEscalations = result.escalations.filter((esc) => !esc.blocking);
   const hasRtaAssumptionNote =
@@ -363,7 +425,8 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
     return nodes;
   };
 
-  const showRecheckBtn = isReducedConfidence && canRecheckWithGemini && !result.refused;
+  const showRecheckBtn =
+    isReducedConfidence && (canRecheckWithGemini || isBreakerOpen) && !result.refused;
   const showFreshCheckBtn = isCachedResult && !result.refused;
 
   return (
@@ -374,11 +437,16 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
       aria-busy={isAnalyzing ? 'true' : 'false'}
       aria-labelledby="boarding-pass-heading"
     >
-      <div className="pass-top-band">
+      <div className={`pass-top-band${isSimulatedOutage ? ' simulated' : ''}`}>
         <span className="pass-airline">WATERLOO CO-OP GATE PASS</span>
-        <span className="pass-meta-mono">
-          {shortRunId} · {isCachedResult ? 'SAVED LIVE' : result.mode.toUpperCase()}
-          {result.model ? ` · ${result.model}` : ''}
+        <span className="pass-meta-mono" data-testid="pass-top-meta">
+          {shortRunId} ·{' '}
+          {isSimulatedOutage
+            ? 'SIMULATED'
+            : isCachedResult
+              ? 'SAVED LIVE'
+              : result.mode.toUpperCase()}
+          {!isSimulatedOutage && result.model ? ` · ${result.model}` : ''}
         </span>
       </div>
 
@@ -447,11 +515,15 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
                   type="button"
                   className="btn-recheck-gemini"
                   onClick={onRecheckWithGemini}
-                  disabled={isAnalyzing}
+                  disabled={isAnalyzing || breakerCooldownSec > 0}
                   data-testid="recheck-gemini-btn"
                 >
                   <RefreshCw size={13} aria-hidden="true" />
-                  <span>Re-check with Gemini</span>
+                  <span className="recheck-btn-label">
+                    {breakerCooldownSec > 0
+                      ? `Re-check with Gemini (${breakerCooldownSec}s)`
+                      : 'Re-check with Gemini'}
+                  </span>
                 </button>
               )}
               {showFreshCheckBtn && (
@@ -489,16 +561,39 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
         </div>
 
         {fallbackInfo && (
-          <div className="banner-alert info fallback-banner" role="status" data-testid="fallback-banner">
+          <div
+            className={`banner-alert ${
+              fallbackInfo.kind === 'simulated'
+                ? 'simulated'
+                : fallbackInfo.kind === 'breaker'
+                  ? 'breaker'
+                  : 'info'
+            } fallback-banner`}
+            role="status"
+            aria-live={fallbackInfo.kind === 'simulated' || fallbackInfo.kind === 'breaker' ? 'polite' : undefined}
+            data-testid={
+              fallbackInfo.kind === 'simulated'
+                ? 'simulated-outage-banner'
+                : fallbackInfo.kind === 'breaker'
+                  ? 'breaker-open-banner'
+                  : 'fallback-banner'
+            }
+          >
             <Info size={16} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
             <div className="fallback-banner-body">
               <div>
+                {fallbackInfo.kind === 'simulated' && (
+                  <span className="simulated-pill">SIMULATED</span>
+                )}
                 <strong>
                   {fallbackInfo.title}
                   {fallbackInfo.body && !/[.!?]$/.test(fallbackInfo.title) ? '.' : ''}
                 </strong>
                 {fallbackInfo.body ? ` ${fallbackInfo.body}` : ''}
               </div>
+              {fallbackInfo.kind === 'simulated' && fallbackInfo.rawDetail && (
+                <div className="simulated-api-label">{fallbackInfo.rawDetail}</div>
+              )}
               {fallbackInfo.showOfflineExplainer && (
                 <div className="fallback-links-row">
                   <button
