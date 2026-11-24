@@ -33,6 +33,7 @@ export interface PersistedState {
 
 const VALID_VERDICTS = new Set<Verdict>(['ADMIT', 'HOLD', 'REFUSE']);
 const VALID_MODES = new Set<AnalysisResult['mode']>(['live', 'offline', 'offline-fallback']);
+const VALID_VERDICT_CONFIDENCE = new Set<AnalysisResult['verdictConfidence']>(['standard', 'reduced']);
 const VALID_RTA = new Set<AnalysisResult['rtaApplies']>(['applies', 'may_not_apply', 'unknown']);
 const VALID_COMMUTE = new Set<Commute['status']>(['feasible', 'tight', 'infeasible', 'unknown']);
 const VALID_SCAM_BAND = new Set<AnalysisResult['scam']['band']>(['proceed', 'escalate', 'block']);
@@ -132,6 +133,15 @@ export function validateAndSanitizeResult(raw: unknown): AnalysisResult | null {
   }
   if (raw.fallbackReason !== undefined && typeof raw.fallbackReason !== 'string') return null;
   if (raw.model !== undefined && typeof raw.model !== 'string') return null;
+  if (
+    typeof raw.verdictConfidence !== 'string' ||
+    !VALID_VERDICT_CONFIDENCE.has(raw.verdictConfidence as AnalysisResult['verdictConfidence'])
+  ) {
+    return null;
+  }
+  if (raw.verdictConfidenceReason !== undefined && typeof raw.verdictConfidenceReason !== 'string') {
+    return null;
+  }
 
   const listingLen = raw.listing.length;
 

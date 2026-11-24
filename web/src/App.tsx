@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 import {
+  checkApiReachable,
   getSampleListing,
   isFixturesDemoEnabled,
   markWrongEngine,
@@ -43,6 +44,7 @@ export const App: React.FC = () => {
   const [analyzingSource, setAnalyzingSource] = useState<DataSourceMode>(initial.dataSource);
   const [elapsedMs, setElapsedMs] = useState<number>(0);
   const [isRewinding, setIsRewinding] = useState<boolean>(false);
+  const [apiReachable, setApiReachable] = useState<boolean>(false);
   const [lastFixture, setLastFixture] = useState<RegressionFixture | null>(null);
   const [focusedSpan, setFocusedSpan] = useState<Span | null>(null);
   const [focusSeq, setFocusSeq] = useState<number>(0);
@@ -103,6 +105,22 @@ export const App: React.FC = () => {
   }, [isAnalyzing]);
 
   useEffect(() => {
+    if (!result) return;
+    if (result.mode === 'live') {
+      setApiReachable(true);
+      return;
+    }
+    if (result.verdictConfidence !== 'reduced') return;
+    const controller = new AbortController();
+    void checkApiReachable(controller.signal).then((reachable) => {
+      if (!controller.signal.aborted) {
+        setApiReachable(reachable);
+      }
+    });
+    return () => controller.abort();
+  }, [result?.runId, result?.mode, result?.verdictConfidence]);
+
+  useEffect(() => {
     return () => {
       if (rewindTimerRef.current !== null) {
         window.clearTimeout(rewindTimerRef.current);
@@ -160,6 +178,11 @@ export const App: React.FC = () => {
     activeAbortRef.current?.abort();
     setDataSource('offline');
     void executeAnalysis(listing, profile, 'offline');
+  };
+
+  const handleRecheckWithGemini = () => {
+    setDataSource('api');
+    void executeAnalysis(listing, profile, 'api');
   };
 
   // Run initial analysis automatically on first load when no persisted result exists
@@ -379,9 +402,13 @@ export const App: React.FC = () => {
                   : result.verdict === 'HOLD'
                     ? 'warn'
                     : 'bad'
-            }`}
+            }${result?.verdictConfidence === 'reduced' ? ' reduced' : ''}`}
           >
-            {result ? result.verdict : 'CHECKING'}
+            {result
+              ? result.verdictConfidence === 'reduced'
+                ? `${result.verdict} · OFFLINE`
+                : result.verdict
+              : 'CHECKING'}
           </span>
           {result && !result.refused && (
             <>
@@ -442,7 +469,9 @@ export const App: React.FC = () => {
             analyzingSource={analyzingSource}
             elapsedMs={elapsedMs}
             notice={notice}
+            canRecheckWithGemini={apiReachable}
             onUseOfflineNow={handleUseOfflineNow}
+            onRecheckWithGemini={handleRecheckWithGemini}
             onPerformAction={handlePerformAction}
           />
         ) : (

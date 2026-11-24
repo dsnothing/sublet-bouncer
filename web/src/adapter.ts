@@ -61,6 +61,36 @@ export function isFixturesDemoEnabled(): boolean {
 }
 
 export const CLIENT_LIVE_TIMEOUT_MS = 20_000;
+const HEALTH_CHECK_TIMEOUT_MS = 3_500;
+
+export async function checkApiReachable(signal?: AbortSignal): Promise<boolean> {
+  if (typeof fetch !== 'function') return false;
+  const timeoutController = new AbortController();
+  const timeoutId = window.setTimeout(() => timeoutController.abort(), HEALTH_CHECK_TIMEOUT_MS);
+  const onExternalAbort = () => timeoutController.abort();
+  if (signal) {
+    if (signal.aborted) {
+      window.clearTimeout(timeoutId);
+      return false;
+    }
+    signal.addEventListener('abort', onExternalAbort, { once: true });
+  }
+  try {
+    const res = await fetch('/api/health', {
+      method: 'GET',
+      cache: 'no-store',
+      signal: timeoutController.signal,
+    });
+    if (!res.ok) return false;
+    const data = (await res.json()) as { ok?: unknown; liveConfigured?: unknown };
+    return data?.ok === true && data?.liveConfigured === true;
+  } catch {
+    return false;
+  } finally {
+    window.clearTimeout(timeoutId);
+    signal?.removeEventListener('abort', onExternalAbort);
+  }
+}
 
 function matchFixtureForListing(listing: string): { result: AnalysisResult; notice?: string } {
   const lower = listing.toLowerCase();

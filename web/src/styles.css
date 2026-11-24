@@ -826,6 +826,80 @@ button:disabled {
   background: var(--refuse-bg);
 }
 
+.verdict-stamp.reduced {
+  border-style: dashed;
+}
+
+.verdict-stamp.ADMIT.reduced {
+  color: #1f5c42;
+  background: #eef5f1;
+  border-color: #2e6b52;
+}
+
+.verdict-stamp-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.verdict-stamp-col:has(.verdict-stamp.reduced) {
+  flex: 1 1 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.verdict-live-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.confidence-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #334155;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  padding: 3px 10px;
+  line-height: 1.35;
+}
+
+.btn-recheck-gemini {
+  min-height: 36px;
+  padding: 0 11px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--rope);
+  background: #ffffff;
+  color: var(--rope);
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+}
+
+.btn-recheck-gemini:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-recheck-gemini:hover:not(:disabled) {
+    background: var(--rope-soft);
+  }
+}
+
+.could-not-confidence-item {
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
 .banner-alert {
   margin-top: 14px;
   padding: 10px 12px;
@@ -1071,6 +1145,11 @@ button:disabled {
 .status-pill.ok {
   background: var(--admit-bg);
   color: var(--admit);
+}
+.status-pill.ok.reduced {
+  background: #eef5f1;
+  color: #1f5c42;
+  border: 1px dashed #2e6b52;
 }
 .status-pill.warn {
   background: var(--hold-bg);
@@ -1731,6 +1810,11 @@ button:disabled {
   .verdict-stamp {
     font-size: 16px;
     padding: 6px 12px;
+  }
+
+  .verdict-stamp-col,
+  .verdict-live-wrap {
+    align-items: flex-start;
   }
 }
 

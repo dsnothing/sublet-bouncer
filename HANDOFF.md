@@ -167,3 +167,10 @@
 - **Verified**: `tsc --noEmit`, `npm run build` (`web/dist`), and `npm test` (126 passed, 1 skipped) green; headless Chrome CDP QA at 1280×900 & 375×812 verified Clean/Tricky/Scammy + custom ADMIT-with-unknown-commute, collapsed-by-default Notes toggle + one-tap answers, `prefers-reduced-motion: reduce` (`1e-05s`), 0 overflow, 0 console errors.
 - **Screenshots**: `evidence/ui/c4d-{1280-clean,1280-tricky,1280-scammy,1280-admit-notes-open,375-tricky-scrolled}.png`.
 - **Open risks**: None blocking; no deploy performed (per brief).
+
+## C4e — Reduced-confidence offline verdict UI (Antigravity L4+L5)
+- **Role/skills**: L4+L5 frontend & browser QA; skills: `frontend-design`, `unslop-ui`, `karpathy-guidelines`; gap: explicit `C:\Program Files\nodejs` PATH, headless Chrome CDP.
+- **Changed**: Rendered `AnalysisResult.verdictConfidence === 'reduced'` (`'standard'|'reduced'`) on `BoardingPass` with dashed provisional stamp (calm sage for offline ADMIT vs solid green live ADMIT), `"Checked offline — exact wording only"` tag inside `aria-live="polite"`, deduplicated `verdictConfidenceReason` leading `"What I couldn't check"`, mobile `ADMIT · OFFLINE` pill, `storage.ts` validation, and `/api/health`-gated one-click `"Re-check with Gemini"` (`adapter.ts`, `App.tsx`, `styles.css`).
+- **Verified**: `tsc --noEmit`, `npm run build`, and `npm test` (160 passed, 1 skipped) green; headless Chrome CDP at 1280×900 & 375×812 verified offline ADMIT, one-click Gemini re-check → live ADMIT (`gemini-3.1-flash-lite`), `aria-live`, `prefers-reduced-motion: reduce` (`1e-05s`), 0 overflow.
+- **Screenshots**: `evidence/ui/c4e-{1280-offline-admit,1280-offline-could-not-check,375-offline-admit,1280-live-admit,375-live-admit}.png`.
+- **Open risks**: None blocking; no deploy performed (per brief).

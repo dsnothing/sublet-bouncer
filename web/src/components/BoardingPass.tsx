@@ -7,6 +7,7 @@ import {
   Download,
   EyeOff,
   Info,
+  RefreshCw,
   ShieldAlert,
   ShieldCheck,
   TrainFront,
@@ -23,7 +24,9 @@ interface BoardingPassProps {
   analyzingSource: DataSourceMode;
   elapsedMs: number;
   notice?: string;
+  canRecheckWithGemini: boolean;
   onUseOfflineNow: () => void;
+  onRecheckWithGemini: () => void;
   onPerformAction: (actionId: string, expectedRunId?: string) => boolean;
 }
 
@@ -163,7 +166,9 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   analyzingSource,
   elapsedMs,
   notice,
+  canRecheckWithGemini,
   onUseOfflineNow,
+  onRecheckWithGemini,
   onPerformAction,
 }) => {
   const [actionError, setActionError] = useState<string | null>(null);
@@ -248,6 +253,15 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
 
   const refusalInfo = result.refused ? REFUSAL_COPY[result.refused.reason] : null;
   const shortRunId = result.runId.length > 12 ? result.runId.slice(0, 8) : result.runId;
+  const isReducedConfidence = result.verdictConfidence === 'reduced';
+  const confidenceReason = isReducedConfidence
+    ? result.verdictConfidenceReason ??
+      'Offline mode checks exact wording only; reworded clauses may be missed'
+    : undefined;
+  const remainingCouldNotCheck = confidenceReason
+    ? result.couldNotCheck.filter((item) => item !== confidenceReason)
+    : result.couldNotCheck;
+  const hasCouldNotCheck = Boolean(confidenceReason) || remainingCouldNotCheck.length > 0;
 
   return (
     <article
@@ -303,21 +317,41 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
             </p>
           </div>
 
-          <div aria-live="polite" aria-atomic="true">
-            <div
-              key={`${result.runId}-${result.verdict}`}
-              className={`verdict-stamp ${result.verdict}`}
-            >
-              {result.verdict === 'ADMIT' && <ShieldCheck size={20} aria-hidden="true" />}
-              {result.verdict === 'HOLD' && <AlertTriangle size={20} aria-hidden="true" />}
-              {result.verdict === 'REFUSE' && <ShieldAlert size={20} aria-hidden="true" />}
-              <span>{STAMP_TEXT[result.verdict]}</span>
-              {result.verdict === 'ADMIT' && !result.refused && totalNotesCount > 0 && (
-                <span className="sr-only">
-                  , with {totalNotesCount} non-blocking {totalNotesCount === 1 ? 'note' : 'notes'} to confirm
+          <div className="verdict-stamp-col">
+            <div className="verdict-live-wrap" aria-live="polite" aria-atomic="true">
+              <div
+                key={`${result.runId}-${result.verdict}-${result.verdictConfidence}`}
+                className={`verdict-stamp ${result.verdict}${isReducedConfidence ? ' reduced' : ''}`}
+                data-verdict-confidence={result.verdictConfidence}
+              >
+                {result.verdict === 'ADMIT' && <ShieldCheck size={20} aria-hidden="true" />}
+                {result.verdict === 'HOLD' && <AlertTriangle size={20} aria-hidden="true" />}
+                {result.verdict === 'REFUSE' && <ShieldAlert size={20} aria-hidden="true" />}
+                <span>{STAMP_TEXT[result.verdict]}</span>
+                {result.verdict === 'ADMIT' && !result.refused && totalNotesCount > 0 && (
+                  <span className="sr-only">
+                    , with {totalNotesCount} non-blocking {totalNotesCount === 1 ? 'note' : 'notes'} to confirm
+                  </span>
+                )}
+              </div>
+              {isReducedConfidence && (
+                <span className="confidence-tag" data-testid="confidence-tag">
+                  Checked offline — exact wording only
                 </span>
               )}
             </div>
+            {isReducedConfidence && canRecheckWithGemini && !result.refused && (
+              <button
+                type="button"
+                className="btn-recheck-gemini"
+                onClick={onRecheckWithGemini}
+                disabled={isAnalyzing}
+                data-testid="recheck-gemini-btn"
+              >
+                <RefreshCw size={13} aria-hidden="true" />
+                <span>Re-check with Gemini</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -562,14 +596,19 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
         </>
       )}
 
-      {result.couldNotCheck.length > 0 && (
+      {hasCouldNotCheck && (
         <section className="could-not-check-panel" aria-labelledby="could-not-check-heading">
           <h3 id="could-not-check-heading" className="could-not-check-title">
             <EyeOff size={14} aria-hidden="true" />
             <span>What I couldn&apos;t check</span>
           </h3>
           <ul className="could-not-list">
-            {result.couldNotCheck.map((item, idx) => (
+            {confidenceReason && (
+              <li className="could-not-confidence-item" data-testid="confidence-reason-item">
+                <strong>Reduced confidence:</strong> {confidenceReason}
+              </li>
+            )}
+            {remainingCouldNotCheck.map((item, idx) => (
               <li key={idx}>{item}</li>
             ))}
           </ul>
