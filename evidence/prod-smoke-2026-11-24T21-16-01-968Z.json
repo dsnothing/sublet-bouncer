@@ -1,0 +1,91 @@
+{
+  "commit": "684786252224a513b4b83b09c3c8bb54888309d7",
+  "date": "2026-11-24T21:16:01.968Z",
+  "counts": {
+    "total": 8,
+    "live": 5,
+    "fallback": 2,
+    "cached": 3,
+    "simulated": 1,
+    "expectationsMet": 7
+  },
+  "causes": {
+    "SIMULATED OUTAGE (demo): Gemini was not called": 1,
+    "Primary gemini-3.1-flash-lite: Gemini HTTP 503; trying gemini-3-flash-preview": 1,
+    "Primary gemini-3.1-flash-lite: Gemini HTTP 503; trying gemini-3-flash-preview; Gemini HTTP 429": 1
+  },
+  "calls": [
+    {
+      "id": "health",
+      "latencyMs": 273,
+      "expectationMet": true,
+      "status": 200
+    },
+    {
+      "id": "sample-1",
+      "latencyMs": 147,
+      "expectationMet": true,
+      "status": 200,
+      "mode": "live",
+      "cached": true,
+      "simulated": false
+    },
+    {
+      "id": "sample-2",
+      "latencyMs": 58,
+      "expectationMet": true,
+      "status": 200,
+      "mode": "live",
+      "cached": true,
+      "simulated": false
+    },
+    {
+      "id": "sample-3",
+      "latencyMs": 109,
+      "expectationMet": true,
+      "status": 200,
+      "mode": "live",
+      "cached": true,
+      "simulated": false
+    },
+    {
+      "id": "simulation",
+      "latencyMs": 80,
+      "expectationMet": true,
+      "status": 200,
+      "mode": "offline-fallback",
+      "cached": false,
+      "simulated": true,
+      "fallbackReason": "SIMULATED OUTAGE (demo): Gemini was not called"
+    },
+    {
+      "id": "gold-04",
+      "latencyMs": 7644,
+      "expectationMet": true,
+      "status": 200,
+      "mode": "live",
+      "cached": false,
+      "simulated": false
+    },
+    {
+      "id": "gold-08",
+      "latencyMs": 2414,
+      "expectationMet": true,
+      "status": 200,
+      "mode": "live",
+      "cached": false,
+      "simulated": false,
+      "fallbackReason": "Primary gemini-3.1-flash-lite: Gemini HTTP 503; trying gemini-3-flash-preview"
+    },
+    {
+      "id": "gold-13",
+      "latencyMs": 1444,
+      "expectationMet": false,
+      "status": 200,
+      "mode": "offline-fallback",
+      "cached": false,
+      "simulated": false,
+      "fallbackReason": "Primary gemini-3.1-flash-lite: Gemini HTTP 503; trying gemini-3-flash-preview; Gemini HTTP 429"
+    }
+  ]
+}
