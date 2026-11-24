@@ -1,0 +1,24 @@
+{
+  "id": "rt-21",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Room in a clean 3BR townhouse, Jan 1 - Apr 30, $780/mo. I ask for a rent deposit of one month ($780), which is applied to your April rent, per the usual Ontario rules. First month due on move-in after you've seen the place. Landlord has OK'd the sublet. Showings Mon-Thu evenings. 9 Weber St E, Kitchener.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 780,
+    "address": "9 Weber St E, Kitchener",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Lawful one-month rent deposit applied to the last month (RTA s.106). Not excess, not a damage deposit. There is no rule id for a lawful rent deposit, so clauses omit it. ADMIT."
+}

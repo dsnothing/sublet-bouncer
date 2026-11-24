@@ -1,0 +1,24 @@
+{
+  "id": "rt-15",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Cheap room, $560/mo + shared utilities, Jan-Apr, Kitchener near Fairview. Place is rented AS-IS. Tenant takes care of every repair (plumbing, heating, appliances, whatever breaks) at their own cost - landlord won't be called out for fixes so please don't ask. That's part of the deal for the low rent. Happy to show it Sat morning. 46 Strange St, Kitchener.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 560,
+    "address": "46 Strange St, Kitchener",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "maintenance_waiver"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Tenant 'waives' landlord repair duties. Landlord's maintenance obligations (RTA s.20) cannot be waived (s.3/4 non-waiver). HOLD."
+}

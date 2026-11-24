@@ -1,0 +1,25 @@
+{
+  "id": "rt-06",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "WINTER 2027 SUBLET - 1 bedroom + ensuite in 2BR condo - $1,250/mo (hydro extra, ~$40)\n\nQuiet building, 5 min drive / 20 min ION to UW. Secure entry, gym, in-suite laundry. A sublet agreement will be signed on the Ontario Standard Lease form, and the landlord's written consent form is attached to my first reply. Tenant insurance is required. Available Jan 1 to Apr 30, 2027.\nShowings: Tue/Thu 6-8pm or weekends by appointment.\n300 Regina St N, Unit 811, Waterloo\nQuestions: winter.sublet@example.com",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 1250,
+    "address": "300 Regina St N, Unit 811, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "standard_lease",
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Formal, fully compliant listing. Mentions standard lease and landlord consent; the tenant-insurance requirement is lawful. ADMIT."
+}

@@ -1,0 +1,24 @@
+{
+  "id": "rt-24",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Basement bachelor suite, 144 Weber St N, Waterloo. $950/mo, utilities and wifi included, fully furnished, own entrance. Landlord has approved the sublet in writing. Jan 1 - Apr 30. The place is exactly as in the photos, I can send references from my previous subtenants.\nHonest note: I'm overseas on a work contract until June so I can't meet in person and nobody can show it. Keys go by courier once your first month's e-transfer clears, and we sign the sublet digitally. Message me and I'll send the paperwork.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 950,
+    "address": "144 Weber St N, Waterloo",
+    "viewing_offered": false
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 1,
+  "verdict": "REFUSE",
+  "label_rationale": "Mostly legitimate-looking (address, market-plausible rent, consent) but with the core scam pattern: leaseholder abroad, no viewing, keys only after e-transfer. Per policy REFUSE (payment before viewing + abroad)."
+}

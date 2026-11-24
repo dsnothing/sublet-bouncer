@@ -1,0 +1,24 @@
+{
+  "id": "rt-01",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "SUBLET - Furnished Bedroom in 3BR Townhouse - Jan to Apr 2027 ☀️\n\nHi! I'm heading out on co-op in Ottawa so my room is free Jan 1 – Apr 30. $725/mo, utilities + wifi included. 10 min walk to UW (Columbia & Phillip area). 2 other roommates, both UW engineering students, super chill.\n\nAddress: 412 Hazel St, Waterloo.\nProperty manager already approved the sublet (I have the email, can forward it). Come see the place any evening this week or I can do a video tour first.\nContact: Kijiji message or sam.tester@example.com",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 725,
+    "address": "412 Hazel St, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Ordinary Kijiji sublet: address, rent, viewing offered, landlord consent already obtained. No deposits, no restrictive clauses. Clean ADMIT."
+}

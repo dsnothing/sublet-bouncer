@@ -1,0 +1,24 @@
+{
+  "id": "rt-02",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "[Sublet] W27 | Room near Laurier 🦅 | $640 + utils (~$55)\n\nposting for my bro who's leaving for coop in Toronto lol\n- 4 bed house, 3 others (all WLU, 2 are 3A, 1 is 2B)\n- 8 min walk to WLU, bus stop right outside\n- unfurnished tho, bed frame can stay if u want\n- laundry in bsmt, no dishwasher 😭\n- Jan 1 - Apr 30, can flex by a few days\n\n88 Albert St, Waterloo. Landlord is fine w/ sublets, will sign the consent form. DM me to set up a viewing, house is open most evenings after 6 or ill FaceTime u.\nNo $$ changes hands till u've seen it & we've signed.\ndm here or test.sublet@example.com",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 640,
+    "address": "88 Albert St, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Reddit-style, slang and emoji. States viewing and explicitly says no payment before viewing. Landlord consent form mentioned. ADMIT."
+}

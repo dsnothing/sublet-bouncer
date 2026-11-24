@@ -1,0 +1,24 @@
+{
+  "id": "rt-08",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Long post, sorry! I'm leaving for a co-op in Calgary and my room in our friendly 6-person house near both campuses is open Jan 1 to Apr 30. Rent is $575/month plus an equal share of utilities (last winter that was about $48 each). Big kitchen, 2 bathrooms, backyard, everyone's a student. Rent is paid by e-transfer on the 1st of each month to the head tenant and you get a receipt. We'd love to meet you before anyone commits - come by for dinner or tea! Happy to answer questions about the landlord, who is responsive when things break (heater fixed in 2 days last Feb). The landlord's consent to the sublet is requested and he's usually fine with it. 17 Lester St, Waterloo.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 575,
+    "address": "17 Lester St, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Chatty, long, wholesome. Contains words a naive scam model might key on (e-transfer, 'before anyone commits', 'sorry') but all are benign. ADMIT."
+}

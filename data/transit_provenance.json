@@ -21,5 +21,9 @@
     "access": 600,
     "transfer": 250,
     "egress": 600
-  }
+  },
+  "source": [
+    "https://webapps.regionofwaterloo.ca/api/grt-routes/api/staticfeeds/1",
+    "https://webapps.regionofwaterloo.ca/api/grt-routes/api/staticfeeds/2"
+  ]
 }

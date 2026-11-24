@@ -1,0 +1,22 @@
+{
+  "id": "rt-04",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Large room in 2-bed apartment, Kitchener (Victoria & Weber). $595/month, heat + water incl, hydro split 50/50. Cats are welcome (I have one, Biscuit, lol) and the landlord is fine with small pets. Available Jan 1 - April 30 2027, maybe longer. Right by the LRT, ~15 min to UW on ION. No parties pls. Free parking spot. Viewings Sat/Sun afternoon. 540 Victoria St N, Kitchener. Text through the site please.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 595,
+    "address": "540 Victoria St N, Kitchener",
+    "viewing_offered": true
+  },
+  "clauses": [],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Pet-FRIENDLY listing: a negative-control for any matcher that fires on the word 'pets'. No restrictive clauses. ADMIT."
+}

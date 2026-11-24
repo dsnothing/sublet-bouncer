@@ -6,7 +6,7 @@ import { createGeminiAdapter } from '../api/gemini';
 import type { AnalyzeRequest, AnalysisResult } from '../core/types';
 
 interface Gold { id:string; group:string; listing:string; profile:AnalyzeRequest['profile']; fields:Record<string,unknown>; clauses:string[]; scam:number; verdict:string }
-interface Row { id:string; result:AnalysisResult; extraction:Extraction; latency_ms:number; cached:boolean; error?:string }
+interface Row { id:string; result:AnalysisResult; extraction:Extraction; latency_ms:number; cached:boolean; recorded_network_ms?:number; error?:string }
 const defaultProfile:AnalyzeRequest['profile']={termStart:'2027-01-01',termEnd:'2027-04-30',campus:'UW',classStart:'08:30'};
 const loadSplit=(dir:string):Gold[]=>existsSync(dir)?readdirSync(dir).filter(f=>f.endsWith('.json')).sort().map(f=>({profile:defaultProfile,...JSON.parse(readFileSync(`${dir}/${f}`,'utf8'))})):[];
 const authored=loadSplit('evals/gold'),redteam=loadSplit('evals/redteam');
@@ -30,8 +30,8 @@ function summarize(rows:Row[]){
  for(const row of rows){const g=gold.find(g=>g.id===row.id)!;const actual=new Set(row.result.clauses.map(c=>c.ruleId).filter(Boolean));const expected=new Set(g.clauses);for(const c of actual)expected.has(c!)?tp++:fp++;for(const c of expected)if(!actual.has(c))fn++;
  for(const [key,value] of Object.entries(g.fields)){fieldTotal++;if(normalize(row.extraction.fields?.[key]?.value)===normalize(value))fieldCorrect++;}if(row.result.verdict===g.verdict)verdictCorrect++;
  }
- const timings=rows.filter(r=>!r.cached).map(r=>r.latency_ms);
- return{n:rows.length,timeout_rate:rows.length?rows.filter(r=>r.error&&/timeout|aborted/i.test(r.error)).length/rows.length:null,fallback_rate:rows.length?rows.filter(r=>r.result.mode==='offline-fallback').length/rows.length:null,live_successes:rows.filter(r=>r.result.mode==='live').length,fallbacks:rows.filter(r=>r.result.mode==='offline-fallback').length,clause:{tp,fp,fn,precision:tp+fp?tp/(tp+fp):null,recall:tp+fn?tp/(tp+fn):null},field_accuracy:fieldTotal?fieldCorrect/fieldTotal:null,field_correct:fieldCorrect,field_total:fieldTotal,scam_auc:auc(rows.map(r=>gold.find(g=>g.id===r.id)!.scam),rows.map(r=>r.result.scam.p)),confusion:[confusion(.3),confusion(.7)],verdict_accuracy:rows.length?verdictCorrect/rows.length:null,latency_ms:{p50:percentile(timings,.5),p95:percentile(timings,.95),uncached_n:timings.length},errors:rows.filter(r=>r.error).map(r=>({id:r.id,error:r.error}))};
+ const timings=rows.filter(r=>!r.cached).map(r=>r.latency_ms);const recorded=rows.flatMap(r=>r.recorded_network_ms===undefined?[]:[r.recorded_network_ms]);
+ return{n:rows.length,timeout_rate:rows.length?rows.filter(r=>r.error&&/timeout|aborted/i.test(r.error)).length/rows.length:null,fallback_rate:rows.length?rows.filter(r=>r.result.mode==='offline-fallback').length/rows.length:null,live_successes:rows.filter(r=>r.result.mode==='live').length,fallbacks:rows.filter(r=>r.result.mode==='offline-fallback').length,clause:{tp,fp,fn,precision:tp+fp?tp/(tp+fp):null,recall:tp+fn?tp/(tp+fn):null},field_accuracy:fieldTotal?fieldCorrect/fieldTotal:null,field_correct:fieldCorrect,field_total:fieldTotal,scam_auc:auc(rows.map(r=>gold.find(g=>g.id===r.id)!.scam),rows.map(r=>r.result.scam.p)),confusion:[confusion(.3),confusion(.7)],verdict_accuracy:rows.length?verdictCorrect/rows.length:null,latency_ms:{p50:percentile(timings,.5),p95:percentile(timings,.95),uncached_n:timings.length,recorded_network_p50:percentile(recorded,.5),recorded_network_p95:percentile(recorded,.95),recorded_network_n:recorded.length},errors:rows.filter(r=>r.error).map(r=>({id:r.id,error:r.error}))};
 }
 function withSplits(rows:Row[]){return {...summarize(rows),splits:{gold:summarize(rows.filter(r=>authored.some(g=>g.id===r.id))),redteam:summarize(rows.filter(r=>redteam.some(g=>g.id===r.id)))},live_only:summarize(rows.filter(r=>r.result.mode==='live'))};}
 const output:any={generated_at:new Date().toISOString(),synthetic:true,gold_size:authored.length,redteam_size:redteam.length,training_size:200,models:{'flash-lite':'gemini-3.1-flash-lite',flash:'gemini-3-flash-preview'},adapter_sha256:adapterHash,notes:['Gold is synthetic, separate from training templates, but authored by the rule author (author-overlap bias). Redteam is independently authored and the headline split. Neither establishes real-world performance.','Clause scoring is rule-id set micro precision/recall including informational lessons. Field accuracy is exact normalized match on annotated field slots only; missing fields are wrong.','flash and flash+span-verify use paired identical raw responses: raw versus verifyExtraction field accuracy. Production analyze always enforces span verification for verdict/scam/clause metrics.','Cached latency is excluded. Live HTTP failures are reported separately; fallback results are never counted as model success.','Current GRT schedule is a proxy for Winter 2027; CMHC means and room proxy are documented in DATA-SOURCES.md.'],variants:{},repeat:{status:'not_run'},rubric_cases:[],rows:{}};
@@ -42,7 +42,7 @@ function save(){
  for(const [name,v] of Object.entries(output.variants) as [string,any][]){
  md+=`## ${name}\n\n`;
  if(v.status){md+=`Status: ${v.status}. ${v.reason??''}\n\n`;continue;}
- for(const split of ['redteam','gold']){const s=v.splits[split];md+=`### ${split==='redteam'?'Independent redteam (headline)':'Gold (rule-author overlap)'}\n\nCases: ${s.n}; live successes: ${s.live_successes}; fallbacks: ${s.fallbacks}; timeout rate: ${s.timeout_rate??'n/a'}.\n\nClause precision/recall: ${s.clause.precision?.toFixed(3)??'n/a'} / ${s.clause.recall?.toFixed(3)??'n/a'}; field accuracy: ${s.field_accuracy?.toFixed(3)??'n/a'} (${s.field_correct}/${s.field_total}); scam AUC: ${s.scam_auc?.toFixed(3)??'n/a'}; verdict accuracy: ${s.verdict_accuracy?.toFixed(3)??'n/a'}.\n\nLatency p50/p95 ms (uncached): ${s.latency_ms.p50??'n/a'} / ${s.latency_ms.p95??'n/a'}.\n\nConfusion: \`${JSON.stringify(s.confusion)}\`.\n\n`;}
+ for(const split of ['redteam','gold']){const s=v.splits[split];md+=`### ${split==='redteam'?'Independent redteam (headline)':'Gold (rule-author overlap)'}\n\nCases: ${s.n}; live successes: ${s.live_successes}; fallbacks: ${s.fallbacks}; timeout rate: ${s.timeout_rate??'n/a'}.\n\nClause precision/recall: ${s.clause.precision?.toFixed(3)??'n/a'} / ${s.clause.recall?.toFixed(3)??'n/a'}; field accuracy: ${s.field_accuracy?.toFixed(3)??'n/a'} (${s.field_correct}/${s.field_total}); scam AUC: ${s.scam_auc?.toFixed(3)??'n/a'}; verdict accuracy: ${s.verdict_accuracy?.toFixed(3)??'n/a'}.\n\nLatency p50/p95 ms (uncached): ${s.latency_ms.p50??'n/a'} / ${s.latency_ms.p95??'n/a'}.\n\nRecorded network p50/p95 ms: ${s.latency_ms.recorded_network_p50??'n/a'} / ${s.latency_ms.recorded_network_p95??'n/a'}.\n\nConfusion: \`${JSON.stringify(s.confusion)}\`.\n\n`;}
  md+=`Live-only pooled metrics: \`${JSON.stringify(v.live_only)}\`.\n\n`;
  }
  md+='## Repeat consistency\n\n```json\n'+JSON.stringify(output.repeat,null,2)+'\n```\n\n## Rubric cases\n\n```json\n'+JSON.stringify(output.rubric_cases,null,2)+'\n```\n\n## Method and limitations\n\n'+output.notes.map((s:string)=>'- '+s).join('\n')+'\n';writeFileSync('evals/RESULTS.md',md);
@@ -54,15 +54,16 @@ for(const [name,model] of [['flash-lite','gemini-3.1-flash-lite'],['flash','gemi
  if(offlineOnly||!process.env.GEMINI_API_KEY){output.variants[name]={status:'not_run',reason:offlineOnly?'--offline requested':'GEMINI_API_KEY unavailable'};continue;}
  const adapter=createGeminiAdapter(process.env.GEMINI_API_KEY,model);const rows:Row[]=[],verified:Row[]=[];
  for(const g of gold){
-  const key=createHash('sha256').update(JSON.stringify({model,listing:g.listing,adapterHash,schema_version:2})).digest('hex');const path=`evals/cache/${key}.json`;let raw:unknown,cached=existsSync(path),error:string|undefined,elapsed=0;
-  if(cached)raw=JSON.parse(readFileSync(path,'utf8'));else{
-   const started=performance.now();try{raw=await adapter.extract(g.listing);writeFileSync(path,JSON.stringify(raw));}catch(e){error=e instanceof Error?e.message:'Live extraction failure';}elapsed=performance.now()-started;
+  const key=createHash('sha256').update(JSON.stringify({model,listing:g.listing,adapterHash,schema_version:3})).digest('hex');const path=`evals/cache/${key}.json`;let raw:unknown,cached=existsSync(path),error:string|undefined,elapsed=0;
+  if(cached){const stored=JSON.parse(readFileSync(path,'utf8'));raw=stored.raw;elapsed=stored.latency_ms;}else{
+   const started=performance.now();try{raw=await adapter.extract(g.listing);}catch(e){error=e instanceof Error?e.message:'Live extraction failure';}elapsed=performance.now()-started;
+   if(!error)writeFileSync(path,JSON.stringify({raw,latency_ms:elapsed,captured_at:new Date().toISOString()}));
    await new Promise(resolve=>setTimeout(resolve,delayMs));
   }
   const fixed:LLMAdapter={model,extract:async()=>{if(error)throw new Error(error);return raw;}};
   const result=await analyze({...g,mode:'live'},{llm:fixed});
   const extraction=raw&&typeof raw==='object'&&(raw as Extraction).fields?raw as Extraction:offlineExtract(g.listing);
-  const row={id:g.id,result,extraction,latency_ms:elapsed,cached,error};rows.push(row);
+  const row={id:g.id,result,extraction,latency_ms:elapsed,cached,recorded_network_ms:elapsed,error};rows.push(row);
   let checked=offlineExtract(g.listing);try{checked=verifyExtraction(raw,g.listing).extraction;}catch{}
   verified.push({...row,extraction:checked});
   console.log(`${name} ${g.id}: ${result.mode}${error?' ('+error+')':''}`);

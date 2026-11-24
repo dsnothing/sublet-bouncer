@@ -1,0 +1,24 @@
+{
+  "id": "rt-09",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "ROOM FOR SUBLET Jan-Apr 2027 - $680/mo includes everything. Quiet house on Moore Ave near UW. Viewing any day, just message. Must be clean & respectful. Just so you know: $400 is held against breakages (stains, holes in the walls, anything that gets broken) and given back at the end of April minus whatever needs fixing. Cash or e-transfer when you move in. 14 Moore Ave, Waterloo.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 680,
+    "address": "14 Moore Ave, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "damage_deposit"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Security/damage deposit phrased as 'held against breakages' with no 'deposit' keyword. Prohibited by RTA s.105 (only rent deposit and refundable key deposit permitted). Not a scam: viewing offered. HOLD."
+}

@@ -1,0 +1,25 @@
+{
+  "id": "rt-19",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Furnished bedroom for rent for the winter term in my own townhouse. I'm the owner and I live here full-time. You'll share the kitchen and the main bathroom with me. $620/mo incl utilities, Jan 1 - Apr 30. I'm a quiet working professional, no parties. Viewing welcome weekday evenings. 63 Bridgeport Rd E, Waterloo.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 620,
+    "address": "63 Bridgeport Rd E, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": true
+  },
+  "clauses": [
+    "owner_shared"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Owner lives in unit and shares kitchen and bathroom: RTA s.5(i) exemption may apply, so tenant protections are uncertain. Policy => HOLD."
+}

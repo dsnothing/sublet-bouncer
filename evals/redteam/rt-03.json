@@ -1,0 +1,24 @@
+{
+  "id": "rt-03",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "hey everyone!! subletting my room Jan-Apr!!! its a 2 bdrm apt (me + 1 roomate, shes a nurse hardly home) $700/m incl hydro n wifi. close to uw, like 12min walk or the 8 bus. landlord ok'd subleting already, i can send screenshot. theres in suite laundry n a balcony 🌿 no smoking please. Parking is 1 spot $40 extra if u need. Can u all msg me if interested and we can set a tour thurs or fri? addr is 175 Marsland Dr unit 4B, Waterloo. Thx!!",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 700,
+    "address": "175 Marsland Dr unit 4B, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Facebook-style run-on with typos. Parking fee is an optional extra, not a deposit. Tour offered. ADMIT."
+}

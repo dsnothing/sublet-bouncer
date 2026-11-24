@@ -1,0 +1,24 @@
+{
+  "id": "rt-14",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Private room in sublet, $750/mo, Jan 1 - Apr 30, steps from the ION. To lock it in you need first month AND the last two months paid before you get keys (\"first + last + last again\" lol). Total due at signing is $2,250 on $750 rent. It's all returned or applied by the end of the term. Tour any evening. 120 Caroline St S, Waterloo.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 750,
+    "address": "120 Caroline St S, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "excess_rent_deposit"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Two months' rent held as deposit beyond the first month. A rent deposit cannot exceed one rental period (RTA s.106); the first/last structure is lawful only once. HOLD."
+}

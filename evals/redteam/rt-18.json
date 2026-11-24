@@ -1,0 +1,25 @@
+{
+  "id": "rt-18",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "UW附近单间出租，2027年1月至4月，租金每月$680，包水电网。押金$500，退房时扣除损坏费用后退还。不允许养宠物。可以提前看房，欢迎联系 sublet.wx@example.com。地址：350 Columbia St W, Waterloo。",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 680,
+    "address": "350 Columbia St W, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "damage_deposit",
+    "no_pets"
+  ],
+  "scam": 0,
+  "verdict": "REFUSE",
+  "label_rationale": "Non-English (Simplified Chinese) listing, otherwise plausible. Also contains a $500 damage deposit and a no-pets clause. SPEC D6 policy as briefed: non-English => REFUSE. Not a scam (scam=0). Group is nominal."
+}

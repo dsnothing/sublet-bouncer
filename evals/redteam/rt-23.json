@@ -1,0 +1,20 @@
+{
+  "id": "rt-23",
+  "group": "tricky",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Room avail for winter term near UW, $600 incl everything 👍 pm me for details. no weirdos pls",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 600
+  },
+  "clauses": [],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Partial info: no address, no viewing mention, no dates. A human must ask for details. HOLD. Could arguably lean scam (cheap, vague), but nothing explicit; HOLD is the conservative label."
+}

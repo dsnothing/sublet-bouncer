@@ -1,0 +1,24 @@
+{
+  "id": "rt-13",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Room avail Jan-Apr near UW. $640/mo, hydro/heat included. Rent is due on the 1st sharp. If it's even a day late I just change the locks and put your stuff in the hallway, no warnings, no excuses. Been burned before. Otherwise it's an easy place with chill housemates. Message to arrange a viewing. 31 Bluevale St N, Waterloo.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 640,
+    "address": "31 Bluevale St N, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "lockout"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Self-help lockout for late rent. Tenant can be evicted only via LTB process (RTA s.37/39; s.24 on changing locks). HOLD."
+}

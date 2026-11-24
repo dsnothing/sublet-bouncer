@@ -1,0 +1,24 @@
+{
+  "id": "rt-12",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Sublet - nice 1BR in 3BR unit, $780/mo, Jan 1-Apr 30, 15 min bus to WLU. For the 4 months I need 4 cheques handed over at signing, each dated the 1st of Jan, Feb, Mar and Apr (cheques only please, no e-transfers and no cash). Come see it any time. 508 Lester St Unit 3, Waterloo.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 780,
+    "address": "508 Lester St Unit 3, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "postdated_cheques"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Requires post-dated cheques without using the phrase 'post-dated'. RTA s.108 says a landlord cannot require post-dated cheques or other post-dated payment methods. HOLD."
+}

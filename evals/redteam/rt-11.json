@@ -1,0 +1,24 @@
+{
+  "id": "rt-11",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Bright room in a duplex, $690/mo all in, Jan-Apr. Landlord (my uncle) lives next door, keeps a spare key and drops by whenever to check on things or fix stuff. He usually doesn't text first so just keep your door locked and dress decent lol. Looking for someone easygoing about that. Viewing anytime this week. 77 Cedarbrae Ave, Waterloo.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 690,
+    "address": "77 Cedarbrae Ave, Waterloo",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "entry_notice"
+  ],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Landlord retains key and enters with no notice. RTA s.27 requires 24 hours written notice with limited exceptions. No 'notice' keyword to match. HOLD."
+}

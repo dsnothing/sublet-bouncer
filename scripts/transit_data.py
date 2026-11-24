@@ -86,7 +86,7 @@ def transit():
             dest[campus]=dict(arrive_by_0830=f'{arrival//3600:02d}:{arrival%3600//60:02d}',minutes=math.ceil((arrival-START)/60),summary=f'07:00 departure; {path}; straight-line walking estimate') if arrival<=DEADLINE else None
         origins.append(dict(id=origin,lat=coord[0],lon=coord[1],label=stops[origin][2],to=dest))
     write('data/commute_table.json',dict(source='https://www.grt.ca/about-grt/open-data/; staticfeeds/1 + /2 at https://webapps.regionofwaterloo.ca/api/grt-routes/api/; scheduled 2026-11-24, depart 07:00 America/Toronto; <=1 transfer; straight-line walking; not Winter 2027 service',gtfs_feed_date=DATE,walk_m_per_min=80,origins=origins))
-    write('data/transit_provenance.json',dict(retrieved=DATE,service_date=SERVICE,sha256=hashes,active_trips=len(trips),origins=len(origins),campus_coordinates=campuses,walking_limit_m=dict(access=600,transfer=250,egress=600)))
+    write('data/transit_provenance.json',dict(source=[f'https://webapps.regionofwaterloo.ca/api/grt-routes/api/staticfeeds/{i}' for i in [1,2]],retrieved=DATE,service_date=SERVICE,sha256=hashes,active_trips=len(trips),origins=len(origins),campus_coordinates=campuses,walking_limit_m=dict(access=600,transfer=250,egress=600)))
     print('Commute origins:',len(origins),'active morning trips:',len(trips))
 if __name__=='__main__':
     if '--geocode' in sys.argv:geocode()

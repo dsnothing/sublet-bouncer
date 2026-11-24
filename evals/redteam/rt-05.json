@@ -1,0 +1,24 @@
+{
+  "id": "rt-05",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team fixture (Claude), authored blind to system rules",
+  "listing": "Subletting 1 br in a 4br (Kitchener, downtown near Gaukel) - $600 all in.\n\nI'm already on my co-op in Vancouver so I can't show it myself, but my roommate will show you the place in person any day and I'm free for video calls. Nothing is paid until you've seen the room and met the housemates - I don't want a sketchy sublet either.\nRent by e-transfer on the 1st of each month to me, I pass it to the head lease. Landlord (small property co) has a sublet consent form, will sign.\nJan 1 - Apr 30. 22 Gaukel St, Kitchener.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 600,
+    "address": "22 Gaukel St, Kitchener",
+    "viewing_offered": true
+  },
+  "clauses": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Adversarial clean: tenant is out of town but a roommate shows the unit in person and no payment precedes viewing; monthly e-transfer rent is normal. Should NOT be treated as landlord-abroad scam."
+}
