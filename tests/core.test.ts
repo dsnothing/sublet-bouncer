@@ -47,5 +47,6 @@ describe('failures and conservative policy',()=>{
   it('escalates low-confidence live fields',async()=>{const r=await live({extract:async()=>({fields:{rent:{value:850,span:{text:'$850/month'},confidence:.6}},clauses:[]})});expect(r.escalations.some(e=>e.decisionId==='D1'&&e.question.includes('rent'))).toBe(true);});
   it('accepts a numeric rent span within a verified currency expression',()=>{const e=verifyExtraction({fields:{rent:{value:850,span:{text:'850'},confidence:1}},clauses:[]},clean);expect(e.extraction.fields.rent.value).toBe(850);});
   it('does not interpret an address number as rent',()=>{const e=verifyExtraction({fields:{rent:{value:203,span:{text:'203'},confidence:1}},clauses:[]},clean);expect(e.extraction.fields.rent).toBeUndefined();});
+  it('logs the recomputed verdict output after a correction',async()=>{const {result}=markWrong(await run(),'D3',.9);const log=result.log.filter(e=>e.kind==='decision'&&e.ref==='D6').at(-1) as {output?:unknown};expect(log.output).toMatchObject({verdict:'REFUSE'});});
 });
 

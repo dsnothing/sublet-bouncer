@@ -78,9 +78,13 @@ export function markWrong(result:AnalysisResult,decisionId:Decision['id'],correc
   if(r.commute.status==='unknown')pending('D4','Confirm a geocodable address and commute');
   if(r.rtaApplies==='unknown')pending('D5','Does the owner share a kitchen or bathroom?');
   appendLog(r,'correction',decisionId,`Pinned correction to ${decisionId}`,'human').output=structuredClone(correction);
+  recomputeVerdict(r);
+  if(decisionId==='D6'&&r.verdict!=='REFUSE'){
+    r.verdict=correction as AnalysisResult['verdict'];r.reasons=['Human verdict correction pinned'];
+    const verdictDecision=r.decisions.find(d=>d.id==='D6')!;verdictDecision.output={verdict:r.verdict,reasons:r.reasons};
+  }
   const outputs:Record<string,unknown>={D1:r.fields,D2:r.clauses,D3:r.scam,D4:r.commute,D5:r.rtaApplies};
   for(const decision of r.decisions){if(outputs[decision.id]!==undefined)decision.output=outputs[decision.id];decision.escalated=r.escalations.some(e=>e.decisionId===decision.id);if(Number(decision.id.slice(1))>Number(decisionId.slice(1))&&decision.id!=='D7')appendLog(r,'decision',decision.id,`Recomputed after ${decisionId} correction`);}
-  recomputeVerdict(r);if(decisionId==='D6'&&r.verdict!=='REFUSE'){r.verdict=correction as AnalysisResult['verdict'];r.reasons=['Human verdict correction pinned'];}
   refreshActions(r,profile);appendLog(r,'decision','D7','Recomputed permission gate');
   return {result:r,fixture:{listing:r.listing,decision_id:decisionId,expected:correction}};
 }
