@@ -1,0 +1,27 @@
+{
+  "id": "v3-05",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v3 fixture (Gemini/Antigravity), authored blind to system rules and to v1/v2",
+  "listing": "Subletting my room for Winter 2027! (289 University Ave W, Waterloo)\n\nHi! I'm a 3B CS student heading to Toronto for coop so my room is avialable Jan 1 - Apr 30 2027. It's right across from the Plaza so grabbing food or walking to DC takes like 5 minutes even in January snow. Rent is $930 per month and covers all utlities (heat, water, hydro) plus fast internet. You'd be living with two ECE guys and one Math student—everyone is pretty clean and respectful during midterms. Pets are totally fine too, one roommate had a hamster last fall. Our landlord lives out in Oakville (so not sharing with the owner) and already emailed me written approval to sublet. I'm on campus all week so I can meet you in the lobby and walk you up to tour the suite anytime between 11am and 6pm. Shoot me an email at univ289.coop@example.com if you want pics or to set up a tour!",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 930,
+    "address": "289 University Ave W, Waterloo",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [],
+  "info_topics": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Chatty student post with realistic minor typos ('avialable', 'utlities'), normal market rent ($930/mo), verifiable UW-adjacent address, off-site landlord (RTA applies), written landlord sublet approval (RTA s. 97), pet-friendly note, and open in-person suite tours. No RTA breaches or CAFC scam signals. Under SPEC D6, ADMIT.",
+  "uncertainty": "low"
+}

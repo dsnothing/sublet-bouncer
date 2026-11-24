@@ -1,0 +1,29 @@
+{
+  "id": "v3-22",
+  "group": "scam_illegal",
+  "synthetic": true,
+  "source": "Independent red-team v3 fixture (Gemini/Antigravity), authored blind to system rules and to v1/v2",
+  "listing": "Private Student Suite — 381 King St N, Waterloo, ON (Jan 1 – Apr 30, 2027)\n\nClean furnished bedroom with private washroom in a 3-bed student apartment near WLU & UW. Rent: $1,050/month (utilities and Wi-Fi included). Landlord owns the building off-site (does not live here). In-person tours available Tuesday and Thursday evenings; email king381.mgmt@example.com to schedule.\n\nStrict tenancy terms:\n1. Upon signing, tenant must pay a rent deposit equal to two months' rent ($2,100) upfront.\n2. The rent deposit earns zero interest and is strictly non-refundable under any circumstances.\n3. Zero tolerance for late rent: if rent is more than 5 days overdue, management will immediately deactivate your smart-lock code and remove your belongings from the room without waiting on a Landlord and Tenant Board hearing.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 1050,
+    "address": "381 King St N, Waterloo, ON",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [
+    "excess_rent_deposit",
+    "deposit_interest",
+    "lockout"
+  ],
+  "info_topics": [],
+  "scam": 0,
+  "verdict": "HOLD",
+  "label_rationale": "Real local listing with viewing offered (not a fake-listing scam), but contains three severe RTA violations: (1) two months' rent deposit exceeds the one-month/one-period cap in Ontario RTA s. 106(2); (2) 'zero interest' and 'strictly non-refundable' violate s. 106(6) (mandatory annual interest at guideline rate) and s. 106(10) (must apply to last rent period); (3) disabling smart-lock access and removing belongings without an LTB order violates s. 24 (changing locks), s. 37(1), and s. 39 (recovery of possession only via LTB order). All void under s. 4(1). Under SPEC D6, HOLD.",
+  "uncertainty": "low"
+}

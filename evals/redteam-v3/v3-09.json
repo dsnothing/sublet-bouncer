@@ -1,0 +1,27 @@
+{
+  "id": "v3-09",
+  "group": "clean",
+  "synthetic": true,
+  "source": "Independent red-team v3 fixture (Gemini/Antigravity), authored blind to system rules and to v1/v2",
+  "listing": "Winter 2027 Co-op Sublet | 145 Hickory St W, Waterloo, ON\n\n• Term: January 1, 2027 – April 30, 2027\n• Monthly Rent: $875/month\n• Utilities: Heat, water, and high-speed Wi-Fi included; electricity split equally among 4 tenants (~$25/mo)\n• Room: Furnished bedroom with keyed door lock, twin XL bed, desk, closet; 2 shared full bathrooms\n• Household: 3 other UW co-op students; landlord does not live on site\n• Sublet Approval: Landlord has already consented to the sublet in writing\n• Viewing: Available to tour in person most weekday afternoons or Sunday mornings — contact hickory145@example.com.",
+  "profile": {
+    "termStart": "2027-01-01",
+    "termEnd": "2027-04-30",
+    "campus": "UW",
+    "classStart": "08:30"
+  },
+  "fields": {
+    "rent": 875,
+    "address": "145 Hickory St W, Waterloo, ON",
+    "viewing_offered": true,
+    "owner_lives_in": false
+  },
+  "clauses": [],
+  "info_topics": [
+    "sublet_consent"
+  ],
+  "scam": 0,
+  "verdict": "ADMIT",
+  "label_rationale": "Well-structured legitimate student sublet at market rent ($875/mo), Hickory St W address near UW/WLU, off-site landlord (not exempt under RTA s. 5(i)), written landlord sublet consent (RTA s. 97), and in-person viewings offered. No illegal clauses or CAFC fraud flags. Under SPEC D6, ADMIT.",
+  "uncertainty": "low"
+}
