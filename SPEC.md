@@ -94,6 +94,30 @@ export interface AnalyzeRequest { listing: string; profile: { termStart: string;
 ```
 Codex commits `core/types.ts` **first**, together with `core/fixtures/sample-result.*.json` (ADMIT, HOLD and REFUSE examples), so the UI can build against fixtures immediately.
 
+## 5b. Data file schemas (contract between C2 readers and C3 writers)
+```ts
+// data/rta_rules.json
+{ version: string; retrieved: string; rules: Array<{ id: string; section: string; title: string;
+  patterns: string[];          // case-insensitive JS regex sources (exact match => confidence 1.0)
+  fuzzy_patterns: string[];    // looser regex sources (=> confidence 0.6)
+  status: 'void'|'questionable'|'ok'|'info'; lesson_plain: string; lesson_simple_english: string; source_url: string }> }
+// data/scam_model.json
+{ version: string; trained_on: string; synthetic: true; features: Array<{ name: string; description: string; mean: number; std: number }>;
+  weights: number[] /* same order as features, on standardized x */; intercept: number; thresholds: { proceed: 0.30; block: 0.70 }; metrics?: object }
+// feature names (stable ids C2 must compute in core/features.ts):
+// rent_to_median, payment_before_viewing, risky_payment_method, landlord_abroad, off_platform_only, no_address,
+// no_viewing_offered, urgency_language, sob_story_length, early_id_request, amenities_vs_price, duplicate_markers
+// data/cmhc_benchmarks.json
+{ source: string; retrieved: string; region: 'Kitchener-Cambridge-Waterloo'; year: number; median_monthly: { room?: number; bachelor: number; one_bedroom: number; two_bedroom: number }; notes: string }
+// data/geocode_cache.json
+{ source: string; retrieved: string; entries: Array<{ key: string /* lowercase normalized street or building name */; aliases: string[]; lat: number; lon: number; confidence: number }> }
+// data/commute_table.json
+{ source: string; gtfs_feed_date: string; walk_m_per_min: 80; origins: Array<{ id: string; lat: number; lon: number; label: string;
+  to: { UW: { arrive_by_0830?: string /* HH:MM latest-departure-arrival or null */; minutes: number; summary: string } | null;
+        WLU: { arrive_by_0830?: string; minutes: number; summary: string } | null } }> }
+// core resolves address -> geocode entry -> nearest origin (<= 600 m, else commute 'unknown' + escalation)
+```
+
 ## 6. UI (Antigravity owns /web)
 The concept is velvet rope + boarding pass. It should be distinctive, not a templated dashboard.
 - Layout ≥1024 px: paste/listing panel on the left with inline highlights, verdict boarding pass in the centre, Accountability drawer on the right (collapsible). At 375 px, stack them with sticky verdict chips.
