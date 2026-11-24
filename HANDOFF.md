@@ -114,3 +114,18 @@
 - **Verified (1280×900 & 375×812)**: 3 live samples on `gemini-3.1-flash-lite` (Tricky `HOLD`, Clean `ADMIT`, Scammy `REFUSE` + `Unlisted address`), live wait state (`Reading clauses with Gemini… 0.1s` + `Use offline now`), custom pasted listing (triggered live 429 → friendly rate-limit `OFFLINE-FALLBACK` banner + `Why offline still works` link + 3 flagged clauses), Offline Clean (`ADMIT`), D5 correction reload persistence (`3→3` log entries), Escape popover close + focus return, `prefers-reduced-motion: reduce` (`1e-05s`), WCAG AA contrast (`5.67:1`–`18.16:1` across 10 elements), `0` horizontal overflow, `0` console errors, `0` failed requests.
 - **Minor cosmetic notes (non-blocking)**: `web/src/styles.css:1446` `.mobile-verdict-strip` `top: 57px` can tuck under the wrapped sticky `.topbar` while scrolling on 375px; `web/src/components/ListingEditor.tsx:79` `"University of Waterloo (UW)"` clips slightly to `"University of Waterlo"` inside the 1280px select.
 - **Screenshots**: `evidence/ui/prod-{1280-tricky-live,1280-clean-live,1280-scammy-live,1280-pasted-live,1280-clean-offline,375-tricky,375-scammy}.png`.
+
+## C3 - Final v2 evidence and error audit (Codex L3)
+- Skills: karpathy-guidelines (scope), systematic-debugging (reproduction/causality); Flash quota deferred, no audit API calls.
+- Frozen source 30126e1; RESULTS-v2-final.md + results-v2-final.json committed 2c61d1f; labels/rules/model unchanged.
+- Independent30: Lite26 live/4 fallback (2 timeout,2 HTTP503), zero retries; violation P/R .348/.889 (TP8 FP15 FN1).
+- All-topic P/R .685/.902; raw fields71/117, verified43/117; AUC .951; verdict13/30=.433; p50/p95 3.401s/14.004s.
+- Offline: violation P/R .500/.111; fields28/117; AUC .914; verdict13/30=.433. Repeat15 trials:3 failed,2/5 cases consistent.
+- V1-after-C2b disclosed as contaminated dev data; v2 lead-example phrase dependency0; seven disputed labels shown unchanged.
+- ERROR-ANALYSIS-v2.md: all30 verdicts/decision drivers, all28 raw-right field drops, all17 all-topic FP pairs.
+- Live wrong buckets:13 benign HOLDs,2 false scam blocks,1 scam under-detection,1 French language miss via email token.
+- All28 quotes found:26 semantic regex misses,1 negation error,1 insufficient quote; offsets/whitespace were not the cause.
+- Restoring viewing alone lowers false-block p .809->.577 and .754->.496; this is analysis-only, saved scores unchanged.
+- ViolationFP15 =14 review proposals(.7)+1 regex; >=.75 precision1/2; zero actual void assertions, precision undefined.
+- Verification:71 tests passed/1 optional skipped; root/eval strict typechecks; frozen hash+verifier reproduction matched; no secrets tracked.
+- Risks: synthetic-only model, material RTA/commute unknowns, low proposal precision and quota limits; no post-holdout tuning.
