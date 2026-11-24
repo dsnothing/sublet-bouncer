@@ -1,0 +1,7 @@
+# C4 — Web UI (Lane L4, Antigravity gemini-4-neon)
+Owns: /web only (its own package.json is a workspace member; Codex owns the root package.json — if you need a root change, note it in HANDOFF.md).
+Build per SPEC §1 and §6 against core/types.ts + core/fixtures/*.json (Codex commits these first; if not yet present, mirror SPEC §5 types locally in web/src/types.ts and switch later). Data source adapter: `fixtures` | `api` (POST /api/analyze, dev proxy to http://localhost:8787) | `offline` (import analyze from core when available).
+Design: distinctive velvet-rope / boarding-pass identity; read design-research/DESIGN.md taste notes (C:/Users/ds980_ugnlatu/OneDrive/Documents/ChatGPT/Skills & Efficiency/design-research/DESIGN.md) and relevant skills (frontend-design, design-taste-frontend, emil-design-eng, choreograph for the rewind animation). Avoid generic dashboard look. Direction selection is delegated to you within this concept — no user selection round.
+Visual gate: run it, capture screenshots at 375px and 1280px for ADMIT/HOLD/REFUSE fixtures + escalation + undo state into ../evidence/ui/, keyboard-only pass, contrast check. Note results in HANDOFF.md (≤15 lines).
+Done-check: `npm run build -w web` succeeds; app works with fixtures now and against the API once C2 lands; visual gate evidence saved. Commit on main (pull/rebase first; other agents commit in other dirs).
+Node: if `node` isn't on PATH, prepend "C:\Program Files\nodejs".
