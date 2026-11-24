@@ -1,0 +1,10 @@
+# C2d — General precision fixes from v2 error analysis (Lane L3, Codex)
+Input: evals/ERROR-ANALYSIS-v2.md (v2 is now a DEV set; a fresh blind v3 will be the headline, so general fixes only — no listing-specific literals, ids, addresses or phrases copied from v2).
+Fix, each with tests:
+1. Span verification of fields (D1): 28 raw-correct fields dropped (22 viewing_offered, 4 owner_lives_in, 2 rent). Verification must accept a verbatim span whose meaning supports the value via a small generic concept lexicon per field (viewing: view/visit/tour/see the place/showing/come by…; owner: owner/landlord/homeowner/live-in/lives upstairs/downstairs…; rent: numbers with $/,/k/"per month"/"/mo"), with NEGATION handling (no/not/never/unavailable/"can't" within the clause scope). Reject only when the span is absent from the listing or contradicts the value. Fix the confirmed negation bug.
+2. Rule-proposal concept gate (D2): an LLM proposed_rule_id is accepted as a review flag only if its verified span contains that rule's generic concept terms (define per rule in data/rta_rules.json as `concept_terms`, e.g. damage_deposit: deposit|hold|holdback|bond|fund|$…; no_pets: pet|animal|dog|cat|furry|…; entry_notice: enter|entry|access|key|drop by|inspect…), and is not negated/permissive ("pets welcome", "no deposit required"). Record gate rejections in the log (kind llm+rules, outcome rejected) so the accountability drawer shows them.
+3. Exact regex negation guard: patterns must not fire inside negations/permissions (e.g. "pets are welcome", "no damage deposit required").
+4. Language detection: strip emails, URLs, phone numbers and @handles before detection.
+5. Keep policy unchanged: LLM proposals stay 0.7 (escalate, never void) — owner decision in docs/HUMAN-REVIEW.md #4; verdict policy D6 unchanged.
+Measure on DEV sets only (gold, redteam v1, redteam v2) before/after and put the table in HANDOFF; do not open evals/redteam-v3/ if it appears.
+Done: npm test + typecheck + build green; commit message MUST start with "C2d:" (final v3 eval freezes on it); git commit --only per WORKFLOW §5; push. Do not deploy (lead deploys). ≤15-line HANDOFF.
