@@ -22,14 +22,16 @@
           "quote": "First month's rent plus an extra $400 we hold in case anything gets broken.",
           "section": "Section 105",
           "inListing": true,
-          "matchesRule": false
+          "matchesRule": true,
+          "strictMatchesRule": false
         },
         {
           "category": "entry_notice",
           "quote": "The landlord can pop in whenever he likes, no need to tell you first.",
           "section": "Section 26",
           "inListing": true,
-          "matchesRule": false
+          "matchesRule": true,
+          "strictMatchesRule": false
         }
       ]
     },
@@ -45,7 +47,8 @@
           "quote": "Send deposit before viewing by crypto.",
           "section": "Section 105",
           "inListing": true,
-          "matchesRule": false
+          "matchesRule": true,
+          "strictMatchesRule": false
         }
       ]
     }

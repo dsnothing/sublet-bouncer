@@ -17,7 +17,7 @@
       "rows": 24
     }
   ],
-  "scoring_sha256": "7d764f1aea47f4f7fc757542546e50ef2a585e92bfc71fd441e2807fbf1c5f1c",
+  "scoring_sha256": "fb778c337a126d46ebbcd0474b1a8654a73dcb069a08cce47ec3b1f4b76db32b",
   "frozen_source": "9be1f86f3ccad188f3512f82ef23fd28573272bf",
   "frozen_results_sha256": "42d7f1bb0502335e7570005adf2c0e75281874671306a5a44653a5bc130bcbe3",
   "systems": {
@@ -36,7 +36,8 @@
       "recall": null,
       "unsafe_admit": 9,
       "quotes_not_in_listing": 0,
-      "section_mismatches": 0,
+      "section_mismatches_strict": 0,
+      "section_mismatches_normalized": 0,
       "no_answer": 0
     },
     "b1": {
@@ -54,7 +55,8 @@
       "recall": 1,
       "unsafe_admit": 4,
       "quotes_not_in_listing": 1,
-      "section_mismatches": 19,
+      "section_mismatches_strict": 19,
+      "section_mismatches_normalized": 6,
       "no_answer": 0
     },
     "offline": {
@@ -72,7 +74,8 @@
       "recall": 0.38461538461538464,
       "unsafe_admit": 4,
       "quotes_not_in_listing": 0,
-      "section_mismatches": 0,
+      "section_mismatches_strict": 0,
+      "section_mismatches_normalized": 0,
       "no_answer": 0
     },
     "live": {
@@ -90,10 +93,36 @@
       "recall": 0.5384615384615384,
       "unsafe_admit": 2,
       "quotes_not_in_listing": 0,
-      "section_mismatches": 0,
+      "section_mismatches_strict": 0,
+      "section_mismatches_normalized": 0,
       "no_answer": 0
     }
   },
+  "section_scoring": {
+    "strict": "The preregistered strict matcher compares the whole section string after case and whitespace normalization.",
+    "normalized": "The normalized matcher checks each cited section against the selected rule's section list. A bare section number can match a listed subsection. When both specify a subsection, the cited detail must agree. Unqualified citations are read as RTA citations. Unknown rule categories count as mismatches under both methods.",
+    "post_hoc": "The normalized matcher was added post-run after review found that strict matching over-counted citation mismatches. The B1 prompt and raw responses are unchanged."
+  },
+  "b1_section_mismatch_examples": [
+    {
+      "id": "v3-18",
+      "category": "no_pets",
+      "cited": "Section 76",
+      "verified": "s.14"
+    },
+    {
+      "id": "v3-28",
+      "category": "no_pets",
+      "cited": "Section 76",
+      "verified": "s.14"
+    },
+    {
+      "id": "v3-30",
+      "category": "excess_rent_deposit",
+      "cited": "RTA s. 105",
+      "verified": "s.106(2)"
+    }
+  ],
   "rows": {
     "b1": [
       {

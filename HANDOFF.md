@@ -252,3 +252,9 @@
 - **Verified**: `npm.cmd run typecheck`, `npm.cmd run build`, `npm.cmd test` (346 passed, 1 skipped) green; exported helper assertions + headless Chrome CDP at 1280×900 & 375×812 verified all 10 fixes, 0 overflow (`scrollWidth=375` on Hidden terms + Accountability open), 0 console errors.
 - **Screenshots**: `evidence/ui/fix-{1280,375}-{hidden-accountability,clean-chatbot,simulated-outage,recheck}.png`.
 - **Open risks / data note**: `web/src/data/baseline-samples.json` (from `evals/baseline_score.ts` exact string check) marks `matchesRule: false` on `tricky` `Section 26` even though `s.26` exists in `data/rta_rules.json` (`entry_notice: "s.27(1); s.26"`); UI now cross-checks `data/rta_rules.json` without editing `evals/`. No deploy.
+
+## C12d — Post-run citation scoring
+- L3 Codex used `systematic-debugging` and `karpathy-guidelines`. No capability gaps.
+- Cached B1 replay found 19 strict and 6 normalized section mismatches, with all 13 labelled violations found (recall 1.00).
+- The report discloses the post-hoc matcher and shows three examples. Sample data exposes both match flags for the UI.
+- Raw responses and prompt are unchanged. Two offline replays were byte-identical. `npm test` had 370 passes and one skip. Typecheck passed.

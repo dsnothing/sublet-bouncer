@@ -1,6 +1,7 @@
 import { existsSync, writeFileSync } from 'node:fs';
+import rules from '../data/rta_rules.json' with { type: 'json' };
 import { checklist } from './baselines/b2_checklist.js';
-import { score, type Label, type ScoreRow } from './baseline_score.js';
+import { score, verifyClause, type Label, type ScoreRow } from './baseline_score.js';
 import { calls, cacheDir, stableHash, read, save, tokenSummary, type Attempt } from './baseline_runtime.js';
 
 type Tokens = ReturnType<typeof tokenSummary>;
@@ -24,6 +25,21 @@ export function writeReport(labels: Label[], frozen: { frozen_source: string; ro
     offline: score(frozen.rows.offline, labels),
     live: score(frozen.rows['flash-lite'], labels),
   };
+  const sectionScoring = {
+    strict: 'The preregistered strict matcher compares the whole section string after case and whitespace normalization.',
+    normalized: 'The normalized matcher checks each cited section against the selected rule\'s section list. A bare section number can match a listed subsection. When both specify a subsection, the cited detail must agree. Unqualified citations are read as RTA citations. Unknown rule categories count as mismatches under both methods.',
+    post_hoc: 'The normalized matcher was added post-run after review found that strict matching over-counted citation mismatches. The B1 prompt and raw responses are unchanged.',
+  };
+  const citedMismatches = b1.flatMap(({ id, result }) => {
+    const label = labels.find(label => label.id === id)!; // score has validated the row IDs.
+    return result.clauses.flatMap(clause => {
+      if (verifyClause(label.listing, clause).matchesRule) return [];
+      const rule = rules.rules.find(rule => rule.id === clause.ruleId);
+      return [{ id, category: clause.ruleId, cited: clause.section, verified: rule?.section ?? null }];
+    });
+  });
+  const mismatchExamples = citedMismatches.filter(row => row.verified !== null).slice(0, 5);
+  const unknownRuleMismatches = citedMismatches.filter(row => row.verified === null).length;
   const ledger = calls();
   const b1Attempts = cached.flatMap(row => row.attempts);
   const b1Tokens = tokenSummary(cached.map(row => row.attempts));
@@ -46,7 +62,8 @@ export function writeReport(labels: Label[], frozen: { frozen_source: string; ro
     })),
     scoring_sha256: stableHash('evals/baseline_score.ts'), frozen_source: frozen.frozen_source,
     frozen_results_sha256: stableHash('evals/results-v3-final.json'),
-    systems, rows: { b1, b2 }, b1_failures: b1Failures,
+    systems, section_scoring: sectionScoring, b1_section_mismatch_examples: mismatchExamples,
+    rows: { b1, b2 }, b1_failures: b1Failures,
     recovered_checkpoints: cached.filter(row => row.resumed_before_first_call).map(row => row.id),
     frozen_bouncer_modes: Object.fromEntries(["live", "offline-fallback", "offline"].map(mode => [
       mode, frozen.rows['flash-lite'].filter(row => row.result.mode === mode).length,
@@ -62,8 +79,8 @@ export function writeReport(labels: Label[], frozen: { frozen_source: string; ro
     "Run date: " + output.run_date + ". n = " + output.n + " synthetic listings.",
     "Harness SHA-256 (LF-normalized): " + output.harness_sha256 + ". Preregistration commit: " + preregCommit + ". Preregistration SHA-256 (LF-normalized): " + output.prereg_sha256 + ".",
     'Bouncer rows are the frozen v3 run at 9be1f86, not re-run.', '',
-    '| System | Verdict acc (Wilson 95%) | Violation P/R | Unsafe ADMIT | Quotes not in listing | Section mismatches | no_answer | Tokens per check (mean) | List-price cost per check |',
-    '|---|---|---|---|---|---|---|---|---|',
+    '| System | Verdict acc (Wilson 95%) | Violation P/R | Unsafe ADMIT | Quotes not in listing | Section mismatches (strict) | Section mismatches (normalized) | no_answer | Tokens per check (mean) | List-price cost per check |',
+    '|---|---|---|---|---|---|---|---|---|---|',
   ];
   const display = [
     ['b2', 'B2 checklist', null, 0],
@@ -79,14 +96,21 @@ export function writeReport(labels: Label[], frozen: { frozen_source: string; ro
     lines.push("| " + [
       name, system.correct + "/" + output.n + " (" + fmt(system.verdict_accuracy) + ", " + system.wilson95.map(fmt).join(" to ") + ")",
       key === "b2" ? "n/a" : fmt(system.precision) + "/" + fmt(system.recall), system.unsafe_admit,
-      system.quotes_not_in_listing, system.section_mismatches, system.no_answer, tokenCell, costCell,
+      system.quotes_not_in_listing, system.section_mismatches_strict, system.section_mismatches_normalized,
+      system.no_answer, tokenCell, costCell,
     ].join(" | ") + " |");
   }
   const coverage = (summary: Tokens | null) => summary
     ? summary.measured_checks + "/" + summary.checks + " fully metered checks, " + summary.metadata_responses + "/" + summary.http_attempts + " attempts with usable metadata, p95 " + (summary.p95 ?? "unavailable") + " tokens"
     : "measurement unavailable";
   lines.push(
-    '', 'A section mismatch means the section does not match the verified rule section. The comparison uses exact section strings after whitespace and case normalization. Alternate valid formats and additional citations can also produce mismatches.',
+    '', `B1 found all ${systems.b1.tp + systems.b1.fn} labelled violations (recall ${systems.b1.recall?.toFixed(2)}) and had ${systems.b1.quotes_not_in_listing} quote absent from the listing. It had ${systems.b1.section_mismatches_strict} strict and ${systems.b1.section_mismatches_normalized} normalized section mismatches. These counts measure agreement with the verified rule table.`,
+    '', sectionScoring.post_hoc, '', sectionScoring.strict, '', sectionScoring.normalized,
+    '', '### Remaining B1 citation mismatches', '',
+    '| Listing | Selected rule | Chatbot citation | Verified section |',
+    '|---|---|---|---|',
+    ...mismatchExamples.map(row => `| ${row.id} | ${row.category} | ${row.cited} | ${row.verified} |`),
+    '', `The normalized total also includes ${unknownRuleMismatches} clauses for which B1 selected \`other\`, which has no corresponding section in the rule table.`,
     '', 'Run ledger: ' + ledger.length + '/50 attempts. B1 recorded ' + b1Failures.http429 + ' HTTP 429s, ' + b1Failures.http503 + ' HTTP 503s, ' + b1Failures.timeout + ' timeouts and ' + b1Failures.retries + ' retries. A missing B1 answer counts as a wrong verdict.',
     '', 'Frozen live-mode rows: ' + output.frozen_bouncer_modes.live + ' live successes, ' + output.frozen_bouncer_modes['offline-fallback'] + ' provider fallbacks, and ' + output.frozen_bouncer_modes.offline + ' deterministic offline refusal.',
     '', 'B1 token coverage: ' + coverage(b1Tokens) + '. Bouncer dev token coverage: ' + coverage(dev) + '. Token and cost averages use only fully metered checks. Output includes thinking tokens.',
