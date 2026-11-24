@@ -28,7 +28,22 @@ export function createGeminiAdapter(apiKey=process.env.GEMINI_API_KEY,model=proc
       const signal=AbortSignal.any([total.signal,attempt.signal]);
       try {
         const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${answeredModel}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},signal,body:JSON.stringify({systemInstruction:{parts:[{text:systemPrompt}]},contents:[{role:'user',parts:[{text:JSON.stringify({untrusted_listing:listing})}]}],generationConfig:{...(/^gemini-3(?:\.\d+)?-flash/.test(answeredModel)?{thinkingConfig:{thinkingLevel:'minimal'}}:{}),temperature:0,maxOutputTokens:2048,responseMimeType:'application/json',responseSchema}})});
-        if(!res.ok){await res.body?.cancel();return {status:res.status};}
+        if(!res.ok){
+          let retryDelayMs:number|undefined;
+          if([429,503].includes(res.status)) {
+            const header=res.headers.get('retry-after');
+            if(header && /^\d+(?:\.\d+)?$/.test(header))retryDelayMs=Number(header)*1000;
+            else {
+              try {
+                const error=await res.json() as {error?:{details?:{retryDelay?:string}[]}};
+                const delay=error.error?.details?.find(d=>typeof d.retryDelay==='string')?.retryDelay;
+                if(delay && /^\d+(?:\.\d+)?s$/.test(delay))retryDelayMs=parseFloat(delay)*1000;
+              } catch { /* Missing retry hints go directly to the fallback. */ }
+            }
+          }
+          await res.body?.cancel().catch(()=>{});
+          return {status:res.status,retryDelayMs};
+        }
         const body=await res.json() as {candidates?:{finishReason?:string;content?:{parts?:{text?:string;thought?:boolean}[]}}[]};
         const candidate=body.candidates?.[0];
         if(candidate?.finishReason==='MAX_TOKENS')throw new Error('Gemini output token limit');
@@ -44,7 +59,18 @@ export function createGeminiAdapter(apiKey=process.env.GEMINI_API_KEY,model=proc
       let response;
       let primaryFailure:string|undefined;
       try {
+        const deadline=Date.now()+PRIMARY_TIMEOUT_MS;
         response=await request(model,PRIMARY_TIMEOUT_MS);
+        const delay=response.retryDelayMs;
+        if([429,503].includes(response.status) && delay!==undefined && delay<=3000 && Date.now()+delay<deadline) {
+          await new Promise<void>((resolve,reject)=>{
+            const done=()=>{total.signal.removeEventListener('abort',aborted);resolve();};
+            const timer=setTimeout(done,delay);
+            const aborted=()=>{clearTimeout(timer);reject(new Error('LLM total timeout'));};
+            if(total.signal.aborted)aborted();else total.signal.addEventListener('abort',aborted,{once:true});
+          });
+          response=await request(model,Math.max(1,deadline-Date.now()));
+        }
         if([429,503].includes(response.status))primaryFailure=`Gemini HTTP ${response.status}`;
         else if(response.status!==200)throw new Error(`Gemini HTTP ${response.status}`);
       } catch(error){

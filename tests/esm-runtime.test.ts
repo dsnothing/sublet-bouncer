@@ -24,6 +24,7 @@ it('loads separately emitted API modules in native Node ESM and serves offline a
     }
     emit('core');
     emit('api');
+    cpSync('api/_lib/sample-cache.json', join(root, 'api/_lib/sample-cache.json'));
     cpSync('data', join(root, 'data'), { recursive: true });
     writeFileSync(join(root, 'package.json'), '{"type":"module"}');
     const output = execFileSync(process.execPath, ['--input-type=module', '-e', `

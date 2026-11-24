@@ -182,3 +182,13 @@
 - Verified: npm test 203 passed / 1 optional skipped (8 files); npm run typecheck and npm run build passed.
 - Post-v3-freeze change: no frozen v3 fixtures opened, no v3 evaluation rerun or tuning; existing v3 metrics describe the frozen source, not this change.
 - Risks: heuristic coverage is incomplete; normal-listing negatives pass. No frontend change or deployment; unrelated evidence/demo/ left untouched.
+
+## C2h - Free-tier capacity (Codex L3)
+- Role/skills: L3; karpathy-guidelines (scope), vercel-functions (instance state), env-vars (setup), systematic-debugging (typed mock signatures); gaps: rg absent, live providers not exercised.
+- Added SHA-256 request keys, live-only 200-entry/1h LRU, honest cached/cachedAt provenance, public-sample seed script (>=8s pacing), and exact text checks preserving evidence offsets.
+- Added first-hop IP token buckets (burst 3, refill 6/10min), HTTP-200 explicit offline fallback, identical in-flight coalescing, and noCache bypass for cache/coalescing.
+- Gemini retries primary 429/503 once for advertised delays <=3s within existing 14/6s budgets. Existing model chain preserved; Azure dropped per lead quota finding, no Azure code/env/tests shipped.
+- Verified: npm test 221 passed / 1 optional live skipped (9 files), typecheck and web build passed; native emitted ESM API test covers JSON seed packaging.
+- Env: GEMINI_API_KEY; GEMINI_MODEL=gemini-3.1-flash-lite; GEMINI_FALLBACK_MODEL=gemini-3-flash-preview. No new env vars.
+- Seed intentionally empty under mock-only verification; lead must run documented seed command with genuine live credentials, commit output, then deploy. UI cache labeling belongs to Antigravity.
+- Limits: cache/limiter/coalescing are per instance (reset on cold start, no global coordination); noCache still rate limited. Post-v3 only: frozen v3 not opened/run/tuned. No deployment.

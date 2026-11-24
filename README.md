@@ -58,6 +58,12 @@ GEMINI_FALLBACK_MODEL=gemini-3-flash-preview
 
 The configured production chain is `gemini-3.1-flash-lite` → `gemini-3-flash-preview` → offline rules. The adapter's code defaults are Flash first and Lite fallback if model overrides are omitted ([adapter:18](api/gemini.ts#L18)). The primary gets 14 seconds, fallback up to 6 seconds within a 20-second LLM budget; geocoding can add time ([adapter:4](api/gemini.ts#L4), [geocoder:16](api/_lib/geocode.ts#L16)). The response records the model that actually answered. No key is needed for offline mode; never put the key in a frontend variable.
 
+Capacity controls (post-v3): `/api/analyze` keeps up to 200 completed live results per instance for one hour, coalesces identical in-flight requests, and limits uncached live calls per visitor IP (burst 3, refill 6 per 10 minutes). A limited visitor receives HTTP 200 with an explicit offline-fallback reason. Cached results keep their original model and expose `cached: true` and `cachedAt`. Offline/fallback results are never cached. Memory limits reset on cold starts and are not shared across instances.
+
+The primary retries 429/503 once only when the provider advertises a delay of at most 3 seconds (`Retry-After` seconds or Gemini `retryDelay`). Waiting and the retry share the primary's existing 14-second allowance; the fallback retains up to 6 seconds. POST `noCache: true` bypasses result caching and in-flight coalescing for independent measurements; visitor limits still apply. Existing eval harnesses call core directly and are unchanged.
+
+To populate the build-time cache with genuine live results for the three public samples, explicitly run `node --env-file=.env --import tsx scripts/seed_sample_cache.ts`, then commit the generated `api/_lib/sample-cache.json` before deployment. The script spaces samples by at least 8 seconds, records original models and timestamps, and preserves the existing file if any sample falls back. The checked-in seed starts empty because this card was tested with mocks; no saved result is presented as live without a real live run. Pasted listings are never written to the seed file. Vercel needs only the existing `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3.1-flash-lite`, and `GEMINI_FALLBACK_MODEL=gemini-3-flash-preview`; no Azure variables are used.
+
 In separate terminals:
 
 ```sh
