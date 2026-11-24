@@ -23,7 +23,7 @@ A Waterloo co-op student, often international, often searching from another city
 /evals     gold/*.json (40 listings), run_eval.ts -> results.json + RESULTS.md
 /tests     vitest
 ```
-- LLM: `gemini-2.5-flash` (stable). Ablation alternatives: `gemini-2.5-flash-lite` and offline regex. Use JSON-schema structured output (`responseMimeType: application/json` + `responseSchema`), temperature 0. The key is read from the env `GEMINI_API_KEY`; never commit it, and keep `.env` git-ignored.
+- LLM: `gemini-3-flash-preview` (verified 200, ~0.9 s on this key; `gemini-2.5-flash`/`-lite` return 404 "no longer available to new users"). Ablation alternatives: `gemini-3.1-flash-lite` and offline regex. Model id is configurable via env `GEMINI_MODEL`. Use JSON-schema structured output (`responseMimeType: application/json` + `responseSchema`), temperature 0. The key is read from the env `GEMINI_API_KEY`; never commit it, and keep `.env` git-ignored.
 - Timeouts: LLM 12 s. Any error, timeout, 429 or schema failure falls back to `offline` extraction and sets `mode:"offline-fallback"` with the reason shown in the UI.
 - Listing text is **data, never instructions**. The system prompt says so. `core/injection.ts` flags patterns like "ignore (all|previous) instructions" or "approve this", and a flagged listing adds an escalation. The rules engine never reads LLM prose, only schema fields with spans.
 
@@ -131,7 +131,7 @@ Failure-oriented: LLM timeout → offline-fallback; LLM returns a span not in th
 
 ## 8. Evals (`npm run eval`, writes evals/results.json + evals/RESULTS.md)
 The gold set is 40 listings: 15 clean, 15 scam/illegal, 10 tricky. They are synthetic but realistic, with no real people's data, and each has labelled fields, clauses, scam label and verdict. Hold them out from training.
-Report: clause precision/recall; scam AUC + confusion at 0.30/0.70; extraction field accuracy for **offline regex vs flash-lite vs flash vs flash+span-verify** (the ablation that is the A2 evidence); verdict accuracy; **repeat consistency** (same 5 listings × 3 live runs); latency p50/p95; and the rubric cases: 2 ordinary, 1 repeat, 1 demanding (multi-clause adversarial). Every number in the write-ups must come from this file.
+Report: clause precision/recall; scam AUC + confusion at 0.30/0.70; extraction field accuracy for **offline regex vs gemini-3.1-flash-lite vs gemini-3-flash-preview vs flash+span-verify** (the ablation that is the A2 evidence); verdict accuracy; **repeat consistency** (same 5 listings × 3 live runs); latency p50/p95; and the rubric cases: 2 ordinary, 1 repeat, 1 demanding (multi-clause adversarial). Every number in the write-ups must come from this file.
 
 ## 9. Deployment
 Vercel: static `/web` build + `/api` functions, with `GEMINI_API_KEY` set as a Vercel env var. A public GitHub repo with MIT license and a README (setup, architecture diagram, decision map, limitations, AI disclosure). The lead handles the deploy and repo creation.
