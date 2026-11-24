@@ -191,6 +191,7 @@ export function validateAndSanitizeResult(raw: unknown): AnalysisResult | null {
     if (!isRecord(e)) return null;
     if (typeof e.id !== 'string' || typeof e.question !== 'string') return null;
     if (typeof e.decisionId !== 'string' || !VALID_DECISION_IDS.has(e.decisionId as Decision['id'])) return null;
+    if (typeof e.blocking !== 'boolean') return null;
     if (!Array.isArray(e.options) || !e.options.every((o) => typeof o === 'string')) return null;
     if (!Array.isArray(e.evidence) || !e.evidence.every((s) => isValidSpan(s, listingLen))) return null;
   }

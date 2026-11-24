@@ -51,6 +51,26 @@ export const App: React.FC = () => {
   const activeAbortRef = useRef<AbortController | null>(null);
   const resultRef = useRef<AnalysisResult | null>(initial.result);
   const didAutoRunRef = useRef<boolean>(false);
+  const topbarRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const el = topbarRef.current;
+    if (!el) return;
+    const syncHeight = () => {
+      const h = Math.ceil(el.getBoundingClientRect().height);
+      if (h > 0) {
+        document.documentElement.style.setProperty('--topbar-height', `${h}px`);
+      }
+    };
+    syncHeight();
+    if (typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(syncHeight);
+      ro.observe(el);
+      return () => ro.disconnect();
+    }
+    window.addEventListener('resize', syncHeight);
+    return () => window.removeEventListener('resize', syncHeight);
+  }, []);
 
   useEffect(() => {
     resultRef.current = result;
@@ -244,6 +264,8 @@ export const App: React.FC = () => {
   };
 
   const scamPct = result ? Math.round(result.scam.p * 100) : 0;
+  const blockingCount = result ? result.escalations.filter((e) => e.blocking).length : 0;
+  const noteCount = result ? result.escalations.filter((e) => !e.blocking).length : 0;
 
   return (
     <>
@@ -251,7 +273,7 @@ export const App: React.FC = () => {
         Skip to verdict boarding pass
       </a>
 
-      <header className="topbar">
+      <header className="topbar" ref={topbarRef}>
         <div className="topbar-inner">
           <div className="brand">
             <span className="brand-mark" aria-hidden="true">
@@ -325,11 +347,21 @@ export const App: React.FC = () => {
                 <PanelRightOpen size={16} aria-hidden="true" />
               )}
               <span>Accountability</span>
-              {result && result.escalations.length > 0 && (
-                <span className="esc-count-pill" aria-label={`${result.escalations.length} open escalations`}>
-                  {result.escalations.length}
+              {blockingCount > 0 ? (
+                <span
+                  className="esc-count-pill"
+                  aria-label={`${blockingCount} blocking ${blockingCount === 1 ? 'question' : 'questions'}`}
+                >
+                  {blockingCount}
                 </span>
-              )}
+              ) : noteCount > 0 ? (
+                <span
+                  className="esc-count-pill notes"
+                  aria-label={`${noteCount} ${noteCount === 1 ? 'note' : 'notes'} to confirm`}
+                >
+                  {noteCount}
+                </span>
+              ) : null}
             </button>
           </div>
         </div>

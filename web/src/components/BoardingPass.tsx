@@ -238,6 +238,14 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   const rawFallbackReason = result.fallbackReason ?? notice;
   const fallbackInfo = classifyFallback(result.mode, rawFallbackReason, result.model);
 
+  const noteEscalations = result.escalations.filter((esc) => !esc.blocking);
+  const hasRtaAssumptionNote =
+    !result.refused &&
+    result.rtaApplies === 'applies' &&
+    !result.escalations.some((esc) => esc.decisionId === 'D5') &&
+    result.couldNotCheck.some((item) => /RTA applies unless/i.test(item));
+  const totalNotesCount = noteEscalations.length + (hasRtaAssumptionNote ? 1 : 0);
+
   const refusalInfo = result.refused ? REFUSAL_COPY[result.refused.reason] : null;
   const shortRunId = result.runId.length > 12 ? result.runId.slice(0, 8) : result.runId;
 
@@ -304,6 +312,11 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
               {result.verdict === 'HOLD' && <AlertTriangle size={20} aria-hidden="true" />}
               {result.verdict === 'REFUSE' && <ShieldAlert size={20} aria-hidden="true" />}
               <span>{STAMP_TEXT[result.verdict]}</span>
+              {result.verdict === 'ADMIT' && !result.refused && totalNotesCount > 0 && (
+                <span className="sr-only">
+                  , with {totalNotesCount} non-blocking {totalNotesCount === 1 ? 'note' : 'notes'} to confirm
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -372,6 +385,20 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
           </div>
         )}
 
+        {!result.refused && result.verdict === 'ADMIT' && totalNotesCount > 0 && (
+          <div className="admit-notes-callout" role="note" data-testid="admit-notes-callout">
+            <Info size={15} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
+            <span>
+              <strong>
+                Admitted with {totalNotesCount} {totalNotesCount === 1 ? 'note' : 'notes'} to confirm.
+              </strong>{' '}
+              {noteEscalations.length > 0
+                ? 'Nothing blocks this verdict; confirm open notes in the Accountability ledger to unlock viewing export.'
+                : "Nothing blocks this verdict; Ontario RTA applies unless you'd share a kitchen or bathroom with the owner."}
+            </span>
+          </div>
+        )}
+
         {result.reasons.length > 0 && (
           <ul className="reasons-list" aria-label="Verdict reasons">
             {result.reasons.map((reason, idx) => (
@@ -418,7 +445,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
                   ) : (
                     <span>
                       {result.commute.summary ??
-                        'Address could not be verified — commute unknown (escalated).'}
+                        'Address could not be verified — commute unknown (added to Notes to confirm).'}
                     </span>
                   )}
                 </div>

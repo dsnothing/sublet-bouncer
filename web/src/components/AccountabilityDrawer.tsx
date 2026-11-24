@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Download, RotateCcw, ShieldBan } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ChevronDown, Download, RotateCcw, ShieldBan } from 'lucide-react';
 import { downloadRegressionFixture } from '../ics';
-import type { AnalysisResult, Commute, Decision, RegressionFixture, Span, Verdict } from '../types';
+import type { AnalysisResult, Commute, Decision, Escalation, RegressionFixture, Span, Verdict } from '../types';
 
 interface AccountabilityDrawerProps {
   result: AnalysisResult;
@@ -25,6 +25,8 @@ export const AccountabilityDrawer: React.FC<AccountabilityDrawerProps> = ({
   onFocusSpan,
 }) => {
   const [editingDecision, setEditingDecision] = useState<Decision['id'] | null>(null);
+  const [notesOpen, setNotesOpen] = useState<boolean>(false);
+  const [confirmedRtaRunId, setConfirmedRtaRunId] = useState<string | null>(null);
   const [d1Address, setD1Address] = useState('');
   const [d1Rent, setD1Rent] = useState('');
   const [d3Prob, setD3Prob] = useState('0.10');
@@ -32,6 +34,22 @@ export const AccountabilityDrawer: React.FC<AccountabilityDrawerProps> = ({
   const [d4Minutes, setD4Minutes] = useState('15');
   const [d5Value, setD5Value] = useState<AnalysisResult['rtaApplies']>('applies');
   const [d6Verdict, setD6Verdict] = useState<Verdict>('ADMIT');
+
+  useEffect(() => {
+    setNotesOpen(false);
+    setConfirmedRtaRunId(null);
+  }, [result.runId]);
+
+  const blockingEscalations = result.escalations.filter((esc) => esc.blocking);
+  const noteEscalations = result.escalations.filter((esc) => !esc.blocking);
+  const rtaNoteText =
+    !result.refused &&
+    result.rtaApplies === 'applies' &&
+    !result.escalations.some((esc) => esc.decisionId === 'D5') &&
+    confirmedRtaRunId !== result.runId
+      ? result.couldNotCheck.find((item) => /RTA applies unless/i.test(item)) ?? null
+      : null;
+  const totalNotesCount = noteEscalations.length + (rtaNoteText ? 1 : 0);
 
   const undoneLogIds = new Set(
     result.log.filter((entry) => entry.kind === 'undo').map((entry) => entry.ref),
@@ -93,6 +111,71 @@ export const AccountabilityDrawer: React.FC<AccountabilityDrawerProps> = ({
     setEditingDecision(null);
   };
 
+  const renderEscalationCard = (esc: Escalation, variant: 'blocking' | 'note') => {
+    const requiresTypedCorrection =
+      esc.decisionId === 'D4' ||
+      (esc.decisionId === 'D1' &&
+        /confirm (?:the monthly rent|address|rent)/i.test(esc.question));
+    const isNote = variant === 'note';
+    return (
+      <div key={esc.id} className={`drawer-card${isNote ? ' note-card' : ' blocking-card'}`}>
+        <p className={`esc-question${isNote ? ' note-question' : ''}`}>
+          [{esc.decisionId}] {esc.question}
+        </p>
+        {esc.evidence.length > 0 && (
+          <div className="evidence-spans-row" style={{ marginBottom: 8 }}>
+            {esc.evidence.map((span, idx) => (
+              <button
+                key={`${span.start}-${span.end}-${idx}`}
+                type="button"
+                className="evidence-span-btn"
+                onClick={() => onFocusSpan(span)}
+              >
+                &ldquo;{span.text.slice(0, 42)}
+                {span.text.length > 42 ? '…' : ''}&rdquo;
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="esc-options">
+          {requiresTypedCorrection && (
+            <button
+              type="button"
+              className={`esc-opt-btn${isNote ? ' note-opt-btn' : ''}`}
+              onClick={() => {
+                openEditor(esc.decisionId);
+                document
+                  .getElementById(`decision-card-${esc.decisionId}`)
+                  ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }}
+            >
+              Supply {esc.decisionId} value
+            </button>
+          )}
+          {esc.options.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              className={`esc-opt-btn${isNote ? ' note-opt-btn' : ''}`}
+              onClick={() => onResolveEscalation(esc.id, opt)}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const queueSummary =
+    blockingEscalations.length > 0 && totalNotesCount > 0
+      ? `${blockingEscalations.length} blocking · ${totalNotesCount} ${totalNotesCount === 1 ? 'note' : 'notes'}`
+      : blockingEscalations.length > 0
+        ? `${blockingEscalations.length} blocking`
+        : totalNotesCount > 0
+          ? `${totalNotesCount} ${totalNotesCount === 1 ? 'note' : 'notes'}`
+          : '0 open';
+
   return (
     <aside
       id="accountability-drawer"
@@ -117,68 +200,84 @@ export const AccountabilityDrawer: React.FC<AccountabilityDrawerProps> = ({
       <section className="drawer-section" aria-labelledby="escalations-heading">
         <h3 id="escalations-heading" className="drawer-section-title">
           <span>Escalation queue</span>
-          <span className="conf-readout">{result.escalations.length} open</span>
+          <span className={`conf-readout${blockingEscalations.length > 0 ? ' warn' : ''}`}>
+            {queueSummary}
+          </span>
         </h3>
 
-        {result.escalations.length === 0 ? (
+        {blockingEscalations.length === 0 && totalNotesCount === 0 ? (
           <div className="drawer-card" style={{ fontSize: 12, color: 'var(--drawer-muted)' }}>
-            No open escalations. All gates cleared or decided.
+            No open questions or notes. All gates cleared or decided.
           </div>
         ) : (
-          result.escalations.map((esc) => {
-            const requiresTypedCorrection =
-              esc.decisionId === 'D4' ||
-              (esc.decisionId === 'D1' &&
-                /confirm (?:the monthly rent|address|rent)/i.test(esc.question));
-            return (
-              <div key={esc.id} className="drawer-card">
-                <p className="esc-question">
-                  [{esc.decisionId}] {esc.question}
-                </p>
-                {esc.evidence.length > 0 && (
-                  <div className="evidence-spans-row" style={{ marginBottom: 8 }}>
-                    {esc.evidence.map((span, idx) => (
-                      <button
-                        key={`${span.start}-${span.end}-${idx}`}
-                        type="button"
-                        className="evidence-span-btn"
-                        onClick={() => onFocusSpan(span)}
-                      >
-                        &ldquo;{span.text.slice(0, 42)}
-                        {span.text.length > 42 ? '…' : ''}&rdquo;
-                      </button>
-                    ))}
+          <>
+            {blockingEscalations.length > 0 ? (
+              <div className="esc-group" aria-labelledby="blocking-esc-heading">
+                <h4 id="blocking-esc-heading" className="esc-group-heading blocking">
+                  Needs your answer before a verdict
+                </h4>
+                {blockingEscalations.map((esc) => renderEscalationCard(esc, 'blocking'))}
+              </div>
+            ) : (
+              <div className="drawer-card" style={{ fontSize: 12, color: 'var(--drawer-muted)' }}>
+                No blocking questions. Verdict is ready.
+              </div>
+            )}
+
+            {totalNotesCount > 0 && (
+              <div className="notes-disclosure">
+                <button
+                  type="button"
+                  className="notes-toggle-btn"
+                  aria-expanded={notesOpen}
+                  aria-controls="notes-to-confirm-panel"
+                  onClick={() => setNotesOpen((v) => !v)}
+                >
+                  <span className="notes-toggle-label">
+                    <span>Notes to confirm</span>
+                    <span className="notes-count-pill">{totalNotesCount}</span>
+                  </span>
+                  <ChevronDown
+                    size={16}
+                    aria-hidden="true"
+                    className={`notes-chevron${notesOpen ? ' open' : ''}`}
+                  />
+                </button>
+
+                {notesOpen && (
+                  <div
+                    id="notes-to-confirm-panel"
+                    className="notes-panel"
+                    role="region"
+                    aria-label="Notes to confirm"
+                  >
+                    {noteEscalations.map((esc) => renderEscalationCard(esc, 'note'))}
+                    {rtaNoteText && (
+                      <div className="drawer-card note-card">
+                        <p className="esc-question note-question">[D5] {rtaNoteText}</p>
+                        <div className="esc-options">
+                          <button
+                            type="button"
+                            className="esc-opt-btn note-opt-btn"
+                            onClick={() => setConfirmedRtaRunId(result.runId)}
+                          >
+                            Confirm — no shared kitchen/bath
+                          </button>
+                          <button
+                            type="button"
+                            className="esc-opt-btn note-opt-btn"
+                            onClick={() => onMarkWrong('D5', 'may_not_apply')}
+                          >
+                            Owner shares kitchen/bath
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
-                <div className="esc-options">
-                  {requiresTypedCorrection && (
-                    <button
-                      type="button"
-                      className="esc-opt-btn"
-                      onClick={() => {
-                        openEditor(esc.decisionId);
-                        document
-                          .getElementById(`decision-card-${esc.decisionId}`)
-                          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      }}
-                    >
-                      Supply {esc.decisionId} value
-                    </button>
-                  )}
-                  {esc.options.map((opt) => (
-                    <button
-                      key={opt}
-                      type="button"
-                      className="esc-opt-btn"
-                      onClick={() => onResolveEscalation(esc.id, opt)}
-                    >
-                      {opt}
-                    </button>
-                  ))}
-                </div>
               </div>
-            );
-          })
+            )}
+          </>
         )}
       </section>
 

@@ -73,7 +73,7 @@ function matchFixtureForListing(listing: string): { result: AnalysisResult; noti
     lower.includes('before viewing') ||
     lower.includes('gift card')
   ) {
-    fixture = structuredClone(refuseFixtureRaw) as AnalysisResult;
+    fixture = structuredClone(refuseFixtureRaw) as unknown as AnalysisResult;
   } else if (
     lower.includes('no pets') ||
     lower.includes('damage deposit') ||
@@ -82,9 +82,9 @@ function matchFixtureForListing(listing: string): { result: AnalysisResult; noti
     lower.includes('share the kitchen') ||
     lower.includes('share kitchen')
   ) {
-    fixture = structuredClone(holdFixtureRaw) as AnalysisResult;
+    fixture = structuredClone(holdFixtureRaw) as unknown as AnalysisResult;
   } else {
-    fixture = structuredClone(admitFixtureRaw) as AnalysisResult;
+    fixture = structuredClone(admitFixtureRaw) as unknown as AnalysisResult;
   }
 
   // Keep the fixture's original listing text so all span offsets stay valid (C5 finding #2).

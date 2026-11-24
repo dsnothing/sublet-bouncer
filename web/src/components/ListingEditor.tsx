@@ -64,7 +64,7 @@ export const ListingEditor: React.FC<ListingEditorProps> = ({
       />
 
       <div className="profile-grid">
-        <div>
+        <div className="profile-field-full">
           <label className="field-label" htmlFor="campus-select">
             Campus
           </label>
@@ -79,19 +79,6 @@ export const ListingEditor: React.FC<ListingEditorProps> = ({
             <option value="UW">University of Waterloo (UW)</option>
             <option value="WLU">Wilfrid Laurier (WLU)</option>
           </select>
-        </div>
-
-        <div>
-          <label className="field-label" htmlFor="class-start-input">
-            Earliest class
-          </label>
-          <input
-            id="class-start-input"
-            type="time"
-            className="profile-input"
-            value={profile.classStart}
-            onChange={(e) => onProfileChange({ ...profile, classStart: e.target.value })}
-          />
         </div>
 
         <div>
@@ -117,6 +104,19 @@ export const ListingEditor: React.FC<ListingEditorProps> = ({
             className="profile-input"
             value={profile.termEnd}
             onChange={(e) => onProfileChange({ ...profile, termEnd: e.target.value })}
+          />
+        </div>
+
+        <div className="profile-field-full">
+          <label className="field-label" htmlFor="class-start-input">
+            Earliest class
+          </label>
+          <input
+            id="class-start-input"
+            type="time"
+            className="profile-input"
+            value={profile.classStart}
+            onChange={(e) => onProfileChange({ ...profile, classStart: e.target.value })}
           />
         </div>
       </div>

@@ -160,3 +160,10 @@
 | v2 / offline | 61/117 | 1.000/.111 | 15/30 -> 18/30 |
 | v2 / saved replay | 73/117 | .636/.778 | 17/30 -> 25/30 |
 - Evidence:evals/escalation-dev-{before,after}.json + escalation_dev.ts; saved raw coverage26/40,18/24,26/30 (missing live uses offline fallback). Risks:synthetic DEV only, lexicons incomplete, rate/cache per server process (no cross-instance coordination), live geocoder mocked only; README policy text needs lead refresh.
+
+## C4d — Escalation blocking vs notes UI & C4c nits (Antigravity L4+L5)
+- **Role/skills**: L4+L5 frontend & browser QA; skills: `emil-design-eng`, `karpathy-guidelines`, `unslop-ui`; gap: Node PATH required explicit `C:\Program Files\nodejs`, browser QA via headless Chrome CDP.
+- **Changed**: Split Escalation Queue in `AccountabilityDrawer.tsx` into **"Needs your answer before a verdict"** (`blocking: true`) and a calmer, collapsed-by-default **"Notes to confirm"** disclosure (`blocking: false` + D5 RTA note) with one-tap answers for both; added ADMIT-with-notes callout + `aria-live` nuance in `BoardingPass.tsx` and calmer topbar note pill in `App.tsx`; validated `Escalation.blocking` in `storage.ts`. Fixed C4c nits: `ResizeObserver`-driven `--topbar-height` + `overflow-x: clip` keeps `.mobile-verdict-strip` cleanly below the wrapped sticky topbar at 375px (`overlapPx: -1`), and full-width Campus select (`351px`) prevents clipping `"University of Waterloo (UW)"` at 1280px.
+- **Verified**: `tsc --noEmit`, `npm run build` (`web/dist`), and `npm test` (126 passed, 1 skipped) green; headless Chrome CDP QA at 1280×900 & 375×812 verified Clean/Tricky/Scammy + custom ADMIT-with-unknown-commute, collapsed-by-default Notes toggle + one-tap answers, `prefers-reduced-motion: reduce` (`1e-05s`), 0 overflow, 0 console errors.
+- **Screenshots**: `evidence/ui/c4d-{1280-clean,1280-tricky,1280-scammy,1280-admit-notes-open,375-tricky-scrolled}.png`.
+- **Open risks**: None blocking; no deploy performed (per brief).
