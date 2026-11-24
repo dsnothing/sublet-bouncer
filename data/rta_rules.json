@@ -1,0 +1,175 @@
+{
+  "version": "1.0.0",
+  "retrieved": "2026-11-24",
+  "rules": [
+    {
+      "id": "damage_deposit",
+      "section": "s.105(1)",
+      "title": "Damage/security deposit",
+      "patterns": [
+        "\\b(?:damage|security|cleaning|pet)\\s+deposit\\b",
+        "first\\s*\\+\\s*last\\s*\\+\\s*(?:damage\\s+)?deposit"
+      ],
+      "fuzzy_patterns": [
+        "additional\\s+deposit"
+      ],
+      "status": "void",
+      "lesson_plain": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+      "lesson_simple_english": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "excess_rent_deposit",
+      "section": "s.106(2)",
+      "title": "Excess rent deposit",
+      "patterns": [
+        "(?:two|three|[2-9])\\s*months?[’\\x27]?\\s*(?:rent\\s*)?(?:deposit|up\\s*front)",
+        "(?:rent\\s*)?deposit\\s*(?:of\\s*)?(?:two|three|[2-9])\\s*months?"
+      ],
+      "fuzzy_patterns": [],
+      "status": "void",
+      "lesson_plain": "A required rent deposit is capped at the lesser of one rent period and one month. Compare any stated dollar deposit to the actual rent.",
+      "lesson_simple_english": "A required rent deposit is capped at the lesser of one rent period and one month. Compare any stated dollar deposit to the actual rent.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "no_pets",
+      "section": "s.14",
+      "title": "No-pets provision",
+      "patterns": [
+        "\\bno[ -]pets?(?:\\s+allowed)?\\b",
+        "\\bpets?\\s+(?:are\\s+)?(?:not\\s+(?:allowed|permitted)|prohibited)\\b"
+      ],
+      "fuzzy_patterns": [],
+      "status": "void",
+      "lesson_plain": "A tenancy agreement cannot ban animals. Other animal-related laws and grounds for an LTB application may still matter.",
+      "lesson_simple_english": "A tenancy agreement cannot ban animals. Other animal-related laws and grounds for an LTB application may still matter.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "postdated_cheques",
+      "section": "s.108",
+      "title": "Required automatic payment/post-dated cheques",
+      "patterns": [
+        "\\b(?:\\d+\\s+)?post[ -]?dated\\s+che(?:que|ck)s?\\b",
+        "(?:mandatory|required|must\\s+(?:use|provide))\\s+(?:automatic\\s+(?:debit|payment)|auto[ -]?debit)"
+      ],
+      "fuzzy_patterns": [],
+      "status": "void",
+      "lesson_plain": "A landlord cannot require post-dated cheques or automatic payments. A voluntary arrangement is different.",
+      "lesson_simple_english": "A landlord cannot require post-dated cheques or automatic payments. A voluntary arrangement is different.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "entry_notice",
+      "section": "s.27(1); s.26",
+      "title": "Unrestricted entry",
+      "patterns": [
+        "landlord\\s+(?:can|may|will)\\s+enter\\s+(?:any\\s*time|anytime|without\\s+(?:notice|24))",
+        "(?:entry|enter)\\s+without\\s+(?:prior\\s+)?notice"
+      ],
+      "fuzzy_patterns": [],
+      "status": "void",
+      "lesson_plain": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+      "lesson_simple_english": "Ordinary entry under s.27 requires at least 24 hours written notice and a permitted reason. Section 26 permits exceptions, including emergencies and consent at entry.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "maintenance_waiver",
+      "section": "s.20(1); s.4(1)",
+      "title": "Maintenance duty waiver",
+      "patterns": [
+        "tenant\\s+(?:does|pays\\s+for|responsible\\s+for)\\s+all\\s+repairs",
+        "landlord\\s+(?:is\\s+)?not\\s+responsible\\s+for\\s+(?:any\\s+)?repairs"
+      ],
+      "fuzzy_patterns": [
+        "\\bas[ -]is\\b"
+      ],
+      "status": "void",
+      "lesson_plain": "A landlord remains responsible for repair, habitation and required standards. An agreement cannot waive the Act.",
+      "lesson_simple_english": "A landlord remains responsible for repair, habitation and required standards. An agreement cannot waive the Act.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "lockout",
+      "section": "s.24; s.39",
+      "title": "Self-help eviction/lockout",
+      "patterns": [
+        "(?:change|changing)\\s+(?:the\\s+)?locks\\s+(?:if|when|without)",
+        "evict\\s+(?:you\\s+)?without\\s+(?:the\\s+)?(?:LTB|board|court)",
+        "immediate\\s+(?:eviction|lock[ -]?out)"
+      ],
+      "fuzzy_patterns": [],
+      "status": "void",
+      "lesson_plain": "A landlord cannot recover possession of an occupied unit without a Board order, except abandonment/vacating; changing locks requires replacement keys.",
+      "lesson_simple_english": "A landlord cannot recover possession of an occupied unit without a Board order, except abandonment/vacating; changing locks requires replacement keys.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "deposit_interest",
+      "section": "s.106(6); s.106(10)",
+      "title": "Rent-deposit interest/use",
+      "patterns": [
+        "non[ -]?refundable\\s+(?:last\\s*month|rent\\s*deposit)",
+        "no\\s+interest\\s+(?:on|for)\\s+(?:the\\s+)?(?:rent\\s+)?deposit"
+      ],
+      "fuzzy_patterns": [],
+      "status": "questionable",
+      "lesson_plain": "Rent-deposit interest is due annually at the guideline rate. A rent deposit is for the last rent period, not a general non-refundable fee.",
+      "lesson_simple_english": "Rent-deposit interest is due annually at the guideline rate. A rent deposit is for the last rent period, not a general non-refundable fee.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "standard_lease",
+      "section": "s.12.1(1)",
+      "title": "Standard lease information",
+      "patterns": [
+        "\\bstandard\\s+lease\\b"
+      ],
+      "fuzzy_patterns": [],
+      "status": "info",
+      "lesson_plain": "Prescribed classes of tenancies require the prescribed agreement form. This lesson does not assume every sublet is a prescribed tenancy.",
+      "lesson_simple_english": "Prescribed classes of tenancies require the prescribed agreement form. This lesson does not assume every sublet is a prescribed tenancy.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "sublet_consent",
+      "section": "s.97(1)-(2)",
+      "title": "Sublet consent",
+      "patterns": [
+        "\\b(?:sublet|subletting|sublease)\\b"
+      ],
+      "fuzzy_patterns": [],
+      "status": "info",
+      "lesson_plain": "Subletting requires landlord consent; a landlord shall not arbitrarily or unreasonably withhold consent to a potential subtenant.",
+      "lesson_simple_english": "Subletting requires landlord consent; a landlord shall not arbitrarily or unreasonably withhold consent to a potential subtenant.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "owner_shared",
+      "section": "s.5(i)",
+      "title": "Owner-shared kitchen/bath exemption",
+      "patterns": [
+        "shar(?:e|ed|ing)\\s+(?:a\\s+|the\\s+)?(?:kitchen|bathroom|bath)\\s+with\\s+(?:the\\s+)?(?:owner|landlord)"
+      ],
+      "fuzzy_patterns": [],
+      "status": "info",
+      "lesson_plain": "The Act may not apply where sharing a kitchen or bathroom with the resident owner or specified family is required. Confirm who lives in the building.",
+      "lesson_simple_english": "The Act may not apply where sharing a kitchen or bathroom with the resident owner or specified family is required. Confirm who lives in the building.",
+      "source_url": "https://www.ontario.ca/laws/statute/06r17"
+    },
+    {
+      "id": "key_deposit",
+      "section": "O. Reg. 516/06 s.17(3)",
+      "title": "Refundable key deposit",
+      "patterns": [
+        "refundable\\s+key\\s+deposit"
+      ],
+      "fuzzy_patterns": [],
+      "status": "info",
+      "lesson_plain": "A refundable key/device/card deposit may not exceed expected direct replacement cost. The amount and refundability need checking.",
+      "lesson_simple_english": "A refundable key/device/card deposit may not exceed expected direct replacement cost. The amount and refundability need checking.",
+      "source_url": "https://www.ontario.ca/laws/regulation/060516"
+    }
+  ]
+}

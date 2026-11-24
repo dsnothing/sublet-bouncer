@@ -1,0 +1,14 @@
+{
+  "source": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3410013301",
+  "retrieved": "2026-11-24",
+  "region": "Kitchener-Cambridge-Waterloo",
+  "year": 2025,
+  "statistic": "mean",
+  "median_monthly": {
+    "room": 908,
+    "bachelor": 1255,
+    "one_bedroom": 1546,
+    "two_bedroom": 1816
+  },
+  "notes": "Schema key median_monthly holds MEANS, not medians. CMHC RMS/Statistics Canada 34-10-0133-01: row and apartment structures of three units and over, 2025. Room proxy = two-bedroom mean / 2 = 908; rooms are not separately published here. Occupied/available stock rents are not current asking sublet prices. No room median is claimed."
+}

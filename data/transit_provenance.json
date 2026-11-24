@@ -1,0 +1,25 @@
+{
+  "retrieved": "2026-11-24",
+  "service_date": "20261124",
+  "sha256": [
+    "e0a15429750a969756b78c8e84262aad7fcb16359321c9468a8335d787a0c3f1",
+    "9f872bb7bc6ca99029e6426a50e5a2167a96522f13ad97b92a8177b04a84b34c"
+  ],
+  "active_trips": 555,
+  "origins": 150,
+  "campus_coordinates": {
+    "UW": [
+      43.4726,
+      -80.542
+    ],
+    "WLU": [
+      43.4738,
+      -80.5275
+    ]
+  },
+  "walking_limit_m": {
+    "access": 600,
+    "transfer": 250,
+    "egress": 600
+  }
+}

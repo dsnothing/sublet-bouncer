@@ -1,0 +1,2707 @@
+{
+  "source": "https://www.grt.ca/about-grt/open-data/; staticfeeds/1 + /2 at https://webapps.regionofwaterloo.ca/api/grt-routes/api/; scheduled 2026-11-24, depart 07:00 America/Toronto; <=1 transfer; straight-line walking; not Winter 2027 service",
+  "gtfs_feed_date": "2026-11-24",
+  "walk_m_per_min": 80,
+  "origins": [
+    {
+      "id": "1:1123",
+      "lat": 43.472651,
+      "lon": -80.541207,
+      "label": "Ring Rd. / U.W. - Davis Centre",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:01",
+          "minutes": 1,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:14",
+          "minutes": 14,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1260",
+      "lat": 43.474043,
+      "lon": -80.541208,
+      "label": "University Of Waterloo Station",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:03",
+          "minutes": 3,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:14",
+          "minutes": 14,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1264",
+      "lat": 43.474485,
+      "lon": -80.539877,
+      "label": "University Of Waterloo Station",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:04",
+          "minutes": 4,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2530",
+      "lat": 43.470728,
+      "lon": -80.544474,
+      "label": "Ring Rd. / U.W. - Quantum Nano Centre",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:04",
+          "minutes": 4,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2519",
+      "lat": 43.474018,
+      "lon": -80.54595,
+      "label": "Ring Rd. / U.W. - B. C. Matthews Hall",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:05",
+          "minutes": 5,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2520",
+      "lat": 43.47544,
+      "lon": -80.544123,
+      "label": "Columbia / U.W. - Optometry",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:05",
+          "minutes": 5,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4074",
+      "lat": 43.475124,
+      "lon": -80.54644,
+      "label": "Hagey / University Of Waterloo",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:06",
+          "minutes": 6,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:20",
+          "minutes": 20,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1090",
+      "lat": 43.469288,
+      "lon": -80.538622,
+      "label": "University Ave. / University Of Waterloo",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:06",
+          "minutes": 6,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2515",
+      "lat": 43.468601,
+      "lon": -80.540284,
+      "label": "Ring Rd. / U.W. - South Campus Hall",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:06",
+          "minutes": 6,
+          "summary": "07:00 departure; walk > GRT 30 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3889",
+      "lat": 43.476506,
+      "lon": -80.539754,
+      "label": "Phillip / Columbia",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:06",
+          "minutes": 6,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2675",
+      "lat": 43.47226,
+      "lon": -80.536072,
+      "label": "University Ave. / Phillip",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:06",
+          "minutes": 6,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2518",
+      "lat": 43.472738,
+      "lon": -80.547992,
+      "label": "Ring Rd. / U.W. - University Club",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:07",
+          "minutes": 7,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2516",
+      "lat": 43.467795,
+      "lon": -80.543591,
+      "label": "Ring Rd. / U.W. - Environment 3",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:06",
+          "minutes": 6,
+          "summary": "07:00 departure; walk > GRT 30 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3865",
+      "lat": 43.476795,
+      "lon": -80.547527,
+      "label": "Hagey / Frank Tompa",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1120",
+      "lat": 43.473171,
+      "lon": -80.550487,
+      "label": "Columbia / U.W. - Village 1",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > GRT 30 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:24",
+          "minutes": 24,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2522",
+      "lat": 43.477864,
+      "lon": -80.537271,
+      "label": "Columbia / Lester",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:12",
+          "minutes": 12,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2674",
+      "lat": 43.473273,
+      "lon": -80.533152,
+      "label": "University Ave. / Sunview",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:08",
+          "minutes": 8,
+          "summary": "07:00 departure; walk > GRT 19 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:06",
+          "minutes": 6,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "2:6005",
+      "lat": 43.46896069600001,
+      "lon": -80.53461781999998,
+      "label": "Laurier-Waterloo Park Station - Southbound",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:06",
+          "minutes": 7,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:10",
+          "minutes": 10,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2677",
+      "lat": 43.466189,
+      "lon": -80.540574,
+      "label": "University Ave. / Ring Rd.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:10",
+          "minutes": 10,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3870",
+      "lat": 43.477709,
+      "lon": -80.548496,
+      "label": "Hagey / Frank Tompa",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:10",
+          "minutes": 10,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:22",
+          "minutes": 22,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2523",
+      "lat": 43.478549,
+      "lon": -80.535337,
+      "label": "Columbia / Albert",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3589",
+      "lat": 43.4645,
+      "lon": -80.541465,
+      "label": "University Ave. / Westmount",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:12",
+          "minutes": 12,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3630",
+      "lat": 43.478973,
+      "lon": -80.549034,
+      "label": "Hagey / Wes Graham",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2673",
+      "lat": 43.474289,
+      "lon": -80.530584,
+      "label": "University Ave. / Hemlock",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:08",
+          "minutes": 8,
+          "summary": "07:00 departure; walk > GRT 19 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:04",
+          "minutes": 4,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "2:6121",
+      "lat": 43.481607188,
+      "lon": -80.54511444,
+      "label": "Research and Technology Station - Northbound",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 12,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1097",
+      "lat": 43.471578,
+      "lon": -80.555395,
+      "label": "Columbia / U.W. - Ron Eydt Village",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk > GRT 31 > walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1163",
+      "lat": 43.477724,
+      "lon": -80.530083,
+      "label": "Hazel / Hickory",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:14",
+          "minutes": 14,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:07",
+          "minutes": 7,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4236",
+      "lat": 43.479443,
+      "lon": -80.531472,
+      "label": "Hazel / Columbia",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3682",
+      "lat": 43.475353,
+      "lon": -80.528337,
+      "label": "Hazel / Wilfrid Laurier University",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:03",
+          "minutes": 3,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2778",
+      "lat": 43.462455,
+      "lon": -80.538921,
+      "label": "Westmount / Father David Bauer",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1161",
+      "lat": 43.481583,
+      "lon": -80.533088,
+      "label": "Hazel / Austin",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3156",
+      "lat": 43.461534,
+      "lon": -80.545134,
+      "label": "Keats Way / Mcdougall",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3621",
+      "lat": 43.475775,
+      "lon": -80.526369,
+      "label": "University Ave. / King",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:03",
+          "minutes": 3,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1173",
+      "lat": 43.483102,
+      "lon": -80.534313,
+      "label": "Hazel / Smallwood",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2533",
+      "lat": 43.475436,
+      "lon": -80.524987,
+      "label": "King / University Ave.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:04",
+          "minutes": 4,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3581",
+      "lat": 43.472327,
+      "lon": -80.524282,
+      "label": "King / Ezra",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:04",
+          "minutes": 4,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1159",
+      "lat": 43.48497,
+      "lon": -80.53665,
+      "label": "Hazel / Tamarack",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1964",
+      "lat": 43.461473,
+      "lon": -80.532198,
+      "label": "Erb / Roslin",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2532",
+      "lat": 43.478356,
+      "lon": -80.52552,
+      "label": "King / Hickory",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:07",
+          "minutes": 7,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1175",
+      "lat": 43.485742,
+      "lon": -80.539437,
+      "label": "Hazel / Albert",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1963",
+      "lat": 43.462267,
+      "lon": -80.530331,
+      "label": "Erb / Avondale",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2000",
+      "lat": 43.460695,
+      "lon": -80.533607,
+      "label": "Erb / Dietz",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1965",
+      "lat": 43.46018,
+      "lon": -80.535156,
+      "label": "Erb / Dietz",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4053",
+      "lat": 43.459688,
+      "lon": -80.537102,
+      "label": "Westmount / Erb",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:09",
+          "minutes": 9,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1910",
+      "lat": 43.470335,
+      "lon": -80.523652,
+      "label": "King / Elgin",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:07",
+          "minutes": 7,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4099",
+      "lat": 43.46748,
+      "lon": -80.524765,
+      "label": "Bridgeport Rd. / Albert",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:10",
+          "minutes": 10,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1962",
+      "lat": 43.463033,
+      "lon": -80.528621,
+      "label": "Erb / Barrel Yards",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3868",
+      "lat": 43.485805,
+      "lon": -80.546995,
+      "label": "Parkside / Bearinger",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 12,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:26",
+          "minutes": 26,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4072",
+      "lat": 43.481701,
+      "lon": -80.527078,
+      "label": "Columbia / King",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1099",
+      "lat": 43.469601,
+      "lon": -80.561087,
+      "label": "Columbia / U.W. - Columbia Lake Village",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk > GRT 201 > walk > walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2786",
+      "lat": 43.476672,
+      "lon": -80.523283,
+      "label": "University Ave. / Regina",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:06",
+          "minutes": 6,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3158",
+      "lat": 43.459125,
+      "lon": -80.548477,
+      "label": "Keats Way / Amos",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1961",
+      "lat": 43.46414,
+      "lon": -80.526003,
+      "label": "Erb / Father David Bauer",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:20",
+          "minutes": 20,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:14",
+          "minutes": 14,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1909",
+      "lat": 43.4679,
+      "lon": -80.523006,
+      "label": "King / Bridgeport Rd.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:10",
+          "minutes": 10,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1149",
+      "lat": 43.485673,
+      "lon": -80.551569,
+      "label": "Cedarbrae / Glen Forrest",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:30",
+          "minutes": 30,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1157",
+      "lat": 43.487642,
+      "lon": -80.541574,
+      "label": "Albert / Quiet",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:24",
+          "minutes": 24,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4073",
+      "lat": 43.482457,
+      "lon": -80.526109,
+      "label": "King / Columbia",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2681",
+      "lat": 43.457614,
+      "lon": -80.535336,
+      "label": "Westmount / Lourdes",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1148",
+      "lat": 43.486149,
+      "lon": -80.553581,
+      "label": "Glen Forrest / Teakwood",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:32",
+          "minutes": 32,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1998",
+      "lat": 43.45656,
+      "lon": -80.541871,
+      "label": "Erb / Mcdougall",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2670",
+      "lat": 43.477831,
+      "lon": -80.520727,
+      "label": "University Ave. / Weber",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:08",
+          "minutes": 8,
+          "summary": "07:00 departure; walk > GRT 8 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1956",
+      "lat": 43.468123,
+      "lon": -80.52026,
+      "label": "Bridgeport Rd. / Peppler",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1150",
+      "lat": 43.487955,
+      "lon": -80.550093,
+      "label": "Cedarbrae / Path To Heasley Park",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "2:6118",
+      "lat": 43.464236449,
+      "lon": -80.52246747,
+      "label": "Waterloo Public Square Station - Northbound",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:06",
+          "minutes": 7,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 16 > walk > walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3626",
+      "lat": 43.488892,
+      "lon": -80.545516,
+      "label": "Parkside / Glenelm",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 19 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:28",
+          "minutes": 28,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "2:6006",
+      "lat": 43.462566364,
+      "lon": -80.52381569,
+      "label": "Willis Way Station - Southbound",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1916",
+      "lat": 43.484997,
+      "lon": -80.52668,
+      "label": "King / Weber",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3150",
+      "lat": 43.457266,
+      "lon": -80.551816,
+      "label": "Keats Way / Path To Mccarron",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 29 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3160",
+      "lat": 43.458195,
+      "lon": -80.55459,
+      "label": "Keats Way / Candlewood",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:24",
+          "minutes": 24,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 29 > walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2682",
+      "lat": 43.456926,
+      "lon": -80.532252,
+      "label": "Westmount / Dietz",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3773",
+      "lat": 43.483042,
+      "lon": -80.523127,
+      "label": "Columbia / Weber",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:14",
+          "minutes": 14,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1969",
+      "lat": 43.455376,
+      "lon": -80.545487,
+      "label": "Erb / Amos",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1185",
+      "lat": 43.487048,
+      "lon": -80.55543,
+      "label": "Glen Forrest / Brookhaven",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:34",
+          "minutes": 34,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1152",
+      "lat": 43.489621,
+      "lon": -80.548064,
+      "label": "Cedarbrae / Sprucehill",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 19 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1116",
+      "lat": 43.467845,
+      "lon": -80.56533,
+      "label": "Columbia / Fischer-Hallman",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk > GRT 201 > walk > walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1181",
+      "lat": 43.490037,
+      "lon": -80.546107,
+      "label": "Cedarbrae / Mount Anne",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 19 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:30",
+          "minutes": 30,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2774",
+      "lat": 43.45684,
+      "lon": -80.530917,
+      "label": "Westmount / Alexandra",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1177",
+      "lat": 43.490255,
+      "lon": -80.539703,
+      "label": "Albert / Longwood",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 19 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:26",
+          "minutes": 26,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1188",
+      "lat": 43.485111,
+      "lon": -80.559673,
+      "label": "Toll Gate / Highpoint",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:37",
+          "minutes": 37,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2833",
+      "lat": 43.475044,
+      "lon": -80.517448,
+      "label": "Weber / Marshall",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk > GRT 8 > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:08",
+          "minutes": 8,
+          "summary": "07:00 departure; walk > GRT 8 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1147",
+      "lat": 43.487197,
+      "lon": -80.556677,
+      "label": "Toll Gate / Glen Forrest",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:26",
+          "minutes": 26,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:35",
+          "minutes": 35,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3464",
+      "lat": 43.458205,
+      "lon": -80.55726,
+      "label": "Keats Way / Fischer-Hallman",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk > GRT 201 > walk > walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2507",
+      "lat": 43.487539,
+      "lon": -80.527464,
+      "label": "King / Blue Springs",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1970",
+      "lat": 43.454638,
+      "lon": -80.547546,
+      "label": "Erb / Culpepper",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:26",
+          "minutes": 26,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1959",
+      "lat": 43.46169,
+      "lon": -80.521534,
+      "label": "King / William",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2007",
+      "lat": 43.465737,
+      "lon": -80.518128,
+      "label": "Erb / Willow",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1115",
+      "lat": 43.469009,
+      "lon": -80.567617,
+      "label": "Fischer-Hallman / Columbia",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:27",
+          "minutes": 27,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 31 > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2832",
+      "lat": 43.478998,
+      "lon": -80.517395,
+      "label": "University Ave. / Conestoga College - Waterloo",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:27",
+          "minutes": 27,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2773",
+      "lat": 43.455896,
+      "lon": -80.529083,
+      "label": "Westmount / William",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1155",
+      "lat": 43.49156,
+      "lon": -80.537562,
+      "label": "Albert / Weber",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 19 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:27",
+          "minutes": 27,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1995",
+      "lat": 43.453852,
+      "lon": -80.549332,
+      "label": "Erb / Roosevelt",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:28",
+          "minutes": 28,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4076",
+      "lat": 43.470776,
+      "lon": -80.56888,
+      "label": "Fischer-Hallman / Gatestone",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:28",
+          "minutes": 28,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 31 > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1955",
+      "lat": 43.469173,
+      "lon": -80.515244,
+      "label": "Bridgeport Rd. / Devitt",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 5 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:13",
+          "minutes": 13,
+          "summary": "07:00 departure; walk > GRT 5 > walk > walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2788",
+      "lat": 43.479307,
+      "lon": -80.516202,
+      "label": "University Ave. / Conestoga College - Waterloo",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:28",
+          "minutes": 28,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:14",
+          "minutes": 14,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1100",
+      "lat": 43.467,
+      "lon": -80.568298,
+      "label": "450 Columbia St. W.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk > GRT 201 > walk > walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3771",
+      "lat": 43.484386,
+      "lon": -80.519869,
+      "label": "Columbia / Marsland",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2456",
+      "lat": 43.492716,
+      "lon": -80.544095,
+      "label": "Weber / Parkside",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:32",
+          "minutes": 32,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1971",
+      "lat": 43.453382,
+      "lon": -80.55114,
+      "label": "Erb / Churchill",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2835",
+      "lat": 43.471148,
+      "lon": -80.513906,
+      "label": "Weber / Lincoln",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2536",
+      "lat": 43.460275,
+      "lon": -80.519381,
+      "label": "Allen Station",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3448",
+      "lat": 43.466994,
+      "lon": -80.514704,
+      "label": "Erb / Moore",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1954",
+      "lat": 43.469842,
+      "lon": -80.513656,
+      "label": "Bridgeport Rd. / Weber",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1189",
+      "lat": 43.486717,
+      "lon": -80.563099,
+      "label": "Highpoint / Dogwood",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4077",
+      "lat": 43.472401,
+      "lon": -80.570773,
+      "label": "Fischer-Hallman / Path To Laurel Gate",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk > walk > GRT 31 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 13 > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:5141",
+      "lat": 43.461939,
+      "lon": -80.517223,
+      "label": "Allen / Herbert (Temporary Stop)",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:20",
+          "minutes": 20,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2772",
+      "lat": 43.454449,
+      "lon": -80.527611,
+      "label": "Westmount / John",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:5142",
+      "lat": 43.462908,
+      "lon": -80.516344,
+      "label": "Allen / Willow (Temporary Stop)",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2505",
+      "lat": 43.491228,
+      "lon": -80.528338,
+      "label": "King / Manulife",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1972",
+      "lat": 43.452915,
+      "lon": -80.55369,
+      "label": "Fischer-Hallman / Erb",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 11,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk > GRT 201 > walk > walk > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3090",
+      "lat": 43.470049,
+      "lon": -80.512376,
+      "label": "Weber / Bridgeport Rd.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:17",
+          "minutes": 17,
+          "summary": "07:00 departure; walk > GRT 8 > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:08",
+          "minutes": 8,
+          "summary": "07:00 departure; walk > GRT 8 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3463",
+      "lat": 43.456007,
+      "lon": -80.561751,
+      "label": "Keats Way / Sandford Fleming",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:30",
+          "minutes": 30,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 29 > walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2455",
+      "lat": 43.494494,
+      "lon": -80.544513,
+      "label": "551 Parkside Dr.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 12,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 301 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4254",
+      "lat": 43.474478,
+      "lon": -80.57227,
+      "label": "Fischer-Hallman / Laurelwood",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 13 > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1144",
+      "lat": 43.488438,
+      "lon": -80.563322,
+      "label": "Highpoint / Rolling Hills",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3622",
+      "lat": 43.487023,
+      "lon": -80.518243,
+      "label": "Lexington / Dearborn Pl.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:32",
+          "minutes": 32,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:21",
+          "minutes": 21,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3606",
+      "lat": 43.468625,
+      "lon": -80.511157,
+      "label": "Weber / Erb",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:32",
+          "minutes": 32,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1975",
+      "lat": 43.456965,
+      "lon": -80.564908,
+      "label": "Keats Way / Brynhurst",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:30",
+          "minutes": 30,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 29 > walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1196",
+      "lat": 43.493533,
+      "lon": -80.555938,
+      "label": "Northfield / Skylark",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:31",
+          "minutes": 32,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4060",
+      "lat": 43.474353,
+      "lon": -80.510026,
+      "label": "Lincoln / Ellis",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1197",
+      "lat": 43.494361,
+      "lon": -80.553558,
+      "label": "Northfield / Northgate",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:31",
+          "minutes": 32,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:37",
+          "minutes": 37,
+          "summary": "07:00 departure; walk > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3914",
+      "lat": 43.452433,
+      "lon": -80.525711,
+      "label": "Westmount / Union",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:15",
+          "minutes": 15,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:16",
+          "minutes": 16,
+          "summary": "07:00 departure; walk > GRT 12 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1198",
+      "lat": 43.495652,
+      "lon": -80.549714,
+      "label": "Northfield / Weber",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 301 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1919",
+      "lat": 43.494403,
+      "lon": -80.52866,
+      "label": "King / Highway 85",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4024",
+      "lat": 43.46503,
+      "lon": -80.573294,
+      "label": "Columbia / Bennington",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk > GRT 31 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 31 > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1902",
+      "lat": 43.458477,
+      "lon": -80.515355,
+      "label": "King / Union",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4241",
+      "lat": 43.496072,
+      "lon": -80.53498,
+      "label": "520 Conestogo Rd. W.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4062",
+      "lat": 43.476343,
+      "lon": -80.509278,
+      "label": "Lincoln / Marshall",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:34",
+          "minutes": 34,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:19",
+          "minutes": 19,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2574",
+      "lat": 43.496581,
+      "lon": -80.545805,
+      "label": "Parkside / Northfield",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 12,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 301 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3281",
+      "lat": 43.457454,
+      "lon": -80.516051,
+      "label": "Union / Park",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1976",
+      "lat": 43.457644,
+      "lon": -80.568327,
+      "label": "Keats Way / Leighland",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:29",
+          "minutes": 29,
+          "summary": "07:00 departure; walk > GRT 13 > walk > GRT 31 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 29 > walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1958",
+      "lat": 43.455034,
+      "lon": -80.518879,
+      "label": "Belmont / Union",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1195",
+      "lat": 43.494517,
+      "lon": -80.556661,
+      "label": "Northlake / Skylark",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:31",
+          "minutes": 32,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "2:6002",
+      "lat": 43.496965083,
+      "lon": -80.54312158,
+      "label": "Northfield Station - Southbound",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 12,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 301 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1135",
+      "lat": 43.496683,
+      "lon": -80.547523,
+      "label": "Northfield / Parkside",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 301 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1191",
+      "lat": 43.491098,
+      "lon": -80.564267,
+      "label": "Highpoint / Northfield",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:31",
+          "minutes": 32,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:4242",
+      "lat": 43.496082,
+      "lon": -80.532071,
+      "label": "Conestogo / Dotzert",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1984",
+      "lat": 43.450843,
+      "lon": -80.557835,
+      "label": "Erb / Gateview",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:30",
+          "minutes": 30,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1992",
+      "lat": 43.448686,
+      "lon": -80.550038,
+      "label": "Fischer-Hallman / Thorndale",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:30",
+          "minutes": 30,
+          "summary": "07:00 departure; walk > GRT 201 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:31",
+          "minutes": 31,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1952",
+      "lat": 43.471646,
+      "lon": -80.508029,
+      "label": "Bridgeport Rd. / Ellis",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:35",
+          "minutes": 35,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:20",
+          "minutes": 20,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3108",
+      "lat": 43.467082,
+      "lon": -80.508558,
+      "label": "Weber / Cornwall",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:35",
+          "minutes": 35,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:22",
+          "minutes": 22,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:5136",
+      "lat": 43.464769,
+      "lon": -80.509213,
+      "label": "Dover / Rodney (Temporary Stop)",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 4 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk > GRT 4 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1257",
+      "lat": 43.497653,
+      "lon": -80.544044,
+      "label": "Northfield Station",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 12,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 301 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:3748",
+      "lat": 43.489989,
+      "lon": -80.516958,
+      "label": "Lexington / Dearborn Blvd.",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 29 > GRT 202 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:25",
+          "minutes": 25,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1194",
+      "lat": 43.494718,
+      "lon": -80.559541,
+      "label": "Northlake / Green Meadow",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:31",
+          "minutes": 32,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:40",
+          "minutes": 40,
+          "summary": "07:00 departure; walk > GRT 9 > walk > GRT 19 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:1272",
+      "lat": 43.457379,
+      "lon": -80.513581,
+      "label": "Grand River Hospital Station",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2365",
+      "lat": 43.498037,
+      "lon": -80.546747,
+      "label": "Parkside / Waterloo Corporate Campus - South",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:11",
+          "minutes": 12,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 301 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2793",
+      "lat": 43.479199,
+      "lon": -80.50777,
+      "label": "Lincoln / Mayfield",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:33",
+          "minutes": 33,
+          "summary": "07:00 departure; walk > GRT 202 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:22",
+          "minutes": 22,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2504",
+      "lat": 43.496633,
+      "lon": -80.529434,
+      "label": "King / Path To Bauer",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:18",
+          "minutes": 18,
+          "summary": "07:00 departure; walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:5137",
+      "lat": 43.464228,
+      "lon": -80.508134,
+      "label": "Union / Dover (Temporary Stop)",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:21",
+          "minutes": 22,
+          "summary": "07:00 departure; walk > GRT 4 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:23",
+          "minutes": 23,
+          "summary": "07:00 departure; walk > GRT 4 > walk > GRT 7 > campus walk; straight-line walking estimate"
+        }
+      }
+    },
+    {
+      "id": "1:2011",
+      "lat": 43.470035,
+      "lon": -80.506323,
+      "label": "Erb / Ellis",
+      "to": {
+        "UW": {
+          "arrive_by_0830": "07:36",
+          "minutes": 37,
+          "summary": "07:00 departure; walk > GRT 8 > walk > GRT 301 > campus walk; straight-line walking estimate"
+        },
+        "WLU": {
+          "arrive_by_0830": "07:22",
+          "minutes": 22,
+          "summary": "07:00 departure; walk direct; straight-line walking estimate"
+        }
+      }
+    }
+  ]
+}

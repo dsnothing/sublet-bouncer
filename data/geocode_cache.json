@@ -1,0 +1,179 @@
+{
+  "source": "https://nominatim.openstreetmap.org/search (OSM, ODbL); street centroids, not address-level geocoding",
+  "retrieved": "2026-11-24",
+  "entries": [
+    {
+      "key": "columbia street west",
+      "aliases": [
+        "columbia st west",
+        "columbia street w",
+        "columbia street west"
+      ],
+      "lat": 43.4708127,
+      "lon": -80.5574635,
+      "confidence": 0.8
+    },
+    {
+      "key": "king street north",
+      "aliases": [
+        "king st north",
+        "king street n",
+        "king street north"
+      ],
+      "lat": 43.4695447,
+      "lon": -80.5235502,
+      "confidence": 0.8
+    },
+    {
+      "key": "lester street",
+      "aliases": [
+        "lester st",
+        "lester street"
+      ],
+      "lat": 43.4753877,
+      "lon": -80.535867,
+      "confidence": 0.8
+    },
+    {
+      "key": "sunview street",
+      "aliases": [
+        "sunview st",
+        "sunview street"
+      ],
+      "lat": 43.4747367,
+      "lon": -80.5338669,
+      "confidence": 0.8
+    },
+    {
+      "key": "hickory street west",
+      "aliases": [
+        "hickory st west",
+        "hickory street w",
+        "hickory street west"
+      ],
+      "lat": 43.4777281,
+      "lon": -80.52874,
+      "confidence": 0.8
+    },
+    {
+      "key": "phillip street",
+      "aliases": [
+        "phillip st",
+        "phillip street"
+      ],
+      "lat": 43.4767399,
+      "lon": -80.5397589,
+      "confidence": 0.8
+    },
+    {
+      "key": "albert street",
+      "aliases": [
+        "albert st",
+        "albert street"
+      ],
+      "lat": 43.4665941,
+      "lon": -80.5244596,
+      "confidence": 0.8
+    },
+    {
+      "key": "regina street north",
+      "aliases": [
+        "regina st north",
+        "regina street n",
+        "regina street north"
+      ],
+      "lat": 43.4692655,
+      "lon": -80.5222307,
+      "confidence": 0.8
+    },
+    {
+      "key": "ezra avenue",
+      "aliases": [
+        "ezra ave",
+        "ezra avenue"
+      ],
+      "lat": 43.4715084,
+      "lon": -80.5262574,
+      "confidence": 0.9
+    },
+    {
+      "key": "bricker avenue",
+      "aliases": [
+        "bricker ave",
+        "bricker avenue"
+      ],
+      "lat": 43.4723399,
+      "lon": -80.5267485,
+      "confidence": 0.9
+    },
+    {
+      "key": "erb street west",
+      "aliases": [
+        "erb st west",
+        "erb street w",
+        "erb street west"
+      ],
+      "lat": 43.4483176,
+      "lon": -80.5654134,
+      "confidence": 0.8
+    },
+    {
+      "key": "westmount road north",
+      "aliases": [
+        "westmount rd north",
+        "westmount road n",
+        "westmount road north",
+        "wmount road north"
+      ],
+      "lat": 43.4613123,
+      "lon": -80.5384994,
+      "confidence": 0.8
+    },
+    {
+      "key": "university avenue west",
+      "aliases": [
+        "university ave west",
+        "university avenue w",
+        "university avenue west"
+      ],
+      "lat": 43.43849,
+      "lon": -80.55588,
+      "confidence": 0.9
+    },
+    {
+      "key": "icon 330 phillip street",
+      "aliases": [
+        "330 phillip",
+        "icon",
+        "icon 330 phillip st",
+        "icon 330 phillip street",
+        "icon towers"
+      ],
+      "lat": 43.4762025,
+      "lon": -80.5389214,
+      "confidence": 0.8
+    },
+    {
+      "key": "sage 8 hickory street west",
+      "aliases": [
+        "sage",
+        "sage 8 hickory st west",
+        "sage 8 hickory street w",
+        "sage 8 hickory street west",
+        "sage condos"
+      ],
+      "lat": 43.4783635,
+      "lon": -80.526213,
+      "confidence": 0.8
+    },
+    {
+      "key": "wilfrid laurier university",
+      "aliases": [
+        "wilfrid laurier university"
+      ],
+      "lat": 43.4727989,
+      "lon": -80.5280863,
+      "confidence": 0.9
+    }
+  ]
+}
