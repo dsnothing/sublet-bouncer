@@ -1,0 +1,87 @@
+{
+  "results": [
+    {
+      "i": 0,
+      "ms": 1576,
+      "mode": "offline-fallback",
+      "reason": "Primary gemini-3.1-flash-lite: Gemini HTTP 503; trying gemini-3-flash-preview; Gemini HTTP 429",
+      "fields": 7,
+      "clauses": 0
+    },
+    {
+      "i": 1,
+      "ms": 5867,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 4,
+      "clauses": 3
+    },
+    {
+      "i": 2,
+      "ms": 14162,
+      "mode": "offline-fallback",
+      "reason": "Primary gemini-3.1-flash-lite: Gemini attempt timeout; trying gemini-3-flash-preview; Gemini HTTP 429",
+      "fields": 7,
+      "clauses": 0
+    },
+    {
+      "i": 3,
+      "ms": 14149,
+      "mode": "offline-fallback",
+      "reason": "Primary gemini-3.1-flash-lite: Gemini attempt timeout; trying gemini-3-flash-preview; Gemini HTTP 429",
+      "fields": 7,
+      "clauses": 2
+    },
+    {
+      "i": 4,
+      "ms": 9984,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 3,
+      "clauses": 3
+    },
+    {
+      "i": 5,
+      "ms": 3779,
+      "mode": "offline-fallback",
+      "reason": "Primary gemini-3.1-flash-lite: Gemini HTTP 503; trying gemini-3-flash-preview; Gemini HTTP 429",
+      "fields": 7,
+      "clauses": 0
+    },
+    {
+      "i": 6,
+      "ms": 8332,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 4,
+      "clauses": 3
+    },
+    {
+      "i": 7,
+      "ms": 7109,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 5,
+      "clauses": 1
+    },
+    {
+      "i": 8,
+      "ms": 13055,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 4,
+      "clauses": 2
+    },
+    {
+      "i": 9,
+      "ms": 16306,
+      "mode": "live",
+      "model": "gemini-3-flash-preview",
+      "reason": "Primary gemini-3.1-flash-lite: Gemini attempt timeout; trying gemini-3-flash-preview",
+      "fields": 3,
+      "clauses": 3
+    }
+  ],
+  "p50": 9158,
+  "p95": 16306
+}

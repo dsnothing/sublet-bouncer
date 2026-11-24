@@ -18,7 +18,7 @@ describe('Gemini adapter',()=>{
       expect(result.fallbackReason).toContain(`Gemini HTTP ${status}`);
       expect(result.log.some(entry=>entry.summary.includes(`Gemini HTTP ${status}`))).toBe(true);
       expect(spy.mock.calls[1][0]).toContain('/gemini-3.1-flash-lite:');
-      expect(requests[0].signal).toBe(requests[1].signal);
+      expect(requests[0].signal).not.toBe(requests[1].signal);
     }
     const failures=vi.fn(async()=>new Response('private error',{status:429}));vi.stubGlobal('fetch',failures);
     const result=await analyze({listing,profile,mode:'live'},{llm:createGeminiAdapter('test-key','gemini-3-flash-preview','gemini-3.1-flash-lite')});
@@ -36,7 +36,7 @@ describe('Gemini adapter',()=>{
   it('does not disclose provider error bodies in fallback messages',async()=>{vi.stubGlobal('fetch',async()=>new Response('sensitive provider details',{status:429}));await expect(createGeminiAdapter('test-key').extract(listing)).rejects.toThrow('Gemini HTTP 429');});
   it('treats missing model as explicit fallback',async()=>{vi.stubGlobal('fetch',async()=>new Response('{}',{status:404}));const r=await analyze({listing,profile,mode:'live'},{llm:createGeminiAdapter('test-key')});expect(r.mode).toBe('offline-fallback');expect(r.fallbackReason).toBe('Gemini HTTP 404');});
   it('accepts a mocked live structured extraction',async()=>{const r=await analyze({listing,profile,mode:'live'},{llm:{model:'mock',extract:async()=>({fields:{rent:{value:850,span:{text:'Rent $850/month',start:0,end:0},confidence:.9}},clauses:[]})}});expect(r.mode).toBe('live');expect(r.fields.rent.span?.start).toBe(listing.indexOf('Rent'));});
-  it.skipIf(!process.env.GEMINI_API_KEY)('optional live smoke: live result or explicit provider fallback',async()=>{const r=await analyze({listing,profile,mode:'live'},{llm:createGeminiAdapter()});expect(['live','offline-fallback']).toContain(r.mode);if(r.mode==='offline-fallback')expect(r.fallbackReason).toBeTruthy();},15000);
+  it.skipIf(!process.env.GEMINI_API_KEY)('optional live smoke: live result or explicit provider fallback',async()=>{const r=await analyze({listing,profile,mode:'live'},{llm:createGeminiAdapter()});expect(['live','offline-fallback']).toContain(r.mode);if(r.mode==='offline-fallback')expect(r.fallbackReason).toBeTruthy();},25000);
 });
 describe('HTTP contract',()=>{
   async function request(method:string,body?:string){const server=createServer(handler);server.listen(0,'127.0.0.1');await once(server,'listening');try{const address=server.address() as {port:number};const res=await fetch(`http://127.0.0.1:${address.port}`,{method,headers:{'Content-Type':'application/json'},...(body!==undefined?{body}:{})});return {status:res.status,body:await res.json()};}finally{server.close();}}

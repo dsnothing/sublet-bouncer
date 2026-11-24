@@ -76,3 +76,18 @@
 - Error logs since deploy: zero records; drains/monitoring not inspected. README remains absent/lead-owned.
 - Git pull --rebase blocked by concurrent eval edits; fetch confirmed origin/main is an ancestor before push.
 - Risks: both provider quotas can fail; lite may extract different facts/verdict; HTTP200 alone does not prove live mode.
+
+## C2c - bounded compact Gemini extraction (Codex L3)
+- Skills: systematic-debugging (timeout trace), karpathy-guidelines (focused implementation); CLI tools available via Node PATH.
+- Retained documented minimal thinking; short rule codes, verbatim text-only spans, no generated rationale/confidence for clauses.
+- Kept engine-consumed fields and all C2b risk booleans; verifier reconstructs offsets and proposals still escalate at 0.7.
+- Output capped at 2048 tokens / 12 clauses; unused dates/deposits/utilities/contact/payment display fields omitted from live schema.
+- Budget: 20s total, primary 14s, fallback 6s; retry 429/503/timeouts; body reads bounded; Vercel analyze maxDuration 30s.
+- Paired 10-call local samples, five typical listings repeated twice, >=5s between calls; no held-out evals used.
+- Before p50/p95 10.065s/12.029s (6 live, 4 timeout); after 9.158s/16.306s (6 live, 4 offline provider failures).
+- After: 5 Lite successes, 1 recovered Flash success; two Lite503/Flash429, two Lite timeout/Flash429 failures.
+- Verification: 71 tests passed/1 optional skipped; strict typecheck and production build passed; secrets remain ignored.
+- Latency target NOT met; longer recovery budget can increase p95. Quota/load effects prevent attributing timing to schema alone.
+- Reproduce: Node PATH available, npm ci, npm test, npm run typecheck/build; npx tsx scripts/c2c-latency.ts <label>.
+- Deploy from clean detached worktree of this commit; post-deploy signed-out checks and actual SHA reported in final response.
+- Open risk: README remains absent/lead-owned; C3 must independently verify accuracy after schema/prompt reduction.

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { analyze, clauseFindings } from '../core/engine';
 import { verifyExtraction, offlineExtract, RULE_IDS } from '../core/extract';
 import { computeFeatures } from '../core/features';
-import { responseSchema } from '../api/gemini';
+import { responseSchema, RULE_CODES } from '../api/gemini';
 import { markWrong } from '../core/log';
 import { data } from '../core/data';
 const profile={termStart:'2027-01-01',termEnd:'2027-04-30',campus:'UW' as const,classStart:'08:30'};
@@ -28,7 +28,7 @@ describe('C2b conservative rule proposals',()=>{
     expect(r.escalations.some(e=>e.question.includes('Dropped clause'))).toBe(true);
   });
   it('validates the same rule enum in the schema and runtime',async()=>{
-    expect(responseSchema.properties.clauses.items.properties.proposed_rule_id.enum).toEqual([...RULE_IDS,'none']);
+    expect(responseSchema.properties.clauses.items.properties.proposed_rule_id.enum).toEqual([...RULE_CODES,'none']);
     expect(()=>verifyExtraction({fields:{},clauses:[proposal('Room','invented_law')]},base)).toThrow('Invalid proposed rule id');
     expect((await live(base,[proposal('Room','invented_law')])).mode).toBe('offline-fallback');
   });

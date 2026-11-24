@@ -4,6 +4,7 @@ import { findSpan, offlineExtract, verifyExtraction, type Extraction, type LLMAd
 import { extractFeatures, paymentBeforeViewing } from './features.js';
 import { hasInjection, refusalReason } from './injection.js';
 import { refreshActions, appendLog } from './log.js';
+export const LLM_TIMEOUT_MS = 20000;
 export interface AnalyzeOptions { llm?: LLMAdapter; data?: Data; timeoutMs?: number }
 export const newId = () => globalThis.crypto.randomUUID();
 export function validateRequest(raw: unknown): asserts raw is AnalyzeRequest {
@@ -79,7 +80,7 @@ export async function analyze(req: AnalyzeRequest, options: AnalyzeOptions = {})
     if (!options.llm) {mode='offline-fallback';fallbackReason='Live extraction unavailable';}
     else { let timer: ReturnType<typeof setTimeout>|undefined;
       try {
-        const raw=await Promise.race([options.llm.extract(req.listing),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LLM timeout')),options.timeoutMs??12000);})]);
+        const raw=await Promise.race([options.llm.extract(req.listing),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('LLM timeout')),options.timeoutMs??LLM_TIMEOUT_MS);})]);
         ({extraction,issues}=verifyExtraction(raw,req.listing)); mode='live'; fallbackReason=options.llm.fallbackReason;
       } catch(error) { mode='offline-fallback';fallbackReason=error instanceof Error?error.message:'LLM request failed'; }
       finally {clearTimeout(timer);}

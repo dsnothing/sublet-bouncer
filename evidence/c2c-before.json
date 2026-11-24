@@ -1,0 +1,86 @@
+{
+  "results": [
+    {
+      "i": 0,
+      "ms": 12029,
+      "mode": "offline-fallback",
+      "reason": "The operation was aborted due to timeout",
+      "fields": 7,
+      "clauses": 0
+    },
+    {
+      "i": 1,
+      "ms": 6424,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 7,
+      "clauses": 3
+    },
+    {
+      "i": 2,
+      "ms": 8914,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 8,
+      "clauses": 1
+    },
+    {
+      "i": 3,
+      "ms": 12008,
+      "mode": "offline-fallback",
+      "reason": "The operation was aborted due to timeout",
+      "fields": 7,
+      "clauses": 2
+    },
+    {
+      "i": 4,
+      "ms": 6528,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 4,
+      "clauses": 3
+    },
+    {
+      "i": 5,
+      "ms": 3857,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 4,
+      "clauses": 0
+    },
+    {
+      "i": 6,
+      "ms": 12007,
+      "mode": "offline-fallback",
+      "reason": "The operation was aborted due to timeout",
+      "fields": 7,
+      "clauses": 3
+    },
+    {
+      "i": 7,
+      "ms": 12008,
+      "mode": "offline-fallback",
+      "reason": "The operation was aborted due to timeout",
+      "fields": 7,
+      "clauses": 0
+    },
+    {
+      "i": 8,
+      "ms": 11216,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 3,
+      "clauses": 2
+    },
+    {
+      "i": 9,
+      "ms": 2697,
+      "mode": "live",
+      "model": "gemini-3.1-flash-lite",
+      "fields": 4,
+      "clauses": 3
+    }
+  ],
+  "p50": 10065,
+  "p95": 12029
+}
