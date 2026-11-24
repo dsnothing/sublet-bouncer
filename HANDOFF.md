@@ -198,3 +198,12 @@
 - **Changed**: Added calm `"Saved live result · <model> · <date>"` tag inside `aria-live="polite"`, `SAVED LIVE` top-band / `· SAVED` mobile pill, `"Run fresh check"` button sending `noCache: true` (honoured by `api/analyze.ts` + `capacity.ts`), visitor-limit fallback copy (`"You've used this visitor's live checks for now. The offline engine answered; try again in a few minutes."`), and `cached`/`cachedAt` storage validation (`BoardingPass.tsx`, `App.tsx`, `storage.ts`, `styles.css`).
 - **Verified**: `npm run typecheck`, `npm run build`, `npm test` (221 passed, 1 skipped) green; headless Chrome CDP at 1280×900 & 375×812 verified cached tag in `aria-live`, `noCache: true` dispatch, visitor-limit banner, `prefers-reduced-motion: reduce` (`1e-05s`), 0 overflow, 0 console errors.
 - **Screenshots**: `evidence/ui/c4f-{1280-cached,375-cached,1280-visitor-limit,375-visitor-limit}.png`. No deploy.
+
+## C10 Part A — Legible hero and safety regressions (Codex L3)
+- Skills: karpathy-guidelines and systematic-debugging. Git/Node/npm available; PowerShell and git grep substitute for rg.
+- The default `tricky` sample is Hidden terms (`demo-hero`), HOLD offline and live with a stub. It finds damage_deposit and entry_notice with no owner-sharing question.
+- Added verified-span verdict headlines and a pattern-based jurisdiction block that persists through corrections. Fixture demo runs the actual hero offline.
+- Verified: 304 passed, 1 optional live test skipped (14 files). Typecheck, build, and README API/web startup smoke passed after npm ci.
+- Safety: 83 regressions across 5 files, including 35 authored pairs and 3 asserted key-deposit gaps. Live paths used stubs.
+- Post-v3: no frozen fixtures, labels, harness or results changed, opened, or run. C10 is development work.
+- C5 sample cache seeds are stale and need regeneration in C11. Part B owns UI rendering and visual QA. No deploy.

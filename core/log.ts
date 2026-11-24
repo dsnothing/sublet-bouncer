@@ -1,5 +1,5 @@
 import type { AnalysisResult, AnalyzeRequest, ActionRecord, Decision, LogEntry } from './types.js';
-import { recomputeVerdict, clauseFindings, lookupCommute, scoreScam, newId, rtaApplicability } from './engine.js';
+import { recomputeVerdict, clauseFindings, lookupCommute, scoreScam, newId, rtaApplicability, outsideOntarioEvidence } from './engine.js';
 import { data } from './data.js';
 export interface RegressionFixture { listing:string; decision_id:Decision['id']; expected:unknown }
 type StoredEntry=LogEntry & { inputs_hash?:string; output?:unknown; inverse?:ActionRecord; profile?:AnalyzeRequest['profile']; decision_kind?:Decision['kind'] };
@@ -58,6 +58,7 @@ export function markWrong(result:AnalysisResult,decisionId:Decision['id'],correc
   for(const e of [...r.log].reverse())if(e.kind==='action'&&!r.log.some(u=>u.kind==='undo'&&u.ref===e.id))r=undo(r,e.id);
   const d=r.decisions.find(d=>d.id===decisionId)!;d.output=correction;d.escalated=false;d.reason='Human correction pinned';d.confidence=1;
   const profile=(r.log as StoredEntry[]).find(e=>e.profile)?.profile;
+  const outside=outsideOntarioEvidence(r.listing);
   const proposals=r.clauses.filter(c=>c.confidence===.7&&c.ruleId).map(c=>({span:c.span,confidence:.7,proposed_rule_id:c.ruleId!}));
   if(decisionId==='D1'){
     if(!correction||typeof correction!=='object'||Array.isArray(correction))throw new Error('D1 correction must be a fields object');
@@ -69,7 +70,7 @@ export function markWrong(result:AnalysisResult,decisionId:Decision['id'],correc
   } else if(decisionId==='D2') {if(!Array.isArray(correction))throw new Error('D2 correction must be clause findings');r.clauses=structuredClone(correction);}
   else if(decisionId==='D3') {const p=typeof correction==='number'?correction:(correction as {p:number})?.p;if(typeof p!=='number'||!Number.isFinite(p)||p<0||p>1)throw new Error('Invalid scam probability');r.scam={...r.scam,p,band:p>.7?'block':p>=.3?'escalate':'proceed'};}
   else if(decisionId==='D4'){if(!correction||typeof correction!=='object'||!['feasible','tight','infeasible','unknown'].includes((correction as {status:string}).status))throw new Error('Invalid commute correction');r.commute=structuredClone(correction) as AnalysisResult['commute'];}
-  else if(decisionId==='D5'){if(!['applies','may_not_apply','unknown'].includes(String(correction)))throw new Error('Invalid applicability correction');r.rtaApplies=correction as AnalysisResult['rtaApplies'];r.clauses=clauseFindings(r.listing,data,r.rtaApplies,proposals);}
+  else if(decisionId==='D5'){if(!['applies','may_not_apply','unknown'].includes(String(correction)))throw new Error('Invalid applicability correction');r.rtaApplies=outside?'may_not_apply':correction as AnalysisResult['rtaApplies'];r.clauses=clauseFindings(r.listing,data,r.rtaApplies,proposals);}
   else if(decisionId==='D6'&&!['ADMIT','HOLD','REFUSE'].includes(String(correction)))throw new Error('Invalid verdict correction');
   else if(decisionId==='D7')throw new Error('Permission policy cannot be overridden');
   r.escalations=r.escalations.filter(e=>e.decisionId!==decisionId);
@@ -78,10 +79,10 @@ export function markWrong(result:AnalysisResult,decisionId:Decision['id'],correc
   if(!r.fields.address&&!r.refused)pending('D1','Please confirm address');
   if(r.scam.band==='escalate')pending('D3','Verify listing identity before proceeding');
   if(r.commute.status==='unknown')pending('D4','Confirm a geocodable address and commute',false);
-  if(r.rtaApplies==='unknown'||r.rtaApplies==='may_not_apply'&&decisionId!=='D5')pending('D5','Does the owner share a kitchen or bathroom?');
+  if(!outside&&(r.rtaApplies==='unknown'||r.rtaApplies==='may_not_apply'&&decisionId!=='D5'))pending('D5','Does the owner share a kitchen or bathroom?');
   appendLog(r,'correction',decisionId,`Pinned correction to ${decisionId}`,'human').output=structuredClone(correction);
   recomputeVerdict(r);
-  if(decisionId==='D6'&&r.verdict!=='REFUSE'){
+  if(decisionId==='D6'&&r.verdict!=='REFUSE'&&!(outside&&correction==='ADMIT')){
     r.verdict=correction as AnalysisResult['verdict'];r.reasons=['Human verdict correction pinned'];
     const verdictDecision=r.decisions.find(d=>d.id==='D6')!;verdictDecision.output={verdict:r.verdict,reasons:r.reasons};
   }

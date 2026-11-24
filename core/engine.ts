@@ -54,7 +54,37 @@ export function normalizeAddress(address:string):string {
   const words:Record<string,string>={st:'street',ave:'avenue',rd:'road',dr:'drive',blvd:'boulevard',cres:'crescent',n:'north',s:'south',e:'east',w:'west'};
   return address.toLowerCase().replace(/\b(?:unit|apt|apartment|suite)\s*#?\s*[\w-]+\s*,?/g,'').replace(/#\s*[\w-]+\s*,?/g,'').replace(/^\s*\d+[a-z]?\s*-\s*(?=\d)/,'').replace(/\b(st|ave|rd|dr|blvd|cres|n|s|e|w)\b\.?/g,m=>words[m.replace('.','')]).replace(/[^\w\s]/g,' ').replace(/\s+/g,' ').trim();
 }
+// Require an address-like suffix or postal code, and keep original offsets.
+const outsideOntarioPatterns = [
+  /\b[ABCEGHJRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ][ \t]*\d[ABCEGHJKLMNPRSTVWXYZ]\d\b/gi,
+  /(?<![\p{L}\p{M}])(?:\p{L}[\p{L}\p{M}'’-]*|(?:St|Ste|Ft|Mt)\.)(?:[ \t]+(?:\p{L}[\p{L}\p{M}'’-]*|(?:St|Ste|Ft|Mt)\.)){0,5},[ \t]*(?:BC|QC|AB|MB|SK|NB|NS|NL|PE|NT|NU|YT)\b(?![ \t]*=)/giu,
+  /(?<![\p{L}\p{M}])(?:\p{L}[\p{L}\p{M}'’-]*|(?:St|Ste|Ft|Mt)\.)(?:[ \t]+(?:\p{L}[\p{L}\p{M}'’-]*|(?:St|Ste|Ft|Mt)\.)){0,5},[ \t]*(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)[ \t]+\d{5}(?:-\d{4})?\b/giu,
+];
+export function outsideOntarioEvidence(listing: string) {
+  for (const pattern of outsideOntarioPatterns) {
+    for (const match of listing.matchAll(pattern)) {
+      const start = match.index;
+      const before = listing.slice(Math.max(0, start - 100), start);
+      // A tenant's previous city or postal code is not the rental address.
+      const origin = /\bfrom[ \t]+[^!?;\n]*$/i.exec(before);
+      if (/\bfrom\b/i.test(match[0]) || (origin && !/\b(?:to|room|unit|address|located)\b|[.:]/i.test(origin[0]))) continue;
+      return {text:match[0],start,end:start+match[0].length};
+    }
+  }
+}
+function applyJurisdictionGuard(result: AnalysisResult): boolean {
+  const evidence = outsideOntarioEvidence(result.listing);
+  if (!evidence) return false;
+  result.rtaApplies = 'may_not_apply';
+  const question = "This listing appears to be outside Ontario ('"+evidence.text+"'). Ontario's Residential Tenancies Act may not apply; check local law.";
+  if (!result.escalations.some(e => e.decisionId === 'D5' && e.blocking && e.question === question)) {
+    result.escalations.push({id:newId(), decisionId:'D5', question, blocking:true,
+      options:['Confirm','Unable to confirm'], evidence:[evidence]});
+  }
+  return true;
+}
 export function rtaApplicability(listing:string,fields:AnalysisResult['fields']):AnalysisResult['rtaApplies'] {
+  if(outsideOntarioEvidence(listing))return 'may_not_apply';
   if(fields.owner_lives_in?.value===false)return 'applies';
   const resident=evidenceClauses(listing).some(s=>/\b(?:owner|landlord|homeowner|live[ -]in)\b/i.test(s)&&/\b(?:liv\w*|resid\w*|occup\w*|on\s+prem\w*|shar\w*)\b/i.test(s)&&booleanEvidence('owner_lives_in',s)===true);
   const bothSeparate=/\b(?:private|separate|own|not\s+shared)\s+(?:kitchen\s+and\s+(?:bath|bathroom)|bathroom\s+and\s+kitchen)\b/i.test(listing) || /\b(?:private|separate|own|not\s+shared)\s+kitchen\b/i.test(listing)&&/\b(?:private|separate|own|not\s+shared)\s+bath(?:room)?\b/i.test(listing);
@@ -81,6 +111,7 @@ export function scoreScam(listing:string, fields:AnalysisResult['fields'], db:Da
   return {p,band:p>.7?'block':p>=.3?'escalate':'proceed',topFeatures:contributions.sort((a,b)=>Math.abs(b.weight)-Math.abs(a.weight)).slice(0,3)};
 }
 export function recomputeVerdict(r: AnalysisResult) {
+  applyJurisdictionGuard(r);
   r.verdictConfidence=r.mode==='live'?'standard':'reduced';
   if(r.mode!=='live') {
     r.verdictConfidenceReason=OFFLINE_WARNING;
@@ -126,10 +157,13 @@ export async function analyze(req: AnalyzeRequest, options: AnalyzeOptions = {})
   if(!r.fields.rent && !refused) esc('D1','Please confirm the monthly rent',[],undefined,false);
   decision('D1','Field extraction',r.fields,mode==='live'?.9:.85,.8);
   const owner=r.fields.owner_lives_in;
-  r.rtaApplies=rtaApplicability(req.listing,r.fields);
-  if(r.rtaApplies==='may_not_apply') esc('D5','Does the owner share a kitchen or bathroom?',owner?.span?[owner.span]:[],['Owner shares kitchen/bath','Owner does not share','Unsure']);
-  else r.couldNotCheck.push("RTA applies unless you'd share a kitchen/bath with the owner");
-  if(r.rtaApplies==='may_not_apply') r.couldNotCheck.push('Shared kitchen/bath with owner: RTA may not apply under s.5(i)');
+  if(!applyJurisdictionGuard(r)) {
+    r.rtaApplies=rtaApplicability(req.listing,r.fields);
+    if(r.rtaApplies==='may_not_apply') {
+      esc('D5','Does the owner share a kitchen or bathroom?',owner?.span?[owner.span]:[],['Owner shares kitchen/bath','Owner does not share','Unsure']);
+      r.couldNotCheck.push('Shared kitchen/bath with owner: RTA may not apply under s.5(i)');
+    } else r.couldNotCheck.push("RTA applies unless you'd share a kitchen/bath with the owner");
+  }
   const rejectedProposals:{ruleId:string;reason:string}[]=[];
   if(!refused) r.clauses=clauseFindings(req.listing,db,r.rtaApplies,extraction.clauses,(ruleId,reason)=>rejectedProposals.push({ruleId,reason}));
   for(const c of r.clauses) if(c.confidence<.75) esc('D2',c.confidence===.7?`The bouncer thinks this may concern ${db.rules.rules.find(rule=>rule.id===c.ruleId)?.title} (${c.section}). Confirm?`:`Confirm clause: ${c.span.text}`,[c.span],undefined,db.rules.rules.find(rule=>rule.id===c.ruleId)?.status!=='info');
