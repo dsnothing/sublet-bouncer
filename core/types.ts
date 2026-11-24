@@ -1,4 +1,4 @@
-export type DecisionKind = 'llm' | 'rules' | 'model';
+export type DecisionKind = 'llm' | 'llm+rules' | 'rules' | 'model';
 export type Verdict = 'ADMIT' | 'HOLD' | 'REFUSE';
 export interface Span { text: string; start: number; end: number }       // offsets into original listing
 export interface Decision { id: 'D1'|'D2'|'D3'|'D4'|'D5'|'D6'|'D7'; kind: DecisionKind; label: string;

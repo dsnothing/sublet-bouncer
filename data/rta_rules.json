@@ -11,7 +11,9 @@
         "first\\s*\\+\\s*last\\s*\\+\\s*(?:damage\\s+)?deposit"
       ],
       "fuzzy_patterns": [
-        "additional\\s+deposit"
+        "additional\\s+deposit",
+        "\\bheld\\s+(?:against|for)\\s+(?:breakages?|damages?|repairs?)\\b",
+        "\\b(?:breakage|damages?|security)\\s+(?:fund|bond|fee|holdback)\\b"
       ],
       "status": "void",
       "lesson_plain": "A landlord cannot require a damage/security deposit. A lawful rent deposit and the regulated refundable key deposit are different.",
@@ -40,7 +42,11 @@
         "\\bno[ -]pets?(?:\\s+allowed)?\\b",
         "\\bpets?\\s+(?:are\\s+)?(?:not\\s+(?:allowed|permitted)|prohibited)\\b"
       ],
-      "fuzzy_patterns": [],
+      "fuzzy_patterns": [
+        "\\bno\\s+(?:animals?|furry\\s+friends)\\b",
+        "\\b(?:animals?|pets?)\\s+(?:are\\s+)?(?:banned|forbidden|unwelcome)\\b",
+        "\\b(?:cats?|dogs?)\\s+(?:are\\s+)?not\\s+(?:allowed|permitted|welcome)\\b"
+      ],
       "status": "void",
       "lesson_plain": "A tenancy agreement cannot ban animals. Other animal-related laws and grounds for an LTB application may still matter.",
       "lesson_simple_english": "A tenancy agreement cannot ban animals. Other animal-related laws and grounds for an LTB application may still matter.",

@@ -177,3 +177,9 @@ Source: https://www.ontario.ca/laws/statute/06r17; retrieved 2026-11-24
 Source: https://www.ontario.ca/laws/statute/06r17; retrieved 2026-11-24
 
 > 97 (1) A tenant may sublet a rental unit to another person with the consent of the landlord.
+
+## C2b paraphrase change log (2026-11-24)
+- Derived only from the verified concepts above; blind evals/redteam files were not opened.
+- s.105 security for damage: held against/for breakage, damage or repairs; breakage/damage/security fund, bond, fee or holdback.
+- s.14 animal prohibition: no animals/furry friends; animals/pets banned, forbidden or unwelcome; cats/dogs not allowed, permitted or welcome.
+- These are uncertain lexical hints (fuzzy_patterns, confidence 0.6), always escalated; no exact patterns or legal interpretations changed.

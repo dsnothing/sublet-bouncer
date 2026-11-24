@@ -30,9 +30,9 @@ A Waterloo co-op student, often international, often searching from another city
 ## 3. Typed decisions (the heart; each one is logged)
 | id | kind | what | output | threshold / escalation |
 |---|---|---|---|---|
-| D1 | `llm` (or `rules` offline) | Field + clause extraction | fields {address, rent, dates, deposits[], utilities, contact_channel, payment_methods[], viewing_offered, owner_lives_in}, clauses[] each with **verbatim `span`** | Each span must be an exact substring of the listing (normalized whitespace), otherwise the field is dropped and flagged. A field with confidence <0.8 is escalated as "please confirm" |
-| D2 | `rules` | Clause legality vs RTA table | per clause {rule_id, status: void/questionable/ok, section, lesson, confidence} | exact pattern = 1.0, fuzzy = 0.6. <0.75 escalates |
-| D3 | `model` | Scam risk: logistic regression over ~12 features | p_scam + top 3 contributing features | <0.30 proceed · 0.30–0.70 escalate · >0.70 block payment-adjacent drafting |
+| D1 | `llm` (or `rules` offline) | Field + clause extraction | fields {address, rent, dates, deposits[], utilities, contact_channel, payment_methods[], viewing_offered, owner_lives_in, payment_before_viewing, landlord_abroad, risky_payment_method}, clauses[] each with **verbatim `span`**, proposed_rule_id (rule-table id or none), rationale (at most 20 words) | Each span must be an exact substring of the listing (normalized whitespace), otherwise the field is dropped and flagged. A field with confidence <0.8 is escalated as "please confirm" |
+| D2 | `llm+rules` (or `rules` offline) | Clause legality vs RTA table | per clause {rule_id, status: void/questionable/ok, section, lesson, confidence} | Exact pattern = 1.0, fuzzy = 0.6; regex wins over proposals. Otherwise a span-verified LLM proposal = 0.7 and questionable, always escalated below 0.75; never automatically void. Unverified spans are dropped and logged |
+| D3 | `model` | Scam risk: logistic regression over ~12 features | p_scam + top 3 contributing features; span-verified live payment_before_viewing, landlord_abroad and risky_payment_method booleans are OR-merged with regex features | <0.30 proceed · 0.30–0.70 escalate · >0.70 block payment-adjacent drafting |
 | D4 | `rules` | Commute feasibility (GTFS-derived table) | feasible/tight/infeasible/unknown + minutes + route summary | Arrival ≥10 min before class = feasible, 0–10 min = tight, otherwise infeasible. An ungeocodable address = unknown, which escalates (never guess) |
 | D5 | `rules` | RTA applicability (s.5(i) shared kitchen/bath with owner) | applies / may_not_apply / unknown | may_not_apply shows a banner, and the void verdicts become "questionable: RTA may not apply" |
 | D6 | `rules` | Verdict aggregate | ADMIT/HOLD/REFUSE + reasons[] | REFUSE if p_scam>0.70, or payment requested before viewing. HOLD if any escalation is open or any void/questionable clause exists. Otherwise ADMIT |
@@ -68,7 +68,7 @@ Scam features (D3; design informed by Canadian Anti-Fraud Centre advisories): re
 
 ## 5. API contract (Codex implements; Antigravity consumes). Source of truth: `core/types.ts`
 ```ts
-export type DecisionKind = 'llm' | 'rules' | 'model';
+export type DecisionKind = 'llm' | 'llm+rules' | 'rules' | 'model';
 export type Verdict = 'ADMIT' | 'HOLD' | 'REFUSE';
 export interface Span { text: string; start: number; end: number }       // offsets into original listing
 export interface Decision { id: 'D1'|'D2'|'D3'|'D4'|'D5'|'D6'|'D7'; kind: DecisionKind; label: string;

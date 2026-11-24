@@ -15,3 +15,15 @@
 - Risks: transit uses C3 street-centroid/cache estimates; preview-model availability can change; README is lead-owned and pending.
 - UI integration/review remains C4/lead-owned; no web/data/evals/scripts files changed by C2. Dev API left running for integration.
 - Spec ambiguity: shared local main has no remote, so checked local HEAD before commits; no pull/rebase target exists.
+
+## C2b - Span-verified LLM rule proposals (Codex L3)
+- Role/skills: backend implementation; karpathy-guidelines (scope), systematic-debugging (verification); rg/npm absent from PATH, native search/installed Node used.
+- Extended Gemini clause schema with rule-id enum and <=20-word rationale; added three evidence-backed scam booleans.
+- D2 regex wins; unmatched verified proposals remain questionable at 0.7, escalate below 0.75, and log llm+rules.
+- Dropped unverified evidence is logged; verified live risk booleans OR into regex features and payment-before-viewing verdict.
+- Retained tentative proposals through D1/D5 corrections; added generic fuzzy security/animal synonyms with RTA change log.
+- Verified: npm test 63 passed, 1 optional live test skipped; npm run typecheck clean; 17 new classification cases.
+- Separate key-loaded Gemini smoke: live, damage_deposit 0.7/questionable, D2 llm+rules, HOLD.
+- Blind evals/redteam never opened; no /evals, /web, or scam_model edits; .env remains ignored.
+- Git: pull --rebase blocked by concurrent unstaged work; fetch confirmed HEAD=origin/main before explicit-path commit.
+- Risk: paraphrase precision/recall awaits independent C3 evaluation; verbatim evidence verifies text presence, not semantic truth.

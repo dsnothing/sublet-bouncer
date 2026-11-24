@@ -1,5 +1,8 @@
 import type { AnalysisResult, Span } from './types';
-export interface Extraction { fields: AnalysisResult['fields']; clauses: { span: Span; confidence: number }[] }
+import rules from '../data/rta_rules.json';
+export const RULE_IDS = rules.rules.map(rule => rule.id);
+export const LIVE_RISK_FIELDS = ['payment_before_viewing', 'landlord_abroad', 'risky_payment_method'] as const;
+export interface Extraction { fields: AnalysisResult['fields']; clauses: { span: Span; confidence: number; proposed_rule_id?: string; rationale?: string }[] }
 export interface LLMAdapter { extract(listing: string): Promise<unknown>; model?: string }
 export const normalize = (s: string) => s.replace(/\s+/g, ' ').trim();
 export function findSpan(listing: string, text: string): Span | undefined {
@@ -29,10 +32,11 @@ export function verifyExtraction(raw: unknown, listing: string): { extraction: E
   const x = raw as Extraction;
   if (!x || typeof x.fields !== 'object' || !x.fields || Array.isArray(x.fields) || !Array.isArray(x.clauses)) throw new Error('Invalid extraction schema');
   const fields: Extraction['fields'] = {}; const issues: string[] = [];
-  const allowed = ['address','rent','dates','deposits','utilities','contact_channel','payment_methods','viewing_offered','owner_lives_in'];
+  const allowed = ['address','rent','dates','deposits','utilities','contact_channel','payment_methods','viewing_offered','owner_lives_in',...LIVE_RISK_FIELDS];
   for (const [name, f] of Object.entries(x.fields)) {
     if (!allowed.includes(name)) continue;
     if (!f || typeof f.confidence !== 'number' || f.confidence < 0 || f.confidence > 1 || !f.span || typeof f.span.text !== 'string') throw new Error('Invalid field schema');
+    if ((LIVE_RISK_FIELDS as readonly string[]).includes(name) && typeof f.value !== 'boolean') throw new Error('Invalid risk boolean');
     const span = findSpan(listing, f.span.text);
     if (!span) { issues.push(`Dropped ${name}: evidence is absent from the listing`); continue; }
     // Values controlling policy must agree with a deterministic reading of their cited evidence.
@@ -48,7 +52,11 @@ export function verifyExtraction(raw: unknown, listing: string): { extraction: E
   const clauses: Extraction['clauses'] = [];
   for (const c of x.clauses) {
     if (!c?.span || typeof c.span.text !== 'string' || typeof c.confidence !== 'number' || c.confidence < 0 || c.confidence > 1) throw new Error('Invalid clause schema');
-    const span = findSpan(listing, c.span.text); if (span) clauses.push({ span, confidence: c.confidence }); else issues.push('Dropped clause: evidence is absent from the listing');
+    if (typeof c.proposed_rule_id !== 'string' || ![...RULE_IDS,'none'].includes(c.proposed_rule_id)) throw new Error('Invalid proposed rule id');
+    if (typeof c.rationale !== 'string' || normalize(c.rationale).split(' ').filter(Boolean).length > 20) throw new Error('Invalid clause rationale');
+    const span = findSpan(listing, c.span.text);
+    if (span) clauses.push({ span, confidence: c.confidence, proposed_rule_id: c.proposed_rule_id, rationale: c.rationale });
+    else issues.push('Dropped clause: evidence is absent from the listing');
   }
   return { extraction: { fields, clauses }, issues };
 }
