@@ -82,11 +82,22 @@ Live evals consume provider quota and can fall back or stop on errors. See [data
 
 [Current generated results](evals/RESULTS.md) | [Frozen v1 baseline](evals/RESULTS-v1-baseline.md) | [Row-level evidence](evals/results.json)
 
-The frozen independent blind red-team v2 split measures the pre-C2d/C2e implementation; it became development data during subsequent fixes and is not a current-code headline. The author-overlap synthetic gold split is secondary. The frozen v1 baseline predates C2b clause proposals and risk-field changes. Compare splits and modes separately; provider failures and offline fallbacks are not live successes. See the generated report for completed coverage and unavailable comparisons.
+### Headline: one-shot blind v3 evaluation
 
-<!-- RESULTS:FINAL -->
+30 synthetic listings written by a different model family (Gemini) than the one that built most of the system, blind to our rules, with labels checked against the Residential Tenancies Act. The source was frozen at `9be1f86` before v3 was opened, and no code, rules or labels changed afterwards. Full report: [evals/RESULTS-v3-FINAL.md](evals/RESULTS-v3-FINAL.md); reproduce with `evals/run_eval_v3.ts`.
 
-Final measured results are reserved for the lead after the final run. No performance claim is inferred from the screenshots.
+| Mode (n=30) | Correct verdicts | Illegal-clause precision / recall | Scam AUC | Fields exact | p50 / p95 latency |
+|---|---|---|---|---|---|
+| Offline engine | 23/30 (77%) | 1.00 / 0.38 | 0.93 | 75/115 | 3 ms / 27 ms |
+| Live (Gemini 3.1 Flash-Lite) | 24/30 (80%) | 0.78 / 0.54 | 1.00 (4 scam listings) | 92/115 | 3.4 s / 14.0 s |
+
+- **Live reliability:** 23 of 30 live calls succeeded; 6 fell back to the offline engine (3 timeouts, 3 HTTP 503) and 1 was a deterministic non-English refusal. These count in the table.
+- **Quote verification (the AI design choice):** corrupting one extracted value per listing, verification rejected 23/23 while unverified extraction rejected 0/23. The cost is 7 correct values dropped (field recall 0.88 to 0.80).
+- **Repeat consistency:** 5 listings x 3 live calls. Every completed run agreed on fields, clauses and verdict. Strictly, only 2 of 5 listings completed all 3 runs, because 3 of 15 calls failed with provider errors.
+- **Weak spots:** illegal-clause recall is about 0.54 live (0.38 offline); the system under-reports reworded violations. The one demanding case (a 518-word listing with a buried clause) was wrongly REFUSED.
+- **How we got here:** a v1 baseline (12/24 verdicts), a blind v2 run (13/30), general fixes made while looking at v2, then the one-shot v3. History, contamination notes and caveats are in the report.
+
+Synthetic, small-sample evidence. It does not establish real-world accuracy.
 
 ## Data and licences
 
