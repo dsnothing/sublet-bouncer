@@ -1,0 +1,239 @@
+{
+  "runId": "fixture-hold",
+  "mode": "offline",
+  "listing": "Room at 203 Lester Street, Waterloo. Rent $850/month. No pets allowed. Viewing available. Owner does not live here.",
+  "fields": {},
+  "clauses": [
+    {
+      "span": {
+        "text": "No pets allowed",
+        "start": 54,
+        "end": 69
+      },
+      "ruleId": "no_pets",
+      "status": "void",
+      "section": "14",
+      "lesson": "A no-pets clause is void when the RTA applies.",
+      "lessonSimple": "A lease cannot ban pets.",
+      "sourceUrl": "https://www.ontario.ca/laws/statute/06r17#BK20",
+      "confidence": 1
+    }
+  ],
+  "scam": {
+    "p": 0.12,
+    "band": "proceed",
+    "topFeatures": []
+  },
+  "commute": {
+    "status": "feasible",
+    "minutes": 18,
+    "arriveBy": "08:15",
+    "summary": "Walk to campus (illustrative fixture)"
+  },
+  "rtaApplies": "applies",
+  "verdict": "HOLD",
+  "reasons": [
+    "No-pets clause"
+  ],
+  "decisions": [
+    {
+      "id": "D1",
+      "kind": "rules",
+      "label": "Extraction",
+      "output": {},
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D2",
+      "kind": "rules",
+      "label": "RTA clauses",
+      "output": [
+        {
+          "span": {
+            "text": "No pets allowed",
+            "start": 54,
+            "end": 69
+          },
+          "ruleId": "no_pets",
+          "status": "void",
+          "section": "14",
+          "lesson": "A no-pets clause is void when the RTA applies.",
+          "lessonSimple": "A lease cannot ban pets.",
+          "sourceUrl": "https://www.ontario.ca/laws/statute/06r17#BK20",
+          "confidence": 1
+        }
+      ],
+      "confidence": 1,
+      "escalated": true,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D3",
+      "kind": "model",
+      "label": "Scam risk",
+      "output": {
+        "p": 0.12
+      },
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D4",
+      "kind": "rules",
+      "label": "Commute",
+      "output": {
+        "status": "feasible",
+        "minutes": 18,
+        "arriveBy": "08:15",
+        "summary": "Walk to campus (illustrative fixture)"
+      },
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D5",
+      "kind": "rules",
+      "label": "RTA applicability",
+      "output": "applies",
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D6",
+      "kind": "rules",
+      "label": "Verdict",
+      "output": "HOLD",
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D7",
+      "kind": "rules",
+      "label": "Action gate",
+      "output": [
+        {
+          "id": "A-reply",
+          "type": "draft_reply",
+          "tier": "auto",
+          "status": "done",
+          "payload": "Could we arrange a viewing?"
+        },
+        {
+          "id": "A-evidence",
+          "type": "save_evidence_card",
+          "tier": "auto",
+          "status": "done",
+          "payload": {
+            "verdict": "HOLD"
+          }
+        }
+      ],
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    }
+  ],
+  "escalations": [
+    {
+      "id": "E-D2",
+      "decisionId": "D2",
+      "question": "Ask the landlord to remove the no-pets clause?",
+      "options": [
+        "Ask to remove"
+      ],
+      "evidence": []
+    }
+  ],
+  "actions": [
+    {
+      "id": "A-reply",
+      "type": "draft_reply",
+      "tier": "auto",
+      "status": "done",
+      "payload": "Could we arrange a viewing?"
+    },
+    {
+      "id": "A-evidence",
+      "type": "save_evidence_card",
+      "tier": "auto",
+      "status": "done",
+      "payload": {
+        "verdict": "HOLD"
+      }
+    }
+  ],
+  "log": [
+    {
+      "id": "L0",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D1",
+      "actor": "agent",
+      "summary": "Extraction"
+    },
+    {
+      "id": "L1",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D2",
+      "actor": "agent",
+      "summary": "RTA clauses"
+    },
+    {
+      "id": "L2",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D3",
+      "actor": "agent",
+      "summary": "Scam risk"
+    },
+    {
+      "id": "L3",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D4",
+      "actor": "agent",
+      "summary": "Commute"
+    },
+    {
+      "id": "L4",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D5",
+      "actor": "agent",
+      "summary": "RTA applicability"
+    },
+    {
+      "id": "L5",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D6",
+      "actor": "agent",
+      "summary": "Verdict"
+    },
+    {
+      "id": "L6",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D7",
+      "actor": "agent",
+      "summary": "Action gate"
+    }
+  ],
+  "couldNotCheck": [
+    "Illustrative fixtures; no live checks performed"
+  ]
+}

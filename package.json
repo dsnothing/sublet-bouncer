@@ -1,0 +1,23 @@
+{
+  "name": "sublet-bouncer",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "core",
+    "api",
+    "web"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "dev:api": "tsx api/dev-server.ts",
+    "build": "npm run build --workspace=web",
+    "eval": "tsx evals/run_eval.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "tsx": "^4.19.0",
+    "vitest": "^3.2.0"
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "runId": "fixture-refuse",
+  "mode": "offline",
+  "listing": "Room $400/month. Send a crypto deposit before viewing. I am abroad. Contact Telegram only. Act now!",
+  "fields": {},
+  "clauses": [],
+  "scam": {
+    "p": 0.94,
+    "band": "block",
+    "topFeatures": []
+  },
+  "commute": {
+    "status": "unknown"
+  },
+  "rtaApplies": "applies",
+  "verdict": "REFUSE",
+  "reasons": [
+    "Payment requested before viewing"
+  ],
+  "decisions": [
+    {
+      "id": "D1",
+      "kind": "rules",
+      "label": "Extraction",
+      "output": {},
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D2",
+      "kind": "rules",
+      "label": "RTA clauses",
+      "output": [],
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D3",
+      "kind": "model",
+      "label": "Scam risk",
+      "output": {
+        "p": 0.94
+      },
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D4",
+      "kind": "rules",
+      "label": "Commute",
+      "output": {
+        "status": "unknown"
+      },
+      "confidence": 1,
+      "escalated": true,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D5",
+      "kind": "rules",
+      "label": "RTA applicability",
+      "output": "applies",
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D6",
+      "kind": "rules",
+      "label": "Verdict",
+      "output": "REFUSE",
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    },
+    {
+      "id": "D7",
+      "kind": "rules",
+      "label": "Action gate",
+      "output": [
+        {
+          "id": "A-reply",
+          "type": "draft_reply",
+          "tier": "auto",
+          "status": "done",
+          "payload": "I will not pay before viewing."
+        },
+        {
+          "id": "A-evidence",
+          "type": "save_evidence_card",
+          "tier": "auto",
+          "status": "done",
+          "payload": {
+            "verdict": "REFUSE"
+          }
+        }
+      ],
+      "confidence": 1,
+      "escalated": false,
+      "reason": "Illustrative offline fixture",
+      "evidence": []
+    }
+  ],
+  "escalations": [
+    {
+      "id": "E-D4",
+      "decisionId": "D4",
+      "question": "What is the full address?",
+      "options": [
+        "Provide address"
+      ],
+      "evidence": []
+    }
+  ],
+  "actions": [
+    {
+      "id": "A-reply",
+      "type": "draft_reply",
+      "tier": "auto",
+      "status": "done",
+      "payload": "I will not pay before viewing."
+    },
+    {
+      "id": "A-evidence",
+      "type": "save_evidence_card",
+      "tier": "auto",
+      "status": "done",
+      "payload": {
+        "verdict": "REFUSE"
+      }
+    }
+  ],
+  "log": [
+    {
+      "id": "L0",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D1",
+      "actor": "agent",
+      "summary": "Extraction"
+    },
+    {
+      "id": "L1",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D2",
+      "actor": "agent",
+      "summary": "RTA clauses"
+    },
+    {
+      "id": "L2",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D3",
+      "actor": "agent",
+      "summary": "Scam risk"
+    },
+    {
+      "id": "L3",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D4",
+      "actor": "agent",
+      "summary": "Commute"
+    },
+    {
+      "id": "L4",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D5",
+      "actor": "agent",
+      "summary": "RTA applicability"
+    },
+    {
+      "id": "L5",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D6",
+      "actor": "agent",
+      "summary": "Verdict"
+    },
+    {
+      "id": "L6",
+      "ts": "2026-11-24T10:00:00Z",
+      "kind": "decision",
+      "ref": "D7",
+      "actor": "agent",
+      "summary": "Action gate"
+    }
+  ],
+  "couldNotCheck": [
+    "Illustrative fixtures; no live checks performed"
+  ]
+}

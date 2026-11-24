@@ -1,0 +1,5 @@
+{
+  "name": "@sublet-bouncer/api",
+  "private": true,
+  "type": "module"
+}

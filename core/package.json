@@ -1,0 +1,9 @@
+{
+  "name": "@sublet-bouncer/core",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./types": "./types.ts"
+  }
+}
