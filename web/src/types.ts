@@ -26,8 +26,8 @@ export interface ProfileState {
 export interface RegressionFixture {
   listing: string;
   decision_id: 'D1' | 'D2' | 'D3' | 'D4' | 'D5' | 'D6' | 'D7';
-  expected: string;
-  recordedAt: string;
+  expected: unknown;
+  recordedAt?: string;
 }
 
 export const DEFAULT_PROFILE: ProfileState = {

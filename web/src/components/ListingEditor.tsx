@@ -1,6 +1,6 @@
 import React from 'react';
 import { ShieldCheck } from 'lucide-react';
-import { SAMPLE_FIXTURES } from '../adapter';
+import { SAMPLE_LISTINGS } from '../adapter';
 import type { ProfileState, SampleKey } from '../types';
 
 interface ListingEditorProps {
@@ -36,7 +36,7 @@ export const ListingEditor: React.FC<ListingEditorProps> = ({
 
       <div className="sample-row" role="group" aria-label="Sample listings">
         {SAMPLE_KEYS.map((key) => {
-          const item = SAMPLE_FIXTURES[key];
+          const item = SAMPLE_LISTINGS[key];
           return (
             <button
               key={key}

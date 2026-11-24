@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 import {
-  SAMPLE_FIXTURES,
   getSampleListing,
-  markWrongLocal,
-  performActionLocal,
-  resolveEscalationLocal,
+  isFixturesDemoEnabled,
+  markWrongEngine,
+  performActionEngine,
+  resolveEscalationEngine,
   runAnalysis,
-  undoLogEntryLocal,
+  undoLogEntryEngine,
 } from './adapter';
 import { AccountabilityDrawer } from './components/AccountabilityDrawer';
 import { BoardingPass } from './components/BoardingPass';
@@ -22,9 +22,10 @@ import {
   type ProfileState,
   type RegressionFixture,
   type SampleKey,
+  type Span,
 } from './types';
 
-const STORAGE_KEY = 'sublet-bouncer:v1';
+const STORAGE_KEY = 'sublet-bouncer:v2';
 
 interface PersistedState {
   listing: string;
@@ -33,36 +34,39 @@ interface PersistedState {
   languageLevel: LanguageLevel;
   drawerOpen: boolean;
   activeSample: SampleKey | null;
-  result: AnalysisResult;
+  result: AnalysisResult | null;
 }
 
-function loadInitialState(): PersistedState {
-  const fallbackResult = SAMPLE_FIXTURES.tricky.result();
+function loadInitialState(fixturesAllowed: boolean): PersistedState {
+  const defaultSource: DataSourceMode = fixturesAllowed ? 'fixtures' : 'api';
   const fallback: PersistedState = {
-    listing: fallbackResult.listing,
+    listing: getSampleListing('tricky'),
     profile: DEFAULT_PROFILE,
-    dataSource: 'fixtures',
+    dataSource: defaultSource,
     languageLevel: 'plain',
     drawerOpen: true,
     activeSample: 'tricky',
-    result: fallbackResult,
+    result: null,
   };
 
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return fallback;
     const parsed = JSON.parse(raw) as Partial<PersistedState>;
-    if (!parsed || typeof parsed.listing !== 'string' || !parsed.result) {
+    if (!parsed || typeof parsed.listing !== 'string') {
       return fallback;
     }
+    const storedSource = parsed.dataSource ?? defaultSource;
+    const safeSource: DataSourceMode =
+      storedSource === 'fixtures' && !fixturesAllowed ? 'api' : storedSource;
     return {
       listing: parsed.listing,
       profile: parsed.profile ?? DEFAULT_PROFILE,
-      dataSource: parsed.dataSource ?? 'fixtures',
+      dataSource: safeSource,
       languageLevel: parsed.languageLevel ?? 'plain',
       drawerOpen: typeof parsed.drawerOpen === 'boolean' ? parsed.drawerOpen : true,
       activeSample: parsed.activeSample ?? null,
-      result: parsed.result,
+      result: parsed.result ?? null,
     };
   } catch {
     return fallback;
@@ -70,7 +74,8 @@ function loadInitialState(): PersistedState {
 }
 
 export const App: React.FC = () => {
-  const initial = loadInitialState();
+  const fixturesAllowed = isFixturesDemoEnabled();
+  const initial = loadInitialState(fixturesAllowed);
 
   const [listing, setListing] = useState<string>(initial.listing);
   const [profile, setProfile] = useState<ProfileState>(initial.profile);
@@ -78,12 +83,16 @@ export const App: React.FC = () => {
   const [languageLevel, setLanguageLevel] = useState<LanguageLevel>(initial.languageLevel);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(initial.drawerOpen);
   const [activeSample, setActiveSample] = useState<SampleKey | null>(initial.activeSample);
-  const [result, setResult] = useState<AnalysisResult>(initial.result);
+  const [result, setResult] = useState<AnalysisResult | null>(initial.result);
   const [notice, setNotice] = useState<string | undefined>(undefined);
+  const [engineError, setEngineError] = useState<string | undefined>(undefined);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [isRewinding, setIsRewinding] = useState<boolean>(false);
   const [lastFixture, setLastFixture] = useState<RegressionFixture | null>(null);
+  const [focusedSpan, setFocusedSpan] = useState<Span | null>(null);
+  const [focusSeq, setFocusSeq] = useState<number>(0);
   const rewindTimerRef = useRef<number | null>(null);
+  const didAutoRunRef = useRef<boolean>(false);
 
   useEffect(() => {
     try {
@@ -110,6 +119,40 @@ export const App: React.FC = () => {
     };
   }, []);
 
+  const executeAnalysis = async (
+    text: string,
+    prof: ProfileState,
+    source: DataSourceMode,
+  ) => {
+    if (!text.trim()) return;
+    setIsAnalyzing(true);
+    setNotice(undefined);
+    setEngineError(undefined);
+    try {
+      const { result: nextResult, notice: nextNotice } = await runAnalysis(
+        {
+          listing: text,
+          profile: prof,
+          mode: source === 'api' ? 'live' : 'offline',
+        },
+        source,
+      );
+      setResult(nextResult);
+      setNotice(nextNotice);
+      setLastFixture(null);
+      setFocusedSpan(null);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  // Run initial analysis automatically on first load when no persisted result exists
+  useEffect(() => {
+    if (didAutoRunRef.current || result !== null) return;
+    didAutoRunRef.current = true;
+    void executeAnalysis(listing, profile, dataSource);
+  }, []);
+
   const triggerRewind = () => {
     if (rewindTimerRef.current !== null) {
       window.clearTimeout(rewindTimerRef.current);
@@ -125,55 +168,68 @@ export const App: React.FC = () => {
   };
 
   const handleSelectSample = (key: SampleKey) => {
-    const sampleResult = SAMPLE_FIXTURES[key].result();
+    const sampleText = getSampleListing(key);
     setActiveSample(key);
-    setListing(getSampleListing(key));
-    setResult(sampleResult);
-    setNotice(undefined);
-    setLastFixture(null);
+    setListing(sampleText);
+    void executeAnalysis(sampleText, profile, dataSource);
   };
 
-  const handleAnalyze = async () => {
-    if (!listing.trim()) return;
-    setIsAnalyzing(true);
-    setNotice(undefined);
-    try {
-      const { result: nextResult, notice: nextNotice } = await runAnalysis(
-        {
-          listing,
-          profile,
-          mode: dataSource === 'api' ? 'live' : 'offline',
-        },
-        dataSource,
-      );
-      setResult(nextResult);
-      setNotice(nextNotice);
-      setLastFixture(null);
-    } finally {
-      setIsAnalyzing(false);
-    }
+  const handleAnalyze = () => {
+    void executeAnalysis(listing, profile, dataSource);
   };
 
   const handleResolveEscalation = (escId: string, answer: string) => {
-    setResult((prev) => resolveEscalationLocal(prev, escId, answer));
+    if (!result) return;
+    setEngineError(undefined);
+    const { result: next, error } = resolveEscalationEngine(result, escId, answer);
+    if (error) {
+      setEngineError(error);
+      return;
+    }
+    setResult(next);
   };
 
   const handlePerformAction = (actionId: string) => {
-    setResult((prev) => performActionLocal(prev, actionId));
+    if (!result) return;
+    setEngineError(undefined);
+    const { result: next, error } = performActionEngine(result, actionId);
+    if (error) {
+      setEngineError(error);
+      return;
+    }
+    setResult(next);
   };
 
   const handleUndo = (logEntryId: string) => {
+    if (!result) return;
+    setEngineError(undefined);
+    const { result: next, error } = undoLogEntryEngine(result, logEntryId);
+    if (error) {
+      setEngineError(error);
+      return;
+    }
     triggerRewind();
-    setResult((prev) => undoLogEntryLocal(prev, logEntryId));
+    setResult(next);
   };
 
-  const handleMarkWrong = (decisionId: Decision['id'], correction: string) => {
+  const handleMarkWrong = (decisionId: Decision['id'], correction: unknown) => {
+    if (!result) return;
+    setEngineError(undefined);
+    const { result: updated, fixture, error } = markWrongEngine(result, decisionId, correction);
+    if (error) {
+      setEngineError(error);
+      return;
+    }
     triggerRewind();
-    setResult((prev) => {
-      const { result: updated, fixture } = markWrongLocal(prev, decisionId, correction);
+    setResult(updated);
+    if (fixture) {
       setLastFixture(fixture);
-      return updated;
-    });
+    }
+  };
+
+  const handleFocusSpan = (span: Span) => {
+    setFocusedSpan(span);
+    setFocusSeq((n) => n + 1);
   };
 
   const jumpTo = (id: string) => {
@@ -187,7 +243,7 @@ export const App: React.FC = () => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scamPct = Math.round(result.scam.p * 100);
+  const scamPct = result ? Math.round(result.scam.p * 100) : 0;
 
   return (
     <>
@@ -225,14 +281,16 @@ export const App: React.FC = () => {
               >
                 Offline
               </button>
-              <button
-                type="button"
-                className="seg-btn"
-                aria-pressed={dataSource === 'fixtures'}
-                onClick={() => setDataSource('fixtures')}
-              >
-                Fixtures
-              </button>
+              {fixturesAllowed && (
+                <button
+                  type="button"
+                  className="seg-btn"
+                  aria-pressed={dataSource === 'fixtures'}
+                  onClick={() => setDataSource('fixtures')}
+                >
+                  Fixtures
+                </button>
+              )}
             </div>
 
             <div className="seg-group" role="group" aria-label="Explanation language level">
@@ -267,7 +325,7 @@ export const App: React.FC = () => {
                 <PanelRightOpen size={16} aria-hidden="true" />
               )}
               <span>Accountability</span>
-              {result.escalations.length > 0 && (
+              {result && result.escalations.length > 0 && (
                 <span className="esc-count-pill" aria-label={`${result.escalations.length} open escalations`}>
                   {result.escalations.length}
                 </span>
@@ -282,15 +340,25 @@ export const App: React.FC = () => {
         <div className="mobile-chips">
           <span
             className={`status-pill ${
-              result.verdict === 'ADMIT' ? 'ok' : result.verdict === 'HOLD' ? 'warn' : 'bad'
+              !result
+                ? 'neutral'
+                : result.verdict === 'ADMIT'
+                  ? 'ok'
+                  : result.verdict === 'HOLD'
+                    ? 'warn'
+                    : 'bad'
             }`}
           >
-            {result.verdict}
+            {result ? result.verdict : 'CHECKING'}
           </span>
-          <span className="status-pill neutral">Scam {scamPct}%</span>
-          <span className="status-pill neutral">
-            {result.commute.minutes !== undefined ? `${result.commute.minutes}m` : result.commute.status}
-          </span>
+          {result && !result.refused && (
+            <>
+              <span className="status-pill neutral">Scam {scamPct}%</span>
+              <span className="status-pill neutral">
+                {result.commute.minutes !== undefined ? `${result.commute.minutes}m` : result.commute.status}
+              </span>
+            </>
+          )}
         </div>
         <div className="mobile-jump-row">
           <button type="button" className="mobile-jump-btn" onClick={() => jumpTo('listing-panel')}>
@@ -325,28 +393,44 @@ export const App: React.FC = () => {
             isAnalyzing={isAnalyzing}
           />
           <HighlightedListing
-            listing={result.listing}
-            clauses={result.clauses}
+            listing={result?.listing ?? listing}
+            clauses={result?.clauses ?? []}
             languageLevel={languageLevel}
+            focusedSpan={focusedSpan}
+            focusSeq={focusSeq}
           />
         </div>
 
-        <BoardingPass
-          result={result}
-          profile={profile}
-          isRewinding={isRewinding}
-          notice={notice}
-          onPerformAction={handlePerformAction}
-        />
+        {result ? (
+          <BoardingPass
+            result={result}
+            profile={profile}
+            isRewinding={isRewinding}
+            notice={notice}
+            onPerformAction={handlePerformAction}
+          />
+        ) : (
+          <article id="boarding-pass" className="boarding-pass" aria-busy="true">
+            <div className="pass-top-band">
+              <span className="pass-airline">WATERLOO CO-OP GATE PASS</span>
+              <span className="pass-meta-mono">ANALYZING…</span>
+            </div>
+            <div className="pass-body">
+              <p className="verdict-sub">Checking Ontario RTA clauses, commute, and scam signals…</p>
+            </div>
+          </article>
+        )}
 
-        {drawerOpen && (
+        {drawerOpen && result && (
           <AccountabilityDrawer
             result={result}
             isRewinding={isRewinding}
             lastFixture={lastFixture}
+            engineError={engineError}
             onResolveEscalation={handleResolveEscalation}
             onUndo={handleUndo}
             onMarkWrong={handleMarkWrong}
+            onFocusSpan={handleFocusSpan}
           />
         )}
       </main>

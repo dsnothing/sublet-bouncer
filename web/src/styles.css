@@ -649,14 +649,39 @@ button:disabled {
   flex-wrap: wrap;
 }
 
+.verdict-heading-wrap {
+  min-width: 0;
+  flex: 1 1 200px;
+}
+
 .verdict-route {
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  margin: 0 0 6px 0;
+  line-height: 1.2;
+}
+
+.verdict-address {
+  word-break: break-word;
+}
+
+.verdict-address.unlisted {
+  color: var(--hold);
+}
+
+.verdict-esc-hint {
+  font-size: 12px;
+  color: var(--hold);
+  background: var(--hold-bg);
+  border: 1px solid var(--hold-border);
+  border-radius: var(--r-sm);
+  padding: 5px 9px;
   margin: 0 0 6px 0;
 }
 
@@ -664,6 +689,90 @@ button:disabled {
   font-size: 13px;
   color: var(--ink-muted);
   margin: 0;
+}
+
+/* Polite refusal card */
+.refusal-card {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  background: var(--refuse-bg);
+  border: 1px solid var(--refuse-border);
+  color: #5c120c;
+}
+
+.refusal-card-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: var(--refuse);
+}
+
+.refusal-card-head h3 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.refusal-card-body {
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  color: var(--ink);
+}
+
+.refusal-card-tip {
+  font-size: 13px;
+  margin: 0;
+  color: #5c120c;
+}
+
+/* Dedicated "What I couldn't check" panel */
+.could-not-check-panel {
+  margin: 0 20px 14px 20px;
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  background: #f4f6f9;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.could-not-check-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Evidence focus highlights inside listing */
+.evidence-mark {
+  background: #fde68a;
+  color: var(--ink);
+  padding: 1px 4px;
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px #d97706;
+  animation: evidencePulse 650ms var(--ease-out) both;
+}
+
+.clause-mark.evidence-focused {
+  box-shadow: 0 0 0 2px var(--rope), 0 0 0 4px rgba(124, 29, 46, 0.25);
+  animation: evidencePulse 650ms var(--ease-out) both;
+}
+
+@keyframes evidencePulse {
+  0% {
+    box-shadow: 0 0 0 5px rgba(217, 119, 6, 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 2px #d97706;
+  }
 }
 
 /* Official ink stamp */
@@ -1088,6 +1197,92 @@ button:disabled {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--drawer-muted);
+}
+
+.conf-readout.warn {
+  color: #fcd34d;
+  font-weight: 700;
+}
+
+/* Decision confidence vs threshold meter */
+.conf-meter-wrap {
+  position: relative;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  margin: 6px 0 6px 0;
+}
+
+.conf-meter-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #2e3745;
+  overflow: hidden;
+}
+
+.conf-meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 220ms var(--ease-out);
+}
+
+.conf-meter-fill.ok {
+  background: #34d399;
+}
+
+.conf-meter-fill.warn {
+  background: #f59e0b;
+}
+
+.conf-meter-tick {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 12px;
+  background: #f8fafc;
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+
+.evidence-spans-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0 0 8px 0;
+}
+
+.evidence-span-btn {
+  min-height: 28px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #3f4b5c;
+  background: #141920;
+  color: #cbd5e1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: left;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .evidence-span-btn:hover {
+    border-color: #f3b2be;
+    color: #ffffff;
+  }
+}
+
+.drawer-error {
+  margin-bottom: 12px;
+  padding: 9px 11px;
+  border-radius: var(--r-sm);
+  background: #3d1818;
+  border: 1px solid #b42318;
+  color: #fecaca;
+  font-size: 12px;
 }
 
 .decision-reason {

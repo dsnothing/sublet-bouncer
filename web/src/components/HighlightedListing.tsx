@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ExternalLink, X } from 'lucide-react';
-import type { ClauseFinding, LanguageLevel } from '../types';
+import type { ClauseFinding, LanguageLevel, Span } from '../types';
 
 interface HighlightedListingProps {
   listing: string;
   clauses: ClauseFinding[];
   languageLevel: LanguageLevel;
+  focusedSpan?: Span | null;
+  focusSeq?: number;
 }
 
 interface PopoverState {
@@ -15,13 +17,21 @@ interface PopoverState {
   origin: string;
 }
 
+type Segment =
+  | { type: 'text'; text: string }
+  | { type: 'clause'; clause: ClauseFinding; index: number; isFocused: boolean }
+  | { type: 'evidence'; span: Span };
+
 export const HighlightedListing: React.FC<HighlightedListingProps> = ({
   listing,
   clauses,
   languageLevel,
+  focusedSpan = null,
+  focusSeq = 0,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const triggerRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+  const evidenceMarkRef = useRef<HTMLElement | null>(null);
   const [popover, setPopover] = useState<PopoverState | null>(null);
 
   useEffect(() => {
@@ -41,26 +51,92 @@ export const HighlightedListing: React.FC<HighlightedListingProps> = ({
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [popover]);
 
-  // Sort valid non-overlapping spans
-  const sorted = clauses
+  // Scroll to and highlight the focused evidence span when clicked in AccountabilityDrawer
+  useEffect(() => {
+    if (!focusedSpan || focusSeq === 0) return;
+    const matchingClauseIdx = clauses.findIndex(
+      (c) => c.span.start === focusedSpan.start && c.span.end === focusedSpan.end,
+    );
+    const targetEl =
+      matchingClauseIdx >= 0 ? triggerRefs.current[matchingClauseIdx] : evidenceMarkRef.current;
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (targetEl instanceof HTMLButtonElement) {
+        targetEl.focus({ preventScroll: true });
+      }
+    } else {
+      containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [focusedSpan, focusSeq, clauses]);
+
+  // Build non-overlapping sorted annotations (clauses + optional focused evidence span)
+  const validClauses = clauses
     .map((clause, index) => ({ clause, index }))
     .filter(
       ({ clause }) =>
         clause.span.start >= 0 &&
         clause.span.end > clause.span.start &&
         clause.span.end <= listing.length,
-    )
-    .sort((a, b) => a.clause.span.start - b.clause.span.start);
+    );
 
-  const segments: Array<{ type: 'text'; text: string } | { type: 'clause'; clause: ClauseFinding; index: number }> = [];
-  let cursor = 0;
-  for (const item of sorted) {
-    if (item.clause.span.start < cursor) continue;
-    if (item.clause.span.start > cursor) {
-      segments.push({ type: 'text', text: listing.slice(cursor, item.clause.span.start) });
+  const hasValidFocused =
+    focusedSpan !== null &&
+    focusedSpan.start >= 0 &&
+    focusedSpan.end > focusedSpan.start &&
+    focusedSpan.end <= listing.length;
+
+  const focusedMatchesClause =
+    hasValidFocused &&
+    validClauses.some(
+      ({ clause }) =>
+        clause.span.start === focusedSpan.start && clause.span.end === focusedSpan.end,
+    );
+
+  type RawAnnot =
+    | { kind: 'clause'; start: number; end: number; clause: ClauseFinding; index: number }
+    | { kind: 'evidence'; start: number; end: number; span: Span };
+
+  const annots: RawAnnot[] = validClauses.map(({ clause, index }) => ({
+    kind: 'clause',
+    start: clause.span.start,
+    end: clause.span.end,
+    clause,
+    index,
+  }));
+
+  if (hasValidFocused && !focusedMatchesClause) {
+    const overlapsClause = annots.some(
+      (a) => focusedSpan.start < a.end && focusedSpan.end > a.start,
+    );
+    if (!overlapsClause) {
+      annots.push({
+        kind: 'evidence',
+        start: focusedSpan.start,
+        end: focusedSpan.end,
+        span: focusedSpan,
+      });
     }
-    segments.push({ type: 'clause', clause: item.clause, index: item.index });
-    cursor = item.clause.span.end;
+  }
+
+  annots.sort((a, b) => a.start - b.start);
+
+  const segments: Segment[] = [];
+  let cursor = 0;
+  for (const item of annots) {
+    if (item.start < cursor) continue;
+    if (item.start > cursor) {
+      segments.push({ type: 'text', text: listing.slice(cursor, item.start) });
+    }
+    if (item.kind === 'clause') {
+      const isFocused =
+        hasValidFocused &&
+        item.clause.span.start === focusedSpan.start &&
+        item.clause.span.end === focusedSpan.end;
+      segments.push({ type: 'clause', clause: item.clause, index: item.index, isFocused });
+    } else {
+      segments.push({ type: 'evidence', span: item.span });
+    }
+    cursor = item.end;
   }
   if (cursor < listing.length) {
     segments.push({ type: 'text', text: listing.slice(cursor) });
@@ -91,7 +167,7 @@ export const HighlightedListing: React.FC<HighlightedListingProps> = ({
   const activeClause = popover !== null ? clauses[popover.clauseIndex] : null;
 
   return (
-    <div className="highlighted-section" ref={containerRef}>
+    <div id="highlighted-listing" className="highlighted-section" ref={containerRef}>
       <div className="panel-heading" style={{ marginBottom: 8 }}>
         <h3 style={{ margin: 0, fontSize: 14 }}>Clause highlights</h3>
         <span className="conf-readout" style={{ color: 'var(--ink-muted)' }}>
@@ -115,25 +191,37 @@ export const HighlightedListing: React.FC<HighlightedListingProps> = ({
         {segments.length === 0 ? (
           <span>{listing}</span>
         ) : (
-          segments.map((seg, i) =>
-            seg.type === 'text' ? (
-              <React.Fragment key={i}>{seg.text}</React.Fragment>
-            ) : (
+          segments.map((seg, i) => {
+            if (seg.type === 'text') {
+              return <React.Fragment key={i}>{seg.text}</React.Fragment>;
+            }
+            if (seg.type === 'evidence') {
+              return (
+                <mark
+                  key={`ev-${focusSeq}-${i}`}
+                  ref={evidenceMarkRef}
+                  className="evidence-mark"
+                >
+                  {listing.slice(seg.span.start, seg.span.end)}
+                </mark>
+              );
+            }
+            return (
               <button
                 key={i}
                 ref={(el) => {
                   triggerRefs.current[seg.index] = el;
                 }}
                 type="button"
-                className={`clause-mark ${seg.clause.status}`}
+                className={`clause-mark ${seg.clause.status}${seg.isFocused ? ' evidence-focused' : ''}`}
                 aria-expanded={popover?.clauseIndex === seg.index}
                 aria-label={`${seg.clause.span.text} — ${seg.clause.status} clause, RTA section ${seg.clause.section ?? 'info'}`}
                 onClick={(e) => openClause(seg.index, e.currentTarget)}
               >
                 {seg.clause.span.text}
               </button>
-            ),
-          )
+            );
+          })
         )}
       </div>
 
