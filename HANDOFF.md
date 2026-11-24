@@ -49,3 +49,16 @@
 - Signed-out production: GET /api/health 200; POST /api/analyze offline 200 mode=offline ADMIT; live 200 mode=live ADMIT.
 - Post-deploy error logs (5m): zero records; monitoring/drains configuration not inspected.
 - Scope risk: CLI uploaded shared checkout including concurrent web edits; web/evals changes excluded from this commit.
+
+## C3 - Verified data and v1 eval baseline (Codex L3)
+- Skills: karpathy-guidelines (scope/reproducibility), systematic-debugging (integration); rg absent, native search used.
+- Added 12 exact-quote verified RTA rules, CMHC mean/proxy benchmarks, 150 GTFS origins and 16 OSM geocodes.
+- Added reproducible builders, 200 seeded synthetic training rows and shared-feature logistic weights; 40 authored gold cases.
+- Independent Claude rt-01..24 kept unchanged; frozen results in evals/RESULTS-v1-baseline.md and results-v1-baseline.json.
+- Independent offline: clause P/R .706/.545, fields26/68=.382, scam AUC .730, verdict12/24=.500.
+- Independent Flash Lite: raw fields58/68=.853, same clause P/R/AUC/verdict; timeout5/24; p50/p95 5.036s/12.010s.
+- Author-overlap gold: offline verdict38/40=.950; no generalization claim. Flash Lite completed64 (44 live,18 fallback,2 language refusals).
+- V1 Flash/repeat unavailable after HTTP429; lead confirmed per-minute limit, paced Flash resume is authorized next.
+- Verified: exact e-Laws excerpts, data bounds, training/gold separation, 45 tests passed/1 optional skipped, root+C3 strict typechecks.
+- Risks: synthetic-only uncalibrated model; street centroids/straight-line walks; Nov2026 schedule proxies Winter2027; means are not medians.
+- No rule/model tuning against blind cases. Future rt-v2 split will be the final headline; current24 become development data.
