@@ -1,0 +1,9 @@
+# C2b — LLM-proposed rule classification, span-verified (Lane L3, Codex)
+Why: independent redteam-v1 (offline) showed paraphrase misses: clause P=.706 R=.545, AUC .730, verdict 50% (see evals/RESULTS*.md). Keyword rules can't catch "$400 held against breakages" / "pls no furry friends". Fix the DESIGN, not the dev cases.
+Design (SPEC D1/D2 extension, update SPEC §3 table text in your commit):
+1. Extend the Gemini responseSchema: each extracted clause gets `proposed_rule_id` (enum of data/rta_rules.json ids + "none") and `rationale` (≤20 words). Also extend fields with `payment_before_viewing`, `landlord_abroad`, `risky_payment_method` as booleans each with a verbatim span (feeds D3 features when live).
+2. D2 merge policy: rule pattern match (exact 1.0 / fuzzy 0.6) wins; else an LLM-proposed rule whose span verifies verbatim gets confidence 0.7 → BELOW 0.75 threshold → escalates to the human ("The bouncer thinks this may be a damage deposit (s.105). Confirm?"). LLM can never mark a clause `void` with confidence ≥0.75 on its own. Unverified span → dropped + logged. Log decision kind as `llm+rules`.
+3. D3 live: if LLM booleans are span-verified, OR them into features (never override a regex-true to false).
+4. Offline: add generic (not case-specific) paraphrase patterns as fuzzy_patterns ONLY via a short documented list derived from RTA concepts (e.g. deposit synonyms: held against, breakage, damages, security; pets synonyms) — you may NOT open evals/redteam/* while writing them. C3 will check you didn't overfit.
+5. Tests: ≥6 new (LLM-proposed rule escalates not voids; unverified span dropped; enum validation; offline paraphrase synonyms; regex wins over LLM; feature OR merge).
+Done: npm test green, typecheck clean, HANDOFF entry ≤15 lines, commit + push. Don't touch /evals, /web, /data/scam_model.json (you may append fuzzy_patterns in data/rta_rules.json — record that change in data/RTA-VERIFICATION.md change log).
