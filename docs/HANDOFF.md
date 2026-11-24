@@ -1,0 +1,12 @@
+# C7c documentation handoff - 2026-11-24
+- Role: Codex L3 docs; workforce catalog scanned; no specialist Markdown skill selected.
+- Capability gaps: rg unavailable (PowerShell/Python used); npm.cmd used for Windows PATH/script policy.
+- Refreshed README and policy, accountability, architecture, limitations, AI disclosure and geocoder provenance.
+- Linked completed scoped human review; distinguished blocking questions from notes and the stricter ICS gate.
+- Disclosed normalized address egress to server-side Nominatim, process-local cache/rate limit and extra latency.
+- Removed links to untracked production JSON; evidence file remains the lead's responsibility.
+- Retained final-results placeholder; added no measured evaluation claims; never opened evals/redteam-v3/.
+- Verified shared checkout: npm test (158 passed, 1 skipped), typecheck and production build passed.
+- Verified changed docs: UTF-8 without BOM, no doubled question marks/U+FFFD, tracked local links and line anchors.
+- Clean-clone execution was not repeated; concurrent code/UI changes were present during checks.
+- C2f confidence behavior was uncommitted at C7c completion and is intentionally omitted.
