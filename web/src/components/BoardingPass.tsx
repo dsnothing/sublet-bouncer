@@ -17,11 +17,19 @@ import {
   Zap,
 } from 'lucide-react';
 import { verdictHeadline } from '../../../core/index';
+import rtaRulesRaw from '../../../data/rta_rules.json';
 import baselineSamplesRaw from '../data/baseline-samples.json';
 import { buildViewingIcs, downloadEvidenceCard, downloadTextFile } from '../ics';
-import type { AnalysisResult, DataSourceMode, LanguageLevel, ProfileState, Span } from '../types';
+import type {
+  AnalysisResult,
+  DataSourceMode,
+  LanguageLevel,
+  ProfileState,
+  SampleKey,
+  Span,
+} from '../types';
 
-interface BaselineClause {
+export interface BaselineClause {
   category: string;
   quote: string;
   section: string;
@@ -29,7 +37,7 @@ interface BaselineClause {
   matchesRule: boolean;
 }
 
-interface BaselineSampleEntry {
+export interface BaselineSampleEntry {
   listing: string;
   model: string;
   recordedAt: string;
@@ -41,25 +49,155 @@ interface BaselineSampleEntry {
 interface BaselineSamplesFile {
   model: string;
   date: string;
-  samples: Record<'clean' | 'tricky' | 'scammy', BaselineSampleEntry>;
+  samples: Record<SampleKey, BaselineSampleEntry>;
 }
 
 const BASELINE_SAMPLES = baselineSamplesRaw as BaselineSamplesFile;
 const BASELINE_REPORT_URL =
   'https://github.com/dsnothing/sublet-bouncer/blob/main/evals/RESULTS-BASELINES.md';
 
-function findBaselineSample(listing: string): BaselineSampleEntry | null {
-  const entries = Object.values(BASELINE_SAMPLES.samples);
-  return entries.find((entry) => entry.listing === listing) ?? null;
+const VERIFIED_RULE_SECTIONS = new Map<string, string[]>(
+  rtaRulesRaw.rules.map((rule) => [
+    rule.id,
+    rule.section
+      .split(';')
+      .map((part) => normalizeSectionCitation(part))
+      .filter(Boolean),
+  ]),
+);
+
+function normalizeSectionCitation(raw: string): string {
+  return raw
+    .trim()
+    .toLowerCase()
+    .replace(/^sections?\s+/i, 's.')
+    .replace(/^s\.\s+/i, 's.')
+    .replace(/\s+/g, ' ');
+}
+
+export function sectionMatchesVerifiedTable(category: string, section: string): boolean {
+  const verifiedParts = VERIFIED_RULE_SECTIONS.get(category);
+  if (!verifiedParts || verifiedParts.length === 0) return false;
+  const normalized = normalizeSectionCitation(section);
+  return verifiedParts.includes(normalized);
+}
+
+export function shouldFlagBaselineSection(clause: BaselineClause): boolean {
+  if (clause.matchesRule) return false;
+  return !sectionMatchesVerifiedTable(clause.category, clause.section);
+}
+
+export function buildChatbotComparisonSummary(
+  sample: BaselineSampleEntry,
+  result: Pick<AnalysisResult, 'verdict' | 'clauses'>,
+): string {
+  if (sample.clauses.length === 0) {
+    if (sample.verdict === result.verdict && result.clauses.length === 0) {
+      return 'The plain chatbot reported no violations, agreeing with Bouncer.';
+    }
+    if (sample.verdict === result.verdict) {
+      return `The plain chatbot reported no violations, while Bouncer verified ${result.clauses.length} ${result.clauses.length === 1 ? 'clause' : 'clauses'}.`;
+    }
+    return `The plain chatbot reported no violations (${sample.verdict}), while Bouncer returned ${result.verdict}.`;
+  }
+
+  const total = sample.clauses.length;
+  const missingQuotes = sample.clauses.filter((c) => !c.inListing).length;
+  const sectionDiffs = sample.clauses.filter((c) => shouldFlagBaselineSection(c)).length;
+  const clauseWord = total === 1 ? 'clause' : 'clauses';
+
+  if (missingQuotes > 0 && sectionDiffs > 0) {
+    return `The plain chatbot flagged ${total} ${clauseWord}, with ${missingQuotes} ${missingQuotes === 1 ? 'quote' : 'quotes'} not in the listing and ${sectionDiffs} ${sectionDiffs === 1 ? 'citation whose section number differs' : 'citations whose section numbers differ'} from the verified rule table; Bouncer's quotes and sections are verified.`;
+  }
+  if (sectionDiffs > 0) {
+    const diffPhrase =
+      sectionDiffs === total
+        ? `${total === 1 ? 'a section number that differs' : 'section numbers that differ'} from the verified rule table`
+        : `${sectionDiffs} ${sectionDiffs === 1 ? 'citation whose section number differs' : 'citations whose section numbers differ'} from the verified rule table`;
+    return `The plain chatbot flagged ${total} ${clauseWord} with ${diffPhrase}; Bouncer's quotes and sections are verified.`;
+  }
+  if (missingQuotes > 0) {
+    return `The plain chatbot flagged ${total} ${clauseWord}, with ${missingQuotes} ${missingQuotes === 1 ? 'quote' : 'quotes'} not found in the listing; Bouncer's quotes and sections are verified.`;
+  }
+  return `The plain chatbot flagged ${total} ${clauseWord} matching the verified rule table; Bouncer also verifies every quote offset in the listing.`;
+}
+
+export function computeBreakerCooldownSec(
+  breakerRetryAt: number | null | undefined,
+  now = Date.now(),
+): number {
+  if (!breakerRetryAt || !Number.isFinite(breakerRetryAt)) return 0;
+  return Math.max(0, Math.ceil((breakerRetryAt - now) / 1000));
+}
+
+export function resolveHeadlineLinks(
+  result: Pick<AnalysisResult, 'clauses' | 'listing'>,
+  headline: ReturnType<typeof verdictHeadline>,
+): Array<{ item: ReturnType<typeof verdictHeadline>['items'][number]; span: Span }> {
+  const usedClauseIndices = new Set<number>();
+  const usedFallbackStarts = new Map<string, number>();
+
+  const resolved: Array<{
+    item: ReturnType<typeof verdictHeadline>['items'][number];
+    span: Span;
+    groupOrder: number;
+    originalIndex: number;
+  }> = [];
+
+  headline.items.forEach((item, originalIndex) => {
+    if (!item.spanText) return;
+    let matchedIdx = result.clauses.findIndex(
+      (c, idx) =>
+        !usedClauseIndices.has(idx) &&
+        c.status !== 'ok' &&
+        c.span.text === item.spanText &&
+        (!item.ruleId || c.ruleId === item.ruleId),
+    );
+    if (matchedIdx === -1) {
+      matchedIdx = result.clauses.findIndex(
+        (c, idx) => !usedClauseIndices.has(idx) && c.span.text === item.spanText,
+      );
+    }
+    if (matchedIdx >= 0) {
+      usedClauseIndices.add(matchedIdx);
+      const clause = result.clauses[matchedIdx];
+      resolved.push({
+        item,
+        span: clause.span,
+        groupOrder: clause.status === 'void' ? 0 : 1,
+        originalIndex,
+      });
+      return;
+    }
+
+    const fromIndex = usedFallbackStarts.get(item.spanText) ?? 0;
+    const idx = result.listing.indexOf(item.spanText, fromIndex);
+    if (idx >= 0) {
+      usedFallbackStarts.set(item.spanText, idx + item.spanText.length);
+      resolved.push({
+        item,
+        span: { start: idx, end: idx + item.spanText.length, text: item.spanText },
+        groupOrder: 2,
+        originalIndex,
+      });
+    }
+  });
+
+  resolved.sort((a, b) => a.groupOrder - b.groupOrder || a.originalIndex - b.originalIndex);
+  return resolved.map(({ item, span }) => ({ item, span }));
 }
 
 interface BoardingPassProps {
   result: AnalysisResult;
   profile: ProfileState;
+  activeSample: SampleKey | null;
+  editorListing: string;
   languageLevel: LanguageLevel;
   isRewinding: boolean;
   isAnalyzing: boolean;
   analyzingSource: DataSourceMode;
+  analyzingSimulated: boolean;
+  breakerRetryAt: number | null;
   elapsedMs: number;
   notice?: string;
   canRecheckWithGemini: boolean;
@@ -70,7 +208,14 @@ interface BoardingPassProps {
   onFocusSpan: (span: Span) => void;
 }
 
-export function getLiveWaitStage(elapsedMs: number, source: DataSourceMode): string {
+export function getLiveWaitStage(
+  elapsedMs: number,
+  source: DataSourceMode,
+  simulateOutage = false,
+): string {
+  if (simulateOutage) {
+    return 'Simulating a Gemini outage (offline fallback)…';
+  }
   if (source !== 'api') {
     return 'Checking Ontario RTA rules and commute offline…';
   }
@@ -83,7 +228,7 @@ export function getLiveWaitStage(elapsedMs: number, source: DataSourceMode): str
   return 'Checking Ontario RTA rules and commute…';
 }
 
-interface FallbackBannerInfo {
+export interface FallbackBannerInfo {
   kind: 'info' | 'simulated' | 'breaker';
   title: string;
   body: string;
@@ -91,12 +236,13 @@ interface FallbackBannerInfo {
   rawDetail?: string;
 }
 
-function classifyFallback(
+export function classifyFallback(
   mode: AnalysisResult['mode'],
   rawReason?: string,
   model?: string,
   simulated?: boolean,
   breaker?: AnalysisResult['breaker'],
+  cached?: boolean,
 ): FallbackBannerInfo | null {
   if (simulated === true) {
     return {
@@ -127,8 +273,12 @@ function classifyFallback(
   if (mode === 'live' && rawReason) {
     return {
       kind: 'info',
-      title: 'Primary Gemini model was busy — used backup model',
-      body: `Your listing was still analyzed live${model ? ` with ${model}` : ''}.`,
+      title: cached
+        ? 'Recorded run used backup Gemini model'
+        : 'Primary Gemini model was busy — used backup model',
+      body: cached
+        ? `When this saved result was recorded, the primary model was busy so the backup model${model ? ` (${model})` : ''} completed the run.`
+        : `Your listing was still analyzed live${model ? ` with ${model}` : ''}.`,
       showOfflineExplainer: false,
       rawDetail: rawReason,
     };
@@ -141,6 +291,16 @@ function classifyFallback(
       title: rawReason ?? '',
       body: '',
       showOfflineExplainer: false,
+    };
+  }
+
+  if (text.includes('simulated outage')) {
+    return {
+      kind: 'info',
+      title: 'Outage simulation API call failed — fell back locally',
+      body: 'Could not reach the API to run the server-side simulation, so the built-in offline engine answered in your browser instead.',
+      showOfflineExplainer: true,
+      rawDetail: rawReason,
     };
   }
 
@@ -257,10 +417,14 @@ function formatCachedDate(cachedAt?: string): string | null {
 export const BoardingPass: React.FC<BoardingPassProps> = ({
   result,
   profile,
+  activeSample,
+  editorListing,
   languageLevel,
   isRewinding,
   isAnalyzing,
   analyzingSource,
+  analyzingSimulated,
+  breakerRetryAt,
   elapsedMs,
   notice,
   canRecheckWithGemini,
@@ -280,7 +444,18 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
   const isBreakerOpen =
     result.breaker === 'open' || (rawFallbackReason ?? '').startsWith('Gemini is overloaded right now');
 
-  const [breakerCooldownSec, setBreakerCooldownSec] = useState<number>(() => (isBreakerOpen ? 60 : 0));
+  const baselineSampleKey: SampleKey | null =
+    !result.refused &&
+    activeSample !== null &&
+    editorListing === BASELINE_SAMPLES.samples[activeSample].listing &&
+    result.listing === BASELINE_SAMPLES.samples[activeSample].listing
+      ? activeSample
+      : null;
+  const baselineSample = baselineSampleKey ? BASELINE_SAMPLES.samples[baselineSampleKey] : null;
+
+  const [breakerCooldownSec, setBreakerCooldownSec] = useState<number>(() =>
+    isBreakerOpen ? computeBreakerCooldownSec(breakerRetryAt) : 0,
+  );
 
   useEffect(() => {
     setCopiedId(null);
@@ -290,25 +465,26 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
 
   useEffect(() => {
     setShowChatbotCompare(false);
-  }, [result.listing]);
+  }, [baselineSampleKey]);
 
   useEffect(() => {
-    if (!isBreakerOpen) {
+    if (!isBreakerOpen || !breakerRetryAt) {
       setBreakerCooldownSec(0);
       return;
     }
-    setBreakerCooldownSec(60);
+    const updateRemaining = () => {
+      const remaining = computeBreakerCooldownSec(breakerRetryAt);
+      setBreakerCooldownSec(remaining);
+      return remaining;
+    };
+    if (updateRemaining() <= 0) return;
     const id = window.setInterval(() => {
-      setBreakerCooldownSec((prev) => {
-        if (prev <= 1) {
-          window.clearInterval(id);
-          return 0;
-        }
-        return prev - 1;
-      });
+      if (updateRemaining() <= 0) {
+        window.clearInterval(id);
+      }
     }, 1000);
     return () => window.clearInterval(id);
-  }, [result.runId, isBreakerOpen]);
+  }, [result.runId, isBreakerOpen, breakerRetryAt]);
 
   const draftAction = result.actions.find((a) => a.type === 'draft_reply');
   const copyAction = result.actions.find((a) => a.type === 'copy_reply_to_clipboard');
@@ -375,6 +551,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
     result.model,
     result.simulated,
     result.breaker,
+    result.cached,
   );
 
   const noteEscalations = result.escalations.filter((esc) => !esc.blocking);
@@ -410,24 +587,8 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
     (esc) => esc.decisionId === 'D5' && /outside Ontario/i.test(esc.question),
   );
 
-  const resolveSpanForItem = (item: { ruleId?: string; spanText?: string }): Span | null => {
-    if (!item.spanText) return null;
-    const matchedClause =
-      result.clauses.find(
-        (c) => c.span.text === item.spanText && (!item.ruleId || c.ruleId === item.ruleId),
-      ) ?? result.clauses.find((c) => c.span.text === item.spanText);
-    if (matchedClause) return matchedClause.span;
-    const idx = result.listing.indexOf(item.spanText);
-    if (idx >= 0) {
-      return { start: idx, end: idx + item.spanText.length, text: item.spanText };
-    }
-    return null;
-  };
-
   const renderHeadlineNodes = (): React.ReactNode => {
-    const linkItems = headline.items
-      .map((item) => ({ item, span: resolveSpanForItem(item) }))
-      .filter((entry): entry is { item: (typeof headline.items)[number]; span: Span } => entry.span !== null);
+    const linkItems = resolveHeadlineLinks(result, headline);
 
     if (linkItems.length === 0) {
       return headline.text;
@@ -446,12 +607,14 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
       }
       nodes.push(
         <button
-          key={`l-${idx}`}
+          key={`l-${idx}-${span.start}-${span.end}`}
           type="button"
           className="headline-span-link"
           title={`Jump to "${span.text}" in listing`}
           onClick={() => onFocusSpan(span)}
           data-testid="headline-span-link"
+          data-span-start={span.start}
+          data-span-end={span.end}
         >
           {item.label}
         </button>,
@@ -466,7 +629,6 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
     return nodes;
   };
 
-  const baselineSample = !result.refused ? findBaselineSample(result.listing) : null;
   const showRecheckBtn =
     isReducedConfidence && (canRecheckWithGemini || isBreakerOpen) && !result.refused;
   const showFreshCheckBtn = isCachedResult && !result.refused;
@@ -493,18 +655,27 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
       </div>
 
       {isAnalyzing && (
-        <div className="live-wait-bar" role="status" aria-live="polite" data-testid="live-wait-bar">
+        <div className="live-wait-bar" data-testid="live-wait-bar">
           <div className="live-wait-head">
-            <span className="live-wait-stage">{getLiveWaitStage(elapsedMs, analyzingSource)}</span>
-            <span className="live-wait-timer">{(elapsedMs / 1000).toFixed(1)}s</span>
+            <span className="live-wait-stage" role="status" aria-live="polite" aria-atomic="true">
+              {getLiveWaitStage(elapsedMs, analyzingSource, analyzingSimulated)}
+            </span>
+            <span className="live-wait-timer" aria-hidden="true">
+              {(elapsedMs / 1000).toFixed(1)}s
+            </span>
           </div>
-          {analyzingSource === 'api' && (
+          {analyzingSource === 'api' && !analyzingSimulated && (
             <div className="live-wait-actions">
               <span className="live-wait-hint">Free-tier Gemini can take up to 20 s.</span>
               <button type="button" className="btn-offline-now" onClick={onUseOfflineNow}>
                 <Zap size={14} aria-hidden="true" />
                 <span>Use offline now</span>
               </button>
+            </div>
+          )}
+          {analyzingSimulated && (
+            <div className="live-wait-actions">
+              <span className="live-wait-hint">Testing the offline fallback path without calling Gemini.</span>
             </div>
           )}
         </div>
@@ -785,7 +956,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
                             </div>
                             <div className="chatbot-clause-meta">
                               <span className="chatbot-cat-chip">{clause.category}</span>
-                              {clause.matchesRule ? (
+                              {!shouldFlagBaselineSection(clause) ? (
                                 <span className="chatbot-sec-chip">{clause.section}</span>
                               ) : (
                                 <>
@@ -793,7 +964,7 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
                                     {clause.section}
                                   </del>
                                   <span className="chatbot-flag-badge">
-                                    doesn&apos;t match the rule
+                                    section number differs from the verified rule table
                                   </span>
                                 </>
                               )}
@@ -851,9 +1022,8 @@ export const BoardingPass: React.FC<BoardingPassProps> = ({
                   </div>
                 </div>
 
-                <p className="chatbot-compare-honest-note">
-                  The plain chatbot found the violations but cited law sections that don&apos;t
-                  match the verified table; Bouncer&apos;s quotes and sections are verified.{' '}
+                <p className="chatbot-compare-honest-note" data-testid="chatbot-compare-summary">
+                  {buildChatbotComparisonSummary(baselineSample, result)}{' '}
                   <a
                     href={BASELINE_REPORT_URL}
                     target="_blank"

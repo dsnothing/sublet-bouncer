@@ -42,6 +42,8 @@ export const App: React.FC = () => {
   const [engineError, setEngineError] = useState<string | undefined>(undefined);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analyzingSource, setAnalyzingSource] = useState<DataSourceMode>(initial.dataSource);
+  const [analyzingSimulated, setAnalyzingSimulated] = useState<boolean>(false);
+  const [breakerRetryAt, setBreakerRetryAt] = useState<number | null>(initial.breakerRetryAt ?? null);
   const [elapsedMs, setElapsedMs] = useState<number>(0);
   const [isRewinding, setIsRewinding] = useState<boolean>(false);
   const [apiReachable, setApiReachable] = useState<boolean>(false);
@@ -88,8 +90,9 @@ export const App: React.FC = () => {
       drawerOpen,
       activeSample,
       result,
+      breakerRetryAt,
     });
-  }, [listing, profile, analyzedProfile, dataSource, languageLevel, drawerOpen, activeSample, result]);
+  }, [listing, profile, analyzedProfile, dataSource, languageLevel, drawerOpen, activeSample, result, breakerRetryAt]);
 
   useEffect(() => {
     if (!isAnalyzing) {
@@ -143,6 +146,7 @@ export const App: React.FC = () => {
     const seq = ++analysisSeqRef.current;
     setIsAnalyzing(true);
     setAnalyzingSource(source);
+    setAnalyzingSimulated(Boolean(options?.simulateOutage));
     setNotice(undefined);
     setEngineError(undefined);
     try {
@@ -159,6 +163,10 @@ export const App: React.FC = () => {
       );
       if (seq !== analysisSeqRef.current) return;
       resultRef.current = nextResult;
+      const isBreaker =
+        nextResult.breaker === 'open' ||
+        (nextResult.fallbackReason ?? nextNotice ?? '').startsWith('Gemini is overloaded right now');
+      setBreakerRetryAt(isBreaker ? Date.now() + 60_000 : null);
       setResult(nextResult);
       setAnalyzedProfile(prof);
       setNotice(nextNotice);
@@ -170,6 +178,7 @@ export const App: React.FC = () => {
     } finally {
       if (seq === analysisSeqRef.current) {
         setIsAnalyzing(false);
+        setAnalyzingSimulated(false);
         if (activeAbortRef.current === controller) {
           activeAbortRef.current = null;
         }
@@ -185,7 +194,8 @@ export const App: React.FC = () => {
 
   const handleRecheckWithGemini = () => {
     setDataSource('api');
-    void executeAnalysis(listing, profile, 'api');
+    const bypassCache = resultRef.current?.simulated === true;
+    void executeAnalysis(listing, profile, 'api', bypassCache ? { noCache: true } : undefined);
   };
 
   const handleRunFreshCheck = () => {
@@ -194,7 +204,6 @@ export const App: React.FC = () => {
   };
 
   const handleSimulateOutage = () => {
-    setDataSource('api');
     void executeAnalysis(listing, profile, 'api', { simulateOutage: true });
   };
 
@@ -482,10 +491,14 @@ export const App: React.FC = () => {
           <BoardingPass
             result={result}
             profile={analyzedProfile}
+            activeSample={activeSample}
+            editorListing={listing}
             languageLevel={languageLevel}
             isRewinding={isRewinding}
             isAnalyzing={isAnalyzing}
             analyzingSource={analyzingSource}
+            analyzingSimulated={analyzingSimulated}
+            breakerRetryAt={breakerRetryAt}
             elapsedMs={elapsedMs}
             notice={notice}
             canRecheckWithGemini={apiReachable}
@@ -500,15 +513,20 @@ export const App: React.FC = () => {
             <div className="pass-top-band">
               <span className="pass-airline">WATERLOO CO-OP GATE PASS</span>
               <span className="pass-meta-mono">
-                {analyzingSource === 'api' ? 'LIVE LLM' : 'OFFLINE'} · {(elapsedMs / 1000).toFixed(1)}s
+                {analyzingSimulated ? 'SIMULATED' : analyzingSource === 'api' ? 'LIVE LLM' : 'OFFLINE'} ·{' '}
+                {(elapsedMs / 1000).toFixed(1)}s
               </span>
             </div>
-            <div className="live-wait-bar" role="status" aria-live="polite" data-testid="live-wait-bar">
+            <div className="live-wait-bar" data-testid="live-wait-bar">
               <div className="live-wait-head">
-                <span className="live-wait-stage">{getLiveWaitStage(elapsedMs, analyzingSource)}</span>
-                <span className="live-wait-timer">{(elapsedMs / 1000).toFixed(1)}s</span>
+                <span className="live-wait-stage" role="status" aria-live="polite" aria-atomic="true">
+                  {getLiveWaitStage(elapsedMs, analyzingSource, analyzingSimulated)}
+                </span>
+                <span className="live-wait-timer" aria-hidden="true">
+                  {(elapsedMs / 1000).toFixed(1)}s
+                </span>
               </div>
-              {analyzingSource === 'api' && (
+              {analyzingSource === 'api' && !analyzingSimulated && (
                 <div className="live-wait-actions">
                   <span className="live-wait-hint">Free-tier Gemini can take up to 20 s.</span>
                   <button
@@ -518,6 +536,11 @@ export const App: React.FC = () => {
                   >
                     Use offline now
                   </button>
+                </div>
+              )}
+              {analyzingSimulated && (
+                <div className="live-wait-actions">
+                  <span className="live-wait-hint">Testing the offline fallback path without calling Gemini.</span>
                 </div>
               )}
             </div>

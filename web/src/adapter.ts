@@ -191,11 +191,17 @@ export async function runAnalysis(
       if (options?.signal?.aborted) {
         throw new DOMException('Analysis aborted', 'AbortError');
       }
-      const reason = timedOut
-        ? `Live request timed out after ${Math.round(CLIENT_LIVE_TIMEOUT_MS / 1000)}s; ran offline core engine in browser`
-        : err instanceof Error
-          ? `Live API unreachable (${err.message}); ran offline core engine in browser`
-          : 'Live API unreachable; ran offline core engine in browser';
+      const reason = req.simulateOutage
+        ? timedOut
+          ? `Simulated outage API call timed out after ${Math.round(CLIENT_LIVE_TIMEOUT_MS / 1000)}s; fell back locally to the offline core engine in browser`
+          : err instanceof Error
+            ? `Simulated outage API call failed (${err.message}); fell back locally to the offline core engine in browser`
+            : 'Simulated outage API call failed; fell back locally to the offline core engine in browser'
+        : timedOut
+          ? `Live request timed out after ${Math.round(CLIENT_LIVE_TIMEOUT_MS / 1000)}s; ran offline core engine in browser`
+          : err instanceof Error
+            ? `Live API unreachable (${err.message}); ran offline core engine in browser`
+            : 'Live API unreachable; ran offline core engine in browser';
       const fallback = await coreAnalyze({ ...req, mode: 'offline' });
       fallback.mode = 'offline-fallback';
       fallback.fallbackReason = reason;

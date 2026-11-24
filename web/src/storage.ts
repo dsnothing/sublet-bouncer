@@ -29,6 +29,7 @@ export interface PersistedState {
   drawerOpen: boolean;
   activeSample: SampleKey | null;
   result: AnalysisResult | null;
+  breakerRetryAt?: number | null;
 }
 
 const VALID_VERDICTS = new Set<Verdict>(['ADMIT', 'HOLD', 'REFUSE']);
@@ -274,6 +275,7 @@ export function loadInitialState(
     drawerOpen: true,
     activeSample: 'tricky',
     result: null,
+    breakerRetryAt: null,
   };
 
   try {
@@ -317,6 +319,8 @@ export function loadInitialState(
           ? parsed.activeSample
           : null,
       result: validatedResult,
+      breakerRetryAt:
+        validatedResult && isFiniteNumber(parsed.breakerRetryAt) ? parsed.breakerRetryAt : null,
     };
   } catch {
     return fallback;
