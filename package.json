@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "dev:api": "tsx api/dev-server.ts",
     "build": "npm run build --workspace=web",
-    "eval": "tsx evals/run_eval.ts"
+    "eval": "tsx evals/run_eval.ts",
+    "safety": "tsx scripts/safety_suite_report.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

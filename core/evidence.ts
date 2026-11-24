@@ -24,6 +24,14 @@ export function negatedRestriction(text:string,start:number,end:number,ruleId:st
   const before=text.slice(0,start).split(/[.!?;\n]|\bbut\b/i).pop()??'';
   const after=text.slice(end).split(/[.!?;\n]|\bbut\b/i)[0];
   const clause=before+text.slice(start,end)+after;
+  // Reject whole-clause statements that expressly permit or deny the suspected
+  // restriction. Anchoring keeps a lawful term from masking a second restriction.
+  const statement=clause.trim().replace(/[.!?;]+$/, '');
+  if(ruleId==='maintenance_waiver' && /^(?:(?:the\s+)?tenant|you)\s+(?:(?:do|does|will)\s+not|never|cannot|can't|won't)\s+(?:do|pay\s+for|fix)\s+(?:all\s+)?repairs$|^(?:the\s+)?landlord\s+is\s+responsible\s+for\s+repairs$/i.test(statement))return true;
+  if(ruleId==='entry_notice' && /^(?:entry\s+without\s+(?:prior\s+)?notice\s+is\s+allowed\s+(?:only\s+)?in\s+an?\s+emergency|(?:the\s+)?(?:landlord|owner)\s+(?:can|may|will)\s+enter\s+with\s+(?:at\s+least\s+)?24\s+hours?['’]?\s+written\s+notice\s+for\s+repairs)$/i.test(statement))return true;
+  if(ruleId==='lockout' && /^(?:we|(?:the\s+)?landlord)\s+(?:(?:will|do|does|must)\s+not|cannot|can't|won't|never|will\s+never)\s+(?:change\s+the\s+locks(?:\s+if\s+rent\s+is\s+late)?|remove\s+your\s+(?:things|belongings)|impose\s+immediate\s+eviction)$/i.test(statement))return true;
+  if(ruleId==='lockout' && /^(?:we|(?:the\s+)?landlord)\s+(?:can|may|will)\s+change\s+the\s+locks\s+and\s+(?:give|provide)\s+(?:you\s+)?(?:replacement|new)\s+keys$/i.test(statement))return true;
+  if(ruleId==='key_deposit' && /^(?:a\s+)?refundable\s+key\s+deposit\s+equal\s+to\s+(?:the\s+)?replacement\s+cost$|^(?:the\s+)?key\s+deposit\s+(?:is|will\s+be)\s+returned\s+when\s+(?:the\s+)?keys\s+are\s+returned$/i.test(statement))return true;
   if(/\b(?:no|not|never|without|cannot|can't|won't|don't|doesn't)\s+(?:(?:a|any|the|require|requires|request|enforce|allow)\s+){0,4}["'“”‘’]*\s*$/i.test(before))return true;
   if(/^\s*["'“”‘’]*(?:\s+(?:clause|policy|rule|is|are|will|be|does))*\s+(?:not\s+(?:required|enforced|applicable|apply)|never\s+(?:required|enforced)|optional|voluntary|waived|unnecessary)/i.test(after))return true;
   if(ruleId==='entry_notice' && /\b(?:owner|landlord)\b[^.!?;\n]{0,25}\b(?:cannot|can't|won't|never|may\s+not|must\s+not|does\s+not|do\s+not)\b[^.!?;\n]{0,20}\b(?:enter|pop|drop|come)\b/i.test(clause))return true;

@@ -18,7 +18,7 @@ import type {
   Verdict,
 } from './types';
 
-// Realistic sample listings sourced read-only from evals/gold/{01,31,25}.json
+// Clean/scammy are gold examples; tricky is a separate demo sample.
 export const SAMPLE_LISTINGS: Record<
   SampleKey,
   { label: string; badge: Verdict; goldId: string; listing: string }
@@ -31,11 +31,11 @@ export const SAMPLE_LISTINGS: Record<
       'At 250 Lester Street a furnished room is $950/month. January 1 to April 30 2027. Utilities included. Viewing available. Owner does not live here.',
   },
   tricky: {
-    label: 'Tricky',
+    label: 'Hidden terms',
     badge: 'HOLD',
-    goldId: 'gold-31',
+    goldId: 'demo-hero', // Demo sample, not an eval item
     listing:
-      'Owner lives here at 250 Lester Street, $950/month. Viewing offered. Share the kitchen with the owner. No pets allowed.',
+      "Furnished room at 200 Lester Street, $900/month, January 1 to April 30 2027. Viewing any evening this week. Owner does not live here. First month's rent plus an extra $400 we hold in case anything gets broken. The landlord can pop in whenever he likes, no need to tell you first.",
   },
   scammy: {
     label: 'Scammy',
@@ -133,6 +133,12 @@ export async function runAnalysis(
   options?: { signal?: AbortSignal },
 ): Promise<{ result: AnalysisResult; notice?: string }> {
   if (source === 'fixtures') {
+    if (req.listing === SAMPLE_LISTINGS.tricky.listing) {
+      return {
+        result: await coreAnalyze({ ...req, mode: 'offline' }),
+        notice: 'Fixture demo mode runs this sample with the offline engine.',
+      };
+    }
     return matchFixtureForListing(req.listing);
   }
 
